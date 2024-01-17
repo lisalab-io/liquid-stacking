@@ -2,7 +2,7 @@
 ;; lqstx-mint-registry
 ;;
 
-(use-trait sip010-trait .trait-sip-010.sip-010-trait)
+(use-trait sip010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-UNKNOWN-REQUEST-ID (err u1008))
@@ -91,7 +91,7 @@
 (define-public (transfer-fixed (amount uint) (recipient principal))
     (begin 
         (try! (is-approved-operator))
-        (as-contract (contract-call? .token-wstx transfer-fixed amount tx-sender recipient none))))
+        (as-contract (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx transfer-fixed amount tx-sender recipient none))))
 
 ;; @dev other pools can be added by upgrading registry
 (define-public (delegate-stx (amount uint))
@@ -106,17 +106,17 @@
 (define-public (disallow-contract-caller (caller principal))
 	(begin 
 		(try! (is-approved-operator))
-		(as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 disallow-contract-caller caller))))
+		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 disallow-contract-caller caller)))))
 
 (define-public (allow-contract-caller (caller principal) (until-burn-ht (optional uint)))
 	(begin 
 		(try! (is-approved-operator))
-		(as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller caller until-burn-ht))))
+		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller caller until-burn-ht)))))
 
 (define-public (revoke-delegate-stx)
 	(begin 
 		(try! (is-approved-operator))
-		(as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 revoke-delegate-stx))))
+		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 revoke-delegate-stx)))))
 
 ;; private calls
 
@@ -124,3 +124,5 @@
 	(ok (asserts! (is-eq tx-sender (var-get contract-owner)) ERR-NOT-AUTHORIZED)))
 
 
+(define-read-only (to-response-uint (resp (response bool int)))
+	(match resp success (ok success) err (err (to-uint err))))

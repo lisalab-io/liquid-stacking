@@ -6,11 +6,30 @@ authors = []
 telemetry = false
 cache_dir = "./.cache"
 
-# [contracts.counter]
-# path = "contracts/counter.clar"
-
 [[project.requirements]]
 contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
+
+[[project.requirements]]
+contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard"
+
+[[project.requirements]]
+contract_id = "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx"
+
+[contracts.lqstx-mint-endpoint]
+path = "contracts/lqstx-mint-endpoint.clar"
+epoch = 2.4
+
+[contracts.lqstx-mint-registry]
+path = "contracts/lqstx-mint-registry.clar"
+epoch = 2.4
+
+[contracts.token-lqstx]
+path = "contracts/token-lqstx.clar"
+epoch = 2.4
+
+[contracts.token-wlqstx]
+path = "contracts/token-wlqstx.clar"
+epoch = 2.4
 
 
 [repl.analysis]

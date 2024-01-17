@@ -2,7 +2,7 @@
 ;; lqstx-mint-endpoint
 ;;
 
-(use-trait sip010-trait .trait-sip-010.sip-010-trait)
+(use-trait sip010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-PAUSED (err u1001))
@@ -33,9 +33,6 @@
 (define-read-only (get-revoked)
     (contract-call? .lqstx-mint-registry get-revoked))
 
-(define-read-only (get-approved-token-or-fail (token principal))
-    (contract-call? .lqstx-mint-registry get-approved-token-or-fail token))
-
 (define-read-only (get-mint-request-or-fail (request-id uint))
     (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id))
 
@@ -64,21 +61,21 @@
 (define-public (request-mint (amount uint))
     (let (
             (sender tx-sender)
-            (cycle (try! (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle)))
+            (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
-        (try! (contract-call? .token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none))        
+        (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none))        
         (print { type: "mint-request", id: request-id, details: request-details})
         (ok true)))
 
 (define-public (finalize-mint (request-id uint))
     (let (
             (sender tx-sender)
-            (request-details (try! (get-mint-request-or-fail request-id)))
+            (request-details (try! (get-mint-request-or-fail request-id))))
         (try! (validate-mint-request request-id))
         (try! (contract-call? .token-lqstx mint-fixed (get amount request-details) (get requested-by request-details)))
-        (as-contract (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: (get-finalized) }))))))
+        (as-contract (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: (get-finalized) })))))
 
 (define-public (revoke-mint (request-id uint))
     (ok true))
