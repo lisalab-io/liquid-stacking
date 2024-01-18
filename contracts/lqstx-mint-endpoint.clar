@@ -2,7 +2,7 @@
 ;; lqstx-mint-endpoint
 ;;
 
-(use-trait sip010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
+(use-trait sip010-trait .trait-sip-010.sip-010-trait)
 
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-PAUSED (err u1001))
@@ -36,6 +36,9 @@
 (define-read-only (get-mint-request-or-fail (request-id uint))
     (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id))
 
+(define-read-only (get-burn-request-or-fail (request-id uint))
+    (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id))    
+
 (define-read-only (get-rewards-paid-upto)
     (contract-call? .lqstx-mint-registry get-rewards-paid-upto))
 
@@ -44,11 +47,13 @@
           (request-details (try! (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id))))
         (ok (asserts! (>= (get-rewards-paid-upto) (get requested-at request-details)) ERR-REQUEST-PENDING))))
 
+;; @dev it favours smaller amounts as we do not allow partial burn
 (define-read-only (validate-burn-request (request-id uint))
     (let (
           (request-details (try! (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id)))
-          (balance (stx-account)))
-        (ok (asserts! (>= (get-rewards-paid-upto) (get requested-at request-details)) ERR-REQUEST-PENDING))))
+          (vaulted-amount (try! (contract-call? .token-wlqstx convert-to-tokens (get amount request-details))))
+          (balance (stx-account .lqstx-mint-registry)))
+        (ok (asserts! (>= (get unlocked balance) vaulted-amount) ERR-REQUEST-PENDING))))
 
 ;; governance calls
 
@@ -72,12 +77,12 @@
         (try! (is-paused-or-fail))
         (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none))        
         (print { type: "mint-request", id: request-id, details: request-details})
-        (ok true)))
+        (ok request-id)))
 
 (define-public (finalize-mint (request-id uint))
     (let (
-            (sender tx-sender)
             (request-details (try! (get-mint-request-or-fail request-id))))
+        (try! (is-paused-or-fail))
         (try! (validate-mint-request request-id))
         (try! (contract-call? .token-lqstx mint-fixed (get amount request-details) (get requested-by request-details)))
         (as-contract (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: (get-finalized) })))))
@@ -87,16 +92,26 @@
 
 (define-public (request-burn (amount uint))
     (let (
+            ;; @dev requested-at not used for burn
             (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
             (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details)))))
-            (try! (is-paused-or-fail))
-            (try! (contract-call? .token-lqstx transfer-fixed amount tx-sender .lqstx-mint-registry none))
-            (print { type: "burn-request", id: request-id, details: request-details })
-            (ok true)))
+        (try! (is-paused-or-fail))
+        (try! (contract-call? .token-wlqstx mint-fixed amount tx-sender))
+        (try! (contract-call? .token-wlqstx transfer-fixed amount tx-sender .lqstx-mint-registry none))
+        (print { type: "burn-request", id: request-id, details: request-details })
+        (ok request-id)))
 
 (define-public (finalize-burn (request-id uint))
-    (ok true))
+    (let (
+            (request-details (try! (get-burn-request-or-fail request-id)))
+            (transfer-wlqstx (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get amount request-details) tx-sender .token-wlqstx))))
+            (vaulted-amount (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))))
+        (try! (is-paused-or-fail))
+        (try! (validate-burn-request request-id))
+        (as-contract (try! (contract-call? .token-lqstx burn-fixed vaulted-amount tx-sender)))
+        (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed vaulted-amount (get requested-by request-details) .token-wstx)))
+        (as-contract (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: (get-finalized) })))))
 
 (define-public (revoke-burn (request-id uint))
     (ok true))

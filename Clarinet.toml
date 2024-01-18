@@ -9,11 +9,11 @@ cache_dir = "./.cache"
 [[project.requirements]]
 contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
 
-[[project.requirements]]
-contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard"
+[contracts.trait-sip-010]
+path = "contracts_modules/alex_v1/traits/trait-sip-010.clar"
 
-[[project.requirements]]
-contract_id = "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx"
+[contracts.token-wstx]
+path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
 
 [contracts.lqstx-mint-endpoint]
 path = "contracts/lqstx-mint-endpoint.clar"
