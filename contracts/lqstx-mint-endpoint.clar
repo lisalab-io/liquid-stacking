@@ -44,6 +44,12 @@
           (request-details (try! (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id))))
         (ok (asserts! (>= (get-rewards-paid-upto) (get requested-at request-details)) ERR-REQUEST-PENDING))))
 
+(define-read-only (validate-burn-request (request-id uint))
+    (let (
+          (request-details (try! (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id)))
+          (balance (stx-account)))
+        (ok (asserts! (>= (get-rewards-paid-upto) (get requested-at request-details)) ERR-REQUEST-PENDING))))
+
 ;; governance calls
 
 (define-public (set-contract-owner (owner principal))
@@ -60,9 +66,8 @@
 
 (define-public (request-mint (amount uint))
     (let (
-            (sender tx-sender)
             (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
-            (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: (get-pending) })
+            (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
         (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none))        
@@ -81,7 +86,14 @@
     (ok true))
 
 (define-public (request-burn (amount uint))
-    (ok true))
+    (let (
+            (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
+            (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
+            (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details)))))
+            (try! (is-paused-or-fail))
+            (try! (contract-call? .token-lqstx transfer-fixed amount tx-sender .lqstx-mint-registry none))
+            (print { type: "burn-request", id: request-id, details: request-details })
+            (ok true)))
 
 (define-public (finalize-burn (request-id uint))
     (ok true))
