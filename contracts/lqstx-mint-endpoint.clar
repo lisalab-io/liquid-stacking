@@ -51,9 +51,10 @@
 (define-read-only (validate-burn-request (request-id uint))
     (let (
           (request-details (try! (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id)))
-          (vaulted-amount (try! (contract-call? .token-wlqstx convert-to-tokens (get amount request-details))))
+          (vaulted-amount (contract-call? .token-wlqstx convert-to-tokens (get amount request-details)))
           (balance (stx-account .lqstx-mint-registry)))
-        (ok (asserts! (>= (get unlocked balance) vaulted-amount) ERR-REQUEST-PENDING))))
+        (asserts! (>= (get unlocked balance) vaulted-amount) ERR-REQUEST-PENDING)
+        (ok { vaulted-amount: vaulted-amount, balance: balance })))
 
 ;; governance calls
 
@@ -75,7 +76,7 @@
             (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
-        (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none))        
+        (try! (contract-call? .token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none))        
         (print { type: "mint-request", id: request-id, details: request-details})
         (ok request-id)))
 
@@ -106,11 +107,11 @@
     (let (
             (request-details (try! (get-burn-request-or-fail request-id)))
             (transfer-wlqstx (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get amount request-details) tx-sender .token-wlqstx))))
-            (vaulted-amount (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))))
-        (try! (is-paused-or-fail))
-        (try! (validate-burn-request request-id))
-        (as-contract (try! (contract-call? .token-lqstx burn-fixed vaulted-amount tx-sender)))
-        (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed vaulted-amount (get requested-by request-details) .token-wstx)))
+            (validation-data (try! (validate-burn-request request-id))))
+        (try! (is-paused-or-fail))        
+        (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
+        (as-contract (try! (contract-call? .token-lqstx burn-fixed (get vaulted-amount validation-data) tx-sender)))
+        (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get vaulted-amount validation-data) (get requested-by request-details) .token-wstx)))
         (as-contract (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: (get-finalized) })))))
 
 (define-public (revoke-burn (request-id uint))

@@ -79,7 +79,7 @@
 		(asserts! (is-eq sender tx-sender) ERR-NOT-AUTHORIZED)
 		(try! (ft-burn? wlqstx (fixed-to-decimals amount) sender))
 		(as-contract (try! (contract-call? .token-lqstx transfer-fixed vaulted-amount tx-sender sender none)))
-		(ok vaulted-amount)))
+		(ok true)))
 
 ;; read-only functions
 
