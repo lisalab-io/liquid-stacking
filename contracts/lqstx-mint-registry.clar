@@ -93,6 +93,9 @@
         (try! (is-approved-operator))
         (as-contract (contract-call? token-trait transfer-fixed amount tx-sender recipient none))))
 
+(define-public (approve-fast-pool)
+	(as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-3 allow-contract-caller 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2 none)))
+
 ;; @dev other pools can be added by upgrading registry
 (define-public (delegate-stx (amount uint))
 	(begin 
@@ -106,17 +109,17 @@
 (define-public (disallow-contract-caller (caller principal))
 	(begin 
 		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 disallow-contract-caller caller)))))
+		(to-response-uint (as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-3 disallow-contract-caller caller)))))
 
 (define-public (allow-contract-caller (caller principal) (until-burn-ht (optional uint)))
 	(begin 
 		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller caller until-burn-ht)))))
+		(to-response-uint (as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-3 allow-contract-caller caller until-burn-ht)))))
 
 (define-public (revoke-delegate-stx)
 	(begin 
 		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 revoke-delegate-stx)))))
+		(to-response-uint (as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-3 revoke-delegate-stx)))))
 
 ;; private calls
 

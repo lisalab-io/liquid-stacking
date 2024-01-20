@@ -37,7 +37,7 @@
     (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id))
 
 (define-read-only (get-burn-request-or-fail (request-id uint))
-    (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id))    
+    (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id))
 
 (define-read-only (get-rewards-paid-upto)
     (contract-call? .lqstx-mint-registry get-rewards-paid-upto))
@@ -72,11 +72,11 @@
 
 (define-public (request-mint (amount uint))
     (let (
-            (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
+            (cycle (contract-call? 'ST000000000000000000002AMW42H.pox-3 current-pox-reward-cycle))
             (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
-        (try! (contract-call? .token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none))        
+        (try! (contract-call? .token-wstx transfer-fixed amount tx-sender .lqstx-mint-registry none)) 
         (print { type: "mint-request", id: request-id, details: request-details})
         (ok request-id)))
 
@@ -94,7 +94,7 @@
 (define-public (request-burn (amount uint))
     (let (
             ;; @dev requested-at not used for burn
-            (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
+            (cycle (contract-call? 'ST000000000000000000002AMW42H.pox-3 current-pox-reward-cycle))
             (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details)))))
         (try! (is-paused-or-fail))
@@ -108,7 +108,7 @@
             (request-details (try! (get-burn-request-or-fail request-id)))
             (transfer-wlqstx (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get amount request-details) tx-sender .token-wlqstx))))
             (validation-data (try! (validate-burn-request request-id))))
-        (try! (is-paused-or-fail))        
+        (try! (is-paused-or-fail)) 
         (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
         (as-contract (try! (contract-call? .token-lqstx burn-fixed (get vaulted-amount validation-data) tx-sender)))
         (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get vaulted-amount validation-data) (get requested-by request-details) .token-wstx)))
