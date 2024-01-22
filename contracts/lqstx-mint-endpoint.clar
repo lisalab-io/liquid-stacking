@@ -72,7 +72,7 @@
 
 (define-public (request-mint (amount uint))
     (let (
-            (cycle (contract-call? 'ST000000000000000000002AMW42H.pox-3 current-pox-reward-cycle))
+            (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
             (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
@@ -94,7 +94,7 @@
 (define-public (request-burn (amount uint))
     (let (
             ;; @dev requested-at not used for burn
-            (cycle (contract-call? 'ST000000000000000000002AMW42H.pox-3 current-pox-reward-cycle))
+            (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
             (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details)))))
         (try! (is-paused-or-fail))
