@@ -3,9 +3,11 @@
 ;;
 
 (use-trait sip010-trait .trait-sip-010.sip-010-trait)
+(use-trait stacking-trait .trait-stacking.stacking-trait)
 
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-UNKNOWN-REQUEST-ID (err u1008))
+(define-constant ERR-UNKNOWN-VAULT (err u1009))
 
 (define-constant PENDING u0)
 (define-constant FINALIZED u1)
@@ -13,6 +15,8 @@
 
 (define-data-var contract-owner principal tx-sender)
 (define-map approved-operators principal bool)
+
+(define-map approved-stacking-vault principal bool)
 
 (define-data-var rewards-paid-upto uint u0)
 
@@ -49,6 +53,9 @@
 (define-read-only (is-approved-operator)
 	(ok (asserts! (or (get-approved-operator-or-default tx-sender) (is-ok (check-is-owner))) ERR-NOT-AUTHORIZED)))
 
+(define-read-only (get-approved-stacking-vault-or-default (vault principal))
+	(default-to false (map-get? approved-stacking-vault vault)))
+
 ;; governance calls
 
 (define-public (set-contract-owner (owner principal))
@@ -60,6 +67,12 @@
     (begin 
         (try! (check-is-owner))
         (ok (map-set approved-operators operator approved))))
+
+;; @dev other pools can be added by adding stacking vault that implements stacking-trait
+(define-public (set-approved-stacking-vault (vault-trait <stacking-trait>) (approved bool))
+    (begin 
+        (try! (check-is-owner))
+        (ok (map-set approved-stacking-vault (contract-of vault-trait) approved))))
 
 ;; privileged calls
 
@@ -93,36 +106,31 @@
         (try! (is-approved-operator))
         (as-contract (contract-call? token-trait transfer-fixed amount tx-sender recipient none))))
 
-;; @dev other pools can be added by upgrading registry
-(define-public (delegate-stx (amount uint))
+(define-public (delegate-stx (amount uint) (vault-trait <stacking-trait>))
 	(begin 
 		(try! (is-approved-operator))
-		(as-contract (contract-call? 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2 delegate-stx (/ amount u100)))))
+		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
+		(as-contract (try! (contract-call? .token-wstx transfer-fixed amount tx-sender (contract-of vault-trait) none)))
+		(as-contract (contract-call? vault-trait delegate-stx (/ amount u100)))))
 
-;; @dev other pools can be added by upgrading registry
-(define-public (delegate-stack-stx)
-	(contract-call? 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2 delegate-stack-stx (as-contract tx-sender)))
+(define-public (delegate-stack-stx (vault-trait <stacking-trait>))
+	(begin
+		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
+		(contract-call? vault-trait delegate-stack-stx)))
 
-(define-public (disallow-contract-caller (caller principal))
+(define-public (revoke-delegate-stx (vault-trait <stacking-trait>))
 	(begin 
 		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 disallow-contract-caller caller)))))
+		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
+		(as-contract (contract-call? vault-trait revoke-delegate-stx))))
 
-(define-public (allow-contract-caller (caller principal) (until-burn-ht (optional uint)))
+(define-public (transfer-from-vault (amount uint) (vault-trait <stacking-trait>))
 	(begin 
 		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller caller until-burn-ht)))))
-
-(define-public (revoke-delegate-stx)
-	(begin 
-		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 revoke-delegate-stx)))))
+		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
+		(as-contract (contract-call? vault-trait transfer-fixed amount tx-sender))))
 
 ;; private calls
 
 (define-private (check-is-owner)
 	(ok (asserts! (is-eq tx-sender (var-get contract-owner)) ERR-NOT-AUTHORIZED)))
-
-
-(define-read-only (to-response-uint (resp (response bool int)))
-	(match resp success (ok success) err (err (to-uint err))))

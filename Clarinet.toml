@@ -15,6 +15,9 @@ path = "contracts_modules/alex_v1/traits/trait-sip-010.clar"
 [contracts.trait-ownable]
 path = "contracts_modules/alex_v1/traits/trait-ownable.clar"
 
+[contracts.trait-stacking]
+path = "contracts/traits/trait-stacking.clar"
+
 [contracts.token-wstx]
 path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
 
@@ -32,6 +35,10 @@ epoch = 2.4
 
 [contracts.token-wlqstx]
 path = "contracts/token-wlqstx.clar"
+epoch = 2.4
+
+[contracts.stacking-vault]
+path = "contracts/stacking-vault.clar"
 epoch = 2.4
 
 
