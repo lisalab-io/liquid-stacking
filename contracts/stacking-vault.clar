@@ -44,15 +44,11 @@
 (define-public (delegate-stack-stx)
 	(contract-call? 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2 delegate-stack-stx (as-contract tx-sender)))
 
-(define-public (disallow-contract-caller (caller principal))
+(define-public (disallow-fast-pool (caller principal))
 	(begin 
 		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 disallow-contract-caller caller)))))
+		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 disallow-contract-caller 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2)))))
 
-(define-public (allow-contract-caller (caller principal) (until-burn-ht (optional uint)))
-	(begin 
-		(try! (is-approved-operator))
-		(to-response-uint (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller caller until-burn-ht)))))
 
 (define-public (revoke-delegate-stx)
 	(begin 
@@ -66,3 +62,7 @@
 
 (define-private (to-response-uint (resp (response bool int)))
 	(match resp success (ok success) err (err (to-uint err))))
+
+;; initialisation
+
+(as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-3 allow-contract-caller 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2 none))
