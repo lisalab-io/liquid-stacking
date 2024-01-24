@@ -5,6 +5,7 @@
   "description": "Run unit tests on this project.",
   "private": true,
   "scripts": {
+    "setup:clarity": "./scripts/clarinet_manager.sh clean && ./scripts/clarinet_manager.sh install",
     "test": "vitest run",
     "test:report": "vitest run -- --coverage --costs",
     "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test:report\""

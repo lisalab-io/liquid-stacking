@@ -6,16 +6,45 @@ authors = []
 telemetry = false
 cache_dir = "./.cache"
 
-# [contracts.counter]
-# path = "contracts/counter.clar"
-
 [[project.requirements]]
 contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
 
+[contracts.trait-sip-010]
+path = "contracts_modules/alex_v1/traits/trait-sip-010.clar"
 
-[repl.analysis]
-passes = ["check_checker"]
-check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
+[contracts.trait-ownable]
+path = "contracts_modules/alex_v1/traits/trait-ownable.clar"
+
+[contracts.trait-stacking]
+path = "contracts/traits/trait-stacking.clar"
+
+[contracts.token-wstx]
+path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
+
+[contracts.lqstx-mint-endpoint]
+path = "contracts/lqstx-mint-endpoint.clar"
+epoch = 2.4
+
+[contracts.lqstx-mint-registry]
+path = "contracts/lqstx-mint-registry.clar"
+epoch = 2.4
+
+[contracts.token-lqstx]
+path = "contracts/token-lqstx.clar"
+epoch = 2.4
+
+[contracts.token-wlqstx]
+path = "contracts/token-wlqstx.clar"
+epoch = 2.4
+
+[contracts.stacking-vault]
+path = "contracts/stacking-vault.clar"
+epoch = 2.4
+
+
+# [repl.analysis]
+# passes = ["check_checker"]
+# check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
 
 # Check-checker settings:
 # trusted_sender: if true, inputs are trusted after tx_sender has been checked.
