@@ -1,4 +1,5 @@
 (use-trait ft-trait .trait-sip-010.sip-010-trait)
+(use-trait rebase-trait .trait-wrapped-rebase.wrapped-rebase-trait)
 
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-INVALID-POOL (err u2001))
@@ -52,9 +53,11 @@
     threshold-y: uint,
     max-in-ratio: uint,
     max-out-ratio: uint,
-    wrapped-token-y: principal
+    rebase-token-y: principal
   }
 )
+
+(define-map rebase-to-wrapped principal principal)
 
 ;; read-only calls
 
@@ -74,17 +77,12 @@
     (ok (unwrap! (map-get? pools-id-map pool-id) ERR-INVALID-POOL))
 )
 
-(define-read-only (get-pool-details (token-x principal) (token-y principal) (factor uint) (wrapped-token-y <trait-wrapped-rebase>))
+(define-read-only (get-pool-details (token-x principal) (token-y principal) (factor uint))
     (ok (unwrap! (get-pool-exists token-x token-y factor wrapped-token-y) ERR-INVALID-POOL))
 )
 
-(define-read-only (get-pool-exists (token-x principal) (token-y principal) (factor uint) (wrapped-token-y <trait-wrapped-rebase>))
-    ;; transform balance to reflect rebase <> wrapped
-    (match (map-get? pools-data-map { token-x: token-x, token-y: token-y, factor: factor })
-        some-value
-        (merge pools-data-map { balance-y: (try! (contract-call? wrapped-token-y convert-to-))})
-    ) 
-)
+(define-read-only (get-pool-exists (token-x principal) (token-y principal) (factor uint))
+    (map-get? pools-data-map { token-x: token-x, token-y: token-y, factor: factor }))
 
 (define-read-only (get-balances (token-x principal) (token-y principal) (factor uint))
   (let
@@ -205,50 +203,59 @@
     (ok (get pool-owner (try! (get-pool-details token-x token-y factor))))
 )
 
-(define-read-only (get-y-given-x (token-x principal) (token-y principal) (factor uint) (dx uint))
+(define-read-only (get-y-given-x (token-x principal) (token-y-trait <rebase-trait>) (factor uint) (dx uint))
     (let 
         (
+            (token-y (contract-of token-y-trait))
             (pool (try! (get-pool-details token-x token-y factor)))
             (threshold (get threshold-x pool))
+            (balance-x (get balance-x pool))
+            (balance-y (contract-call? .token-y-trait convert-to-tokens (get balance-y pool)))
             (dy (if (>= dx threshold)
-                (get-y-given-x-internal (get balance-x pool) (get balance-y pool) factor dx)
-                (div-down (mul-down dx (get-y-given-x-internal (get balance-x pool) (get balance-y pool) factor threshold)) threshold)
+                (get-y-given-x-internal balance-x balance-y factor dx)
+                (div-down (mul-down dx (get-y-given-x-internal balance-x balance-y factor threshold)) threshold)
             ))
         )
-        (asserts! (< dx (mul-down (get balance-x pool) (get max-in-ratio pool))) ERR-MAX-IN-RATIO)     
-        (asserts! (< dy (mul-down (get balance-y pool) (get max-out-ratio pool))) ERR-MAX-OUT-RATIO)
+        (asserts! (< dx (mul-down balance-x (get max-in-ratio pool))) ERR-MAX-IN-RATIO)     
+        (asserts! (< dy (mul-down balance-y (get max-out-ratio pool))) ERR-MAX-OUT-RATIO)
         (ok dy)
     )
 )
 
-(define-read-only (get-x-given-y (token-x principal) (token-y principal) (factor uint) (dy uint)) 
+(define-read-only (get-x-given-y (token-x principal) (token-y-trait <rebase-trait>) (factor uint) (dy uint)) 
     (let 
         (
+            (token-y (contract-of token-y-trait))
             (pool (try! (get-pool-details token-x token-y factor)))
             (threshold (get threshold-y pool))
+            (balance-x (get balance-x pool))
+            (balance-y (contract-call? .token-y-trait convert-to-tokens (get balance-y pool)))            
             (dx (if (>= dy threshold)
-                (get-x-given-y-internal (get balance-x pool) (get balance-y pool) factor dy)
-                (div-down (mul-down dy (get-x-given-y-internal (get balance-x pool) (get balance-y pool) factor threshold)) threshold)         
+                (get-x-given-y-internal balance-x balance-y factor dy)
+                (div-down (mul-down dy (get-x-given-y-internal balance-x balance-y factor threshold)) threshold)         
             ))
         )        
-        (asserts! (< dy (mul-down (get balance-y pool) (get max-in-ratio pool))) ERR-MAX-IN-RATIO)
-        (asserts! (< dx (mul-down (get balance-x pool) (get max-out-ratio pool))) ERR-MAX-OUT-RATIO)
+        (asserts! (< dy (mul-down balance-y pool (get max-in-ratio pool))) ERR-MAX-IN-RATIO)
+        (asserts! (< dx (mul-down balance-x pool (get max-out-ratio pool))) ERR-MAX-OUT-RATIO)
         (ok dx)
     )
 )
 
-(define-read-only (get-y-in-given-x-out (token-x principal) (token-y principal) (factor uint) (dx uint))
+(define-read-only (get-y-in-given-x-out (token-x principal) (token-y-trait <rebase-trait>) (factor uint) (dx uint))
     (let 
         (
+            (token-y (contract-of token-y-trait))
             (pool (try! (get-pool-details token-x token-y factor)))
             (threshold (get threshold-x pool))
+            (balance-x (get balance-x pool))
+            (balance-y (contract-call? .token-y-trait convert-to-tokens (get balance-y pool)))            
             (dy (if (>= dx threshold)
-                (get-y-in-given-x-out-internal (get balance-x pool) (get balance-y pool) factor dx)
-                (div-down (mul-down dx (get-y-in-given-x-out-internal (get balance-x pool) (get balance-y pool) factor threshold)) threshold)
+                (get-y-in-given-x-out-internal balance-x balance-y factor dx)
+                (div-down (mul-down dx (get-y-in-given-x-out-internal balance-x balance-y factor threshold)) threshold)
             ))
         )
-        (asserts! (< dy (mul-down (get balance-y pool) (get max-in-ratio pool))) ERR-MAX-IN-RATIO)
-        (asserts! (< dx (mul-down (get balance-x pool) (get max-out-ratio pool))) ERR-MAX-OUT-RATIO)
+        (asserts! (< dy (mul-down balance-y (get max-in-ratio pool))) ERR-MAX-IN-RATIO)
+        (asserts! (< dx (mul-down balance-x (get max-out-ratio pool))) ERR-MAX-OUT-RATIO)
         (ok dy)
     )
 )
