@@ -2,9 +2,9 @@
 ;; lqstx-mint-endpoint
 ;;
 
-(use-trait sip010-trait .trait-sip-010.sip-010-trait)
+(use-trait sip-010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 
-(define-constant ERR-NOT-AUTHORIZED (err u1000))
+(define-constant err-unauthorised (err u1000))
 (define-constant ERR-PAUSED (err u1001))
 (define-constant ERR-INVALID-AMOUNT (err u1002))
 (define-constant ERR-TOKEN-MISMATCH (err u1003))
@@ -12,9 +12,11 @@
 (define-constant ERR-REQUEST-NOT-PENDING (err u1005))
 (define-constant ERR-REQUEST-PENDING (err u1006))
 
-(define-data-var contract-owner principal tx-sender)
-
 (define-data-var paused bool true)
+
+(define-public (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
+)
 
 ;; read-only calls
 
@@ -58,14 +60,9 @@
 
 ;; governance calls
 
-(define-public (set-contract-owner (owner principal))
-	(begin
-		(try! (check-is-owner))
-		(ok (var-set contract-owner owner))))
-
 (define-public (set-paused (new-paused bool))
     (begin 
-        (try! (check-is-owner))
+        (try! (is-dao-or-extension))
         (ok (var-set paused new-paused))))
 
 ;; public calls
@@ -85,7 +82,7 @@
             (request-details (try! (get-mint-request-or-fail request-id))))
         (try! (is-paused-or-fail))
         (try! (validate-mint-request request-id))
-        (try! (contract-call? .token-lqstx mint-fixed (get amount request-details) (get requested-by request-details)))
+        (try! (contract-call? .token-lqstx dao-mint-fixed (get amount request-details) (get requested-by request-details)))
         (as-contract (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: (get-finalized) })))))
 
 (define-public (revoke-mint (request-id uint))
@@ -103,21 +100,16 @@
         (print { type: "burn-request", id: request-id, details: request-details })
         (ok request-id)))
 
-(define-public (finalize-burn (request-id uint))
-    (let (
-            (request-details (try! (get-burn-request-or-fail request-id)))
-            (transfer-wlqstx (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get amount request-details) tx-sender .token-wlqstx))))
-            (validation-data (try! (validate-burn-request request-id))))
-        (try! (is-paused-or-fail)) 
-        (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
-        (as-contract (try! (contract-call? .token-lqstx burn-fixed (get vaulted-amount validation-data) tx-sender)))
-        (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get vaulted-amount validation-data) (get requested-by request-details) .token-wstx)))
-        (as-contract (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: (get-finalized) })))))
+;; (define-public (finalize-burn (request-id uint))
+;;     (let (
+;;             (request-details (try! (get-burn-request-or-fail request-id)))
+;;             (transfer-wlqstx (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get amount request-details) tx-sender .token-wlqstx))))
+;;             (validation-data (try! (validate-burn-request request-id))))
+;;         (try! (is-paused-or-fail)) 
+;;         (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
+;;         (as-contract (try! (contract-call? .token-lqstx burn-fixed (get vaulted-amount validation-data) tx-sender)))
+;;         (as-contract (try! (contract-call? .lqstx-mint-registry transfer-fixed (get vaulted-amount validation-data) (get requested-by request-details) .token-wstx)))
+;;         (as-contract (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: (get-finalized) })))))
 
 (define-public (revoke-burn (request-id uint))
     (ok true))
-
-;; private calls
-
-(define-private (check-is-owner)
-	(ok (asserts! (is-eq tx-sender (var-get contract-owner)) ERR-NOT-AUTHORIZED)))

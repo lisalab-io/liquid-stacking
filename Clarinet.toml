@@ -9,17 +9,147 @@ cache_dir = "./.cache"
 [[project.requirements]]
 contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
 
-[contracts.trait-sip-010]
-path = "contracts_modules/alex_v1/traits/trait-sip-010.clar"
+[[project.requirements]]
+contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard"
+
+[contracts.lisa-dao]
+path = "contracts/lisa-dao.clar"
+epoch = 2.4
+
+[contracts.boot]
+path = "contracts/boot.clar"
+epoch = 2.4
+
+[contracts.vault]
+path = "contracts/vault.clar"
+epoch = 2.4
+
+[contracts.deposit-stx]
+path = "contracts/deposit-stx.clar"
+epoch = 2.4
+
+[contracts.strategy-trait]
+path = "contracts/traits/strategy-trait.clar"
+epoch = 2.4
+
+[contracts.extension-trait]
+path = "contracts/traits/extension-trait.clar"
+epoch = 2.4
+
+[contracts.proposal-trait]
+path = "contracts/traits/proposal-trait.clar"
+epoch = 2.4
+
+[contracts.transfer-provider-trait]
+path = "contracts/traits/transfer-provider-trait.clar"
+epoch = 2.4
+
+[contracts.stx-transfer-provider]
+path = "contracts/transfer-providers/stx-transfer-provider.clar"
+epoch = 2.4
+
+[contracts.fastpool-strategy]
+path = "contracts/strategies/fastpool/fastpool-strategy.clar"
+epoch = 2.4
+
+[contracts.fastpool-member1]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member2]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member3]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member4]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member5]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member6]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member7]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member8]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member9]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member10]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member11]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member12]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member13]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member14]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member15]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member16]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member17]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member18]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member19]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-member20]
+path = "contracts/strategies/fastpool/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.sip-010-extensions-trait]
+path = "contracts/traits/sip-010-extensions-trait.clar"
+epoch = 2.4
 
 [contracts.trait-ownable]
 path = "contracts_modules/alex_v1/traits/trait-ownable.clar"
+epoch = 2.4
 
 [contracts.trait-stacking]
 path = "contracts/traits/trait-stacking.clar"
+epoch = 2.4
 
-[contracts.token-wstx]
-path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
+# [contracts.token-wstx]
+# path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
+
+[contracts.fastpool-strategy-manager]
+path = "contracts/extensions/fastpool-strategy-manager.clar"
+epoch = 2.4
 
 [contracts.lqstx-mint-endpoint]
 path = "contracts/lqstx-mint-endpoint.clar"
@@ -27,6 +157,10 @@ epoch = 2.4
 
 [contracts.lqstx-mint-registry]
 path = "contracts/lqstx-mint-registry.clar"
+epoch = 2.4
+
+[contracts.token-wstx]
+path = "contracts/token-wstx.clar"
 epoch = 2.4
 
 [contracts.token-lqstx]
