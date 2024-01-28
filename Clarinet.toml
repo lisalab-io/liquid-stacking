@@ -18,6 +18,9 @@ path = "contracts_modules/alex_v1/traits/trait-ownable.clar"
 [contracts.trait-stacking]
 path = "contracts/traits/trait-stacking.clar"
 
+[contracts.trait-rebase-sip-010]
+path = "contracts/traits/trait-rebase-sip-010.clar"
+
 [contracts.token-wstx]
 path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
 
@@ -41,6 +44,9 @@ epoch = 2.4
 path = "contracts/stacking-vault.clar"
 epoch = 2.4
 
+[contracts.rebase-swap-pool]
+path = "contracts/rebase-swap-pool.clar"
+epoch = 2.4
 
 # [repl.analysis]
 # passes = ["check_checker"]
