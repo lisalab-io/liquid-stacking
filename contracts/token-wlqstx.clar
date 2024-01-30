@@ -62,6 +62,9 @@
 		(try! (contract-call? .token-lqstx transfer-fixed amount recipient (as-contract tx-sender) none))		
 		(ft-mint? wlqstx (fixed-to-decimals shares) recipient)))
 
+(define-public (mint (amount uint) (recipient principal))
+	(mint-fixed (decimals-to-fixed amount) recipient))
+
 (define-public (burn-fixed (amount uint) (sender principal))
 	(let 
 		(
@@ -71,6 +74,9 @@
 		(try! (ft-burn? wlqstx (fixed-to-decimals amount) sender))
 		(as-contract (try! (contract-call? .token-lqstx transfer-fixed vaulted-amount tx-sender sender none)))
 		(ok true)))
+
+(define-public (burn (amount uint) (sender principal))
+	(burn-fixed (decimals-to-fixed amount) sender))
 
 ;; read-only functions
 

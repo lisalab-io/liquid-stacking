@@ -24,10 +24,6 @@ epoch = 2.4
 path = "contracts/vault.clar"
 epoch = 2.4
 
-[contracts.deposit-stx]
-path = "contracts/deposit-stx.clar"
-epoch = 2.4
-
 [contracts.strategy-trait]
 path = "contracts/traits/strategy-trait.clar"
 epoch = 2.4
@@ -136,17 +132,6 @@ epoch = 2.4
 path = "contracts/traits/sip-010-extensions-trait.clar"
 epoch = 2.4
 
-[contracts.trait-ownable]
-path = "contracts_modules/alex_v1/traits/trait-ownable.clar"
-epoch = 2.4
-
-[contracts.trait-stacking]
-path = "contracts/traits/trait-stacking.clar"
-epoch = 2.4
-
-# [contracts.token-wstx]
-# path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
-
 [contracts.fastpool-strategy-manager]
 path = "contracts/extensions/fastpool-strategy-manager.clar"
 epoch = 2.4
@@ -159,10 +144,6 @@ epoch = 2.4
 path = "contracts/lqstx-mint-registry.clar"
 epoch = 2.4
 
-[contracts.token-wstx]
-path = "contracts/token-wstx.clar"
-epoch = 2.4
-
 [contracts.token-lqstx]
 path = "contracts/token-lqstx.clar"
 epoch = 2.4
@@ -170,11 +151,6 @@ epoch = 2.4
 [contracts.token-wlqstx]
 path = "contracts/token-wlqstx.clar"
 epoch = 2.4
-
-[contracts.stacking-vault]
-path = "contracts/stacking-vault.clar"
-epoch = 2.4
-
 
 # [repl.analysis]
 # passes = ["check_checker"]

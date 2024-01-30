@@ -45,9 +45,6 @@
 (define-read-only (get-burn-request-or-fail (request-id uint))
 	(ok (unwrap! (map-get? burn-requests request-id) ERR-UNKNOWN-REQUEST-ID)))	
 
-(define-read-only (get-approved-stacking-vault-or-default (vault principal))
-	(default-to false (map-get? approved-stacking-vault vault)))
-
 ;; governance calls
 
 (define-public (set-rewards-paid-upto (cycle uint))

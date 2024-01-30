@@ -65,7 +65,7 @@
 (define-public (request-mint (amount-in-fixed uint))
     (let (
             (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
-            (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
+            (request-details { requested-by: tx-sender, amount: amount-in-fixed, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
         (try! (stx-transfer? (/ amount-in-fixed u100) tx-sender .vault)) 
@@ -83,15 +83,15 @@
 (define-public (revoke-mint (request-id uint))
     (ok true))
 
-(define-public (request-burn (amount uint))
+(define-public (request-burn (amount-in-fixed uint))
     (let (
             ;; @dev requested-at not used for burn
             (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
-            (request-details { requested-by: tx-sender, amount: amount, requested-at: cycle, status: (get-pending) })
+            (request-details { requested-by: tx-sender, amount: amount-in-fixed, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details)))))
         (try! (is-paused-or-fail))
-        (try! (contract-call? .token-wlqstx mint-fixed amount tx-sender))
-        (try! (contract-call? .token-wlqstx transfer-fixed amount tx-sender .lqstx-mint-registry none))
+        (try! (contract-call? .token-wlqstx mint-fixed amount-in-fixed tx-sender))
+        (try! (contract-call? .token-wlqstx transfer-fixed amount-in-fixed tx-sender .lqstx-mint-registry none))
         (print { type: "burn-request", id: request-id, details: request-details })
         (ok request-id)))
 
@@ -102,7 +102,7 @@
             (validation-data (try! (validate-burn-request request-id))))
         (try! (is-paused-or-fail)) 
         (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
-        (as-contract (try! (contract-call? .token-lqstx burn-fixed (get vaulted-amount validation-data) tx-sender)))
+        (as-contract (try! (contract-call? .token-lqstx dao-burn-fixed (get vaulted-amount validation-data) tx-sender)))
         (try! (contract-call? .vault dynamic-transfer .stx-transfer-provider (unwrap-panic (to-consensus-buff? { ustx: (/ (get vaulted-amount validation-data) u100), recipient: (get requested-by request-details) }))))
         (as-contract (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: (get-finalized) })))))
 
