@@ -6,8 +6,7 @@
 (use-trait sip-010-extensions-trait .sip-010-extensions-trait.sip-010-extensions-trait)
 
 (define-constant err-unauthorised (err u1000))
-(define-constant ERR-UNKNOWN-REQUEST-ID (err u1008))
-(define-constant ERR-UNKNOWN-VAULT (err u1009))
+(define-constant err-unknown-request-id (err u1008))
 
 (define-constant PENDING u0)
 (define-constant FINALIZED u1)
@@ -40,10 +39,10 @@
 	(var-get burn-request-nonce))
 
 (define-read-only (get-mint-request-or-fail (request-id uint))
-	(ok (unwrap! (map-get? mint-requests request-id) ERR-UNKNOWN-REQUEST-ID)))
+	(ok (unwrap! (map-get? mint-requests request-id) err-unknown-request-id)))
 
 (define-read-only (get-burn-request-or-fail (request-id uint))
-	(ok (unwrap! (map-get? burn-requests request-id) ERR-UNKNOWN-REQUEST-ID)))	
+	(ok (unwrap! (map-get? burn-requests request-id) err-unknown-request-id)))	
 
 ;; governance calls
 
