@@ -4,7 +4,6 @@
 
 (use-trait sip-010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 (use-trait sip-010-extensions-trait .sip-010-extensions-trait.sip-010-extensions-trait)
-(use-trait stacking-trait .trait-stacking.stacking-trait)
 
 (define-constant err-unauthorised (err u1000))
 (define-constant ERR-UNKNOWN-REQUEST-ID (err u1008))
@@ -13,8 +12,6 @@
 (define-constant PENDING u0)
 (define-constant FINALIZED u1)
 (define-constant REVOKED u2)
-
-(define-map approved-stacking-vault principal bool)
 
 (define-data-var rewards-paid-upto uint u0)
 
@@ -25,8 +22,7 @@
 (define-map burn-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: uint })
 
 (define-public (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
-)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 ;; read-only calls
 
@@ -53,14 +49,6 @@
 	(default-to false (map-get? approved-stacking-vault vault)))
 
 ;; governance calls
-
-;; @dev other pools can be added by adding stacking vault that implements stacking-trait
-(define-public (set-approved-stacking-vault (vault-trait <stacking-trait>) (approved bool))
-    (begin 
-        (try! (is-dao-or-extension))
-        (ok (map-set approved-stacking-vault (contract-of vault-trait) approved))))
-
-;; privileged calls
 
 (define-public (set-rewards-paid-upto (cycle uint))
 	(begin 
@@ -91,28 +79,4 @@
     (begin 
         (try! (is-dao-or-extension))
         (as-contract (contract-call? token-trait transfer-fixed amount tx-sender recipient none))))
-
-(define-public (delegate-stx (amount uint) (vault-trait <stacking-trait>))
-	(begin 
-		(try! (is-dao-or-extension))
-		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
-		;;(as-contract (try! (contract-call? .token-wstx transfer-fixed amount tx-sender (contract-of vault-trait) none)))
-		(as-contract (contract-call? vault-trait delegate-stx (/ amount u100)))))
-
-(define-public (delegate-stack-stx (vault-trait <stacking-trait>))
-	(begin
-		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
-		(contract-call? vault-trait delegate-stack-stx)))
-
-(define-public (revoke-delegate-stx (vault-trait <stacking-trait>))
-	(begin 
-		(try! (is-dao-or-extension))
-		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
-		(as-contract (contract-call? vault-trait revoke-delegate-stx))))
-
-(define-public (transfer-from-vault (amount uint) (vault-trait <stacking-trait>))
-	(begin 
-		(try! (is-dao-or-extension))
-		(asserts! (get-approved-stacking-vault-or-default (contract-of vault-trait)) ERR-UNKNOWN-VAULT)
-		(as-contract (contract-call? vault-trait transfer-fixed amount tx-sender))))
 	
