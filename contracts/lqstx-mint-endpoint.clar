@@ -9,13 +9,14 @@
 (define-constant err-unauthorised (err u1000))
 (define-constant err-paused (err u1001))
 (define-constant err-request-pending (err u1006))
+(define-constant err-request-finalized-or-revoked (err u1007))
 
 (define-data-var paused bool true)
 
-(define-public (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
-
 ;; read-only calls
+
+(define-read-only (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (is-paused)
     (var-get paused))
@@ -43,16 +44,19 @@
 
 (define-read-only (validate-mint-request (request-id uint))
     (let (
-          (request-details (try! (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id))))
-        (ok (asserts! (>= (get-rewards-paid-upto) (get requested-at request-details)) err-request-pending))))
+            (request-details (try! (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id))))
+        (asserts! (>= (get-rewards-paid-upto) (get requested-at request-details)) err-request-pending)
+        (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
+        (ok true)))
 
 ;; @dev it favours smaller amounts as we do not allow partial burn
 (define-read-only (validate-burn-request (request-id uint))
     (let (
-          (request-details (try! (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id)))
-          (vaulted-amount (contract-call? .token-wlqstx convert-to-tokens (get amount request-details)))
-          (balance (stx-account .vault)))
+            (request-details (try! (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id)))
+            (vaulted-amount (contract-call? .token-wlqstx convert-to-tokens (get amount request-details)))
+            (balance (stx-account .vault)))
         (asserts! (>= (* (get unlocked balance) u100) vaulted-amount) err-request-pending)
+        (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
         (ok { vaulted-amount: vaulted-amount, balance: balance })))
 
 (define-public (set-paused (new-paused bool))
@@ -62,13 +66,14 @@
         
 ;; public calls
 
+;; @dev the requestor stx is held by the contract until mint can be finalized.
 (define-public (request-mint (amount-in-fixed uint))
     (let (
             (cycle (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
             (request-details { requested-by: tx-sender, amount: amount-in-fixed, requested-at: cycle, status: (get-pending) })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
-        (try! (stx-transfer? (/ amount-in-fixed u100) tx-sender .vault)) 
+        (try! (stx-transfer? (/ amount-in-fixed u100) tx-sender .lqstx-mint-registry)) 
         (print { type: "mint-request", id: request-id, details: request-details})
         (ok request-id)))
 
@@ -77,11 +82,18 @@
             (request-details (try! (get-mint-request-or-fail request-id))))
         (try! (is-paused-or-fail))
         (try! (validate-mint-request request-id))
-        (try! (contract-call? .token-lqstx dao-mint-fixed (get amount request-details) (get requested-by request-details)))
+        (as-contract (try! (contract-call? .lqstx-mint-registry stx-transfer (/ (get amount request-details) u100) .vault)))
+        (as-contract (try! (contract-call? .token-lqstx dao-mint-fixed (get amount request-details) (get requested-by request-details))))
         (as-contract (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: (get-finalized) })))))
 
 (define-public (revoke-mint (request-id uint))
-    (ok true))
+    (let (
+            (request-details (try! (get-mint-request-or-fail request-id))))
+        (try! (is-paused-or-fail))
+        (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
+        (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)        
+        (as-contract (try! (contract-call? .lqstx-mint-registry stx-transfer (/ (get amount request-details) u100) (get requested-by request-details))))
+        (as-contract (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: (get-revoked) })))))
 
 (define-public (request-burn (amount-in-fixed uint))
     (let (
@@ -103,11 +115,17 @@
         (try! (is-paused-or-fail)) 
         (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
         (as-contract (try! (contract-call? .token-lqstx dao-burn-fixed (get vaulted-amount validation-data) tx-sender)))
-        (try! (contract-call? .vault dynamic-transfer .stx-transfer-provider (unwrap-panic (to-consensus-buff? { ustx: (/ (get vaulted-amount validation-data) u100), recipient: (get requested-by request-details) }))))
+        (as-contract (try! (contract-call? .vault dynamic-transfer .stx-transfer-provider (unwrap-panic (to-consensus-buff? { ustx: (/ (get vaulted-amount validation-data) u100), recipient: (get requested-by request-details) })))))
         (as-contract (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: (get-finalized) })))))
 
 (define-public (revoke-burn (request-id uint))
-    (ok true))
+    (let (
+            (request-details (try! (get-burn-request-or-fail request-id))))
+        (try! (is-paused-or-fail))
+        (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
+        (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
+        (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
+        (as-contract (contract-call? .token-lqstx transfer-fixed (contract-call? .token-wlqstx convert-to-tokens (get amount request-details)) tx-sender (get requested-by request-details) none))))
 
 (define-public (callback (extension principal) (payload (buff 34)))
     (ok true))

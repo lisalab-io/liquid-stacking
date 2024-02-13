@@ -7,7 +7,7 @@
 
 (define-map strategy-allocations principal uint)
 
-(define-public (is-dao-or-extension)
+(define-read-only (is-dao-or-extension)
 	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
 )
 

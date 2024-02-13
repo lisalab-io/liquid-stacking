@@ -5,7 +5,7 @@
 (define-map authorised-managers principal bool)
 (map-set authorised-managers tx-sender true)
 
-(define-public (is-dao-or-extension)
+(define-read-only (is-dao-or-extension)
 	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
 )
 

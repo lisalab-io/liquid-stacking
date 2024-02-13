@@ -15,10 +15,6 @@
 
 ;; governance functions
 
-(define-public (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
-)
-
 (define-public (set-name (new-name (string-ascii 32)))
 	(begin
 		(try! (is-dao-or-extension))
@@ -41,7 +37,7 @@
 		(try! (is-dao-or-extension))
 		(ok (var-set token-uri new-uri))))
 
-;; priviledged functions
+;; public functions
 
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
 	(transfer-fixed (decimals-to-fixed amount) sender recipient memo))
@@ -80,6 +76,9 @@
 
 ;; read-only functions
 
+(define-read-only (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
+	
 (define-read-only (get-name)
 	(ok (var-get token-name)))
 
