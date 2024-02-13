@@ -3,7 +3,8 @@
 (impl-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 
 (define-constant err-unauthorised (err u3000))
-(define-constant ONE_8 u100000000)
+(define-constant one-8 u100000000)
+(define-constant base-token .token-lqstx)
 
 (define-fungible-token wlqstx)
 
@@ -52,7 +53,7 @@
 (define-public (mint-fixed (amount uint) (recipient principal))
 	(let 
 		(
-			(shares (convert-to-shares amount))
+			(shares (unwrap-panic (get-tokens-to-shares amount)))
 		)		
 		(asserts! (is-eq recipient tx-sender) err-unauthorised)
 		(try! (contract-call? .token-lqstx transfer-fixed amount recipient (as-contract tx-sender) none))		
@@ -64,7 +65,7 @@
 (define-public (burn-fixed (amount uint) (sender principal))
 	(let 
 		(
-			(vaulted-amount (convert-to-tokens amount))
+			(vaulted-amount (unwrap-panic (get-shares-to-tokens amount)))
 		)
 		(asserts! (is-eq sender tx-sender) err-unauthorised)
 		(try! (ft-burn? wlqstx (fixed-to-decimals amount) sender))
@@ -104,34 +105,37 @@
 	(ok (var-get token-uri)))
 
 (define-read-only (get-vaulted-balance-fixed (who principal))
-	(ok (convert-to-tokens (unwrap-panic (get-balance-fixed who)))))
+	(get-shares-to-tokens (unwrap-panic (get-balance-fixed who))))
 
 (define-read-only (get-total-vaulted-balance-fixed)
 	(ok (unwrap-panic (contract-call? .token-lqstx get-balance-fixed (as-contract tx-sender)))))
 
-(define-read-only (convert-to-shares (amount uint))
+(define-read-only (get-tokens-to-shares (amount uint))
 	(let 
 		(
 			(total-supply (unwrap-panic (get-total-supply-fixed)))
 		)
-		(if (is-eq total-supply u0)
+		(ok (if (is-eq total-supply u0)
 			amount
 			(div-down (mul-down amount total-supply) (unwrap-panic (get-total-vaulted-balance-fixed)))
-		)
+		))
 	)
 )
 
-(define-read-only (convert-to-tokens (shares uint))
+(define-read-only (get-shares-to-tokens (shares uint))
 	(let 
 		(
 			(total-supply (unwrap-panic (get-total-supply-fixed)))
 		)
-		(if (is-eq total-supply u0)
+		(ok (if (is-eq total-supply u0)
 			shares
 			(div-down (mul-down shares (unwrap-panic (get-total-vaulted-balance-fixed))) total-supply)
-		)
+		))
 	)
-)	
+)
+
+(define-read-only (get-reward-multiplier)
+	(contract-call? .token-lqstx get-reward-multiplier))
 
 ;; private functions
 
@@ -139,15 +143,15 @@
 	(pow u10 (unwrap-panic (get-decimals))))
 
 (define-private (decimals-to-fixed (amount uint))
-	(/ (* amount ONE_8) (pow-decimals)))
+	(/ (* amount one-8) (pow-decimals)))
 
 (define-private (fixed-to-decimals (amount uint))
-	(/ (* amount (pow-decimals)) ONE_8))
+	(/ (* amount (pow-decimals)) one-8))
 
 (define-private (mul-down (a uint) (b uint))
-	(/ (* a b) ONE_8))
+	(/ (* a b) one-8))
 
 (define-private (div-down (a uint) (b uint))
 	(if (is-eq a u0)
 		u0
-		(/ (* a ONE_8) b)))
+		(/ (* a one-8) b)))

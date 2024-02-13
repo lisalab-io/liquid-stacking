@@ -53,22 +53,22 @@
 (define-public (dao-mint (amount uint) (recipient principal))
 	(begin		
 		(try! (is-dao-or-extension))
-		(ft-mint? lqstx (convert-to-shares amount) recipient)))
+		(ft-mint? lqstx (unwrap-panic (get-tokens-to-shares amount)) recipient)))
 
 (define-public (dao-mint-fixed (amount uint) (recipient principal))
 	(begin		
 		(try! (is-dao-or-extension))
-		(ft-mint? lqstx (fixed-to-decimals (convert-to-shares amount)) recipient)))
+		(ft-mint? lqstx (fixed-to-decimals (unwrap-panic (get-tokens-to-shares amount))) recipient)))
 
 (define-public (dao-burn-fixed (amount uint) (sender principal))
 	(begin
 		(try! (is-dao-or-extension))
-		(ft-burn? lqstx (fixed-to-decimals (convert-to-shares amount)) sender)))
+		(ft-burn? lqstx (fixed-to-decimals (unwrap-panic (get-tokens-to-shares amount))) sender)))
 
 (define-public (dao-burn (amount uint) (sender principal))
 	(begin
 		(try! (is-dao-or-extension))
-		(ft-burn? lqstx (convert-to-shares amount) sender)))
+		(ft-burn? lqstx (unwrap-panic (get-tokens-to-shares amount)) sender)))
 
 (define-public (dao-burn-fixed-many (senders (list 200 {amount: uint, sender: principal})))
 	(begin
@@ -91,10 +91,10 @@
 	(ok (var-get token-decimals)))
 
 (define-read-only (get-balance (who principal))
-	(ok (convert-to-tokens (get-shares who))))
+	(get-shares-to-tokens (get-shares who)))
 
 (define-read-only (get-total-supply)
-	(ok (convert-to-tokens (get-total-shares))))
+	(get-shares-to-tokens (get-total-shares)))
 
 (define-read-only (get-token-uri)
 	(ok (var-get token-uri)))
@@ -105,14 +105,14 @@
 (define-read-only (get-total-shares)
 	(ft-get-supply lqstx))
 
-(define-read-only (convert-to-shares (amount uint))
-	(div-down amount (var-get reward-multiplier)))
+(define-read-only (get-tokens-to-shares (amount uint))
+	(ok (div-down amount (var-get reward-multiplier))))
 
-(define-read-only (convert-to-tokens (shares uint))
-	(mul-down shares (var-get reward-multiplier)))
+(define-read-only (get-shares-to-tokens (shares uint))
+	(ok (mul-down shares (var-get reward-multiplier))))
 
 (define-read-only (get-reward-multiplier)
-	(var-get reward-multiplier))
+	(ok (var-get reward-multiplier)))
 
 (define-read-only (get-total-supply-fixed)
 	(ok (decimals-to-fixed (unwrap-panic (get-total-supply)))))
@@ -128,10 +128,10 @@
 (define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
 	(begin
 		(asserts! (is-eq sender tx-sender) err-unauthorised)
-		(try! (ft-transfer? lqstx (fixed-to-decimals (convert-to-shares amount)) sender recipient))
+		(try! (ft-transfer? lqstx (fixed-to-decimals (unwrap-panic (get-tokens-to-shares amount))) sender recipient))
 		(match memo to-print (print to-print) 0x)
-		(ok true)))	
-		
+		(ok true)))
+
 ;; private functions
 
 (define-private (dao-burn-fixed-many-iter (item {amount: uint, sender: principal}))

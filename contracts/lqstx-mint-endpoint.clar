@@ -53,7 +53,7 @@
 (define-read-only (validate-burn-request (request-id uint))
     (let (
             (request-details (try! (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id)))
-            (vaulted-amount (contract-call? .token-wlqstx convert-to-tokens (get amount request-details)))
+            (vaulted-amount (unwrap-panic (contract-call? .token-wlqstx get-shares-to-tokens (get amount request-details))))
             (balance (stx-account .vault)))
         (asserts! (>= (* (get unlocked balance) u100) vaulted-amount) err-request-pending)
         (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
@@ -125,7 +125,7 @@
         (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
         (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
         (as-contract (try! (contract-call? .token-wlqstx burn-fixed (get amount request-details) tx-sender)))
-        (as-contract (contract-call? .token-lqstx transfer-fixed (contract-call? .token-wlqstx convert-to-tokens (get amount request-details)) tx-sender (get requested-by request-details) none))))
+        (as-contract (contract-call? .token-lqstx transfer-fixed (unwrap-panic (contract-call? .token-wlqstx get-shares-to-tokens (get amount request-details))) tx-sender (get requested-by request-details) none))))
 
 (define-public (callback (extension principal) (payload (buff 34)))
     (ok true))
