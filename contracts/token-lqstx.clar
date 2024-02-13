@@ -17,10 +17,6 @@
 
 ;; governance functions
 
-(define-public (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
-)
-
 (define-public (dao-set-name (new-name (string-ascii 32)))
 	(begin
 		(try! (is-dao-or-extension))
@@ -54,16 +50,6 @@
 	(set-reward-multiplier (+ (var-get reward-multiplier) increment))
 )
 
-(define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
-	(transfer-fixed (decimals-to-fixed amount) sender recipient memo))
-
-(define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
-	(begin
-		(asserts! (is-eq sender tx-sender) err-unauthorised)
-		(try! (ft-transfer? lqstx (fixed-to-decimals (convert-to-shares amount)) sender recipient))
-		(match memo to-print (print to-print) 0x)
-		(ok true)))	
-
 (define-public (dao-mint (amount uint) (recipient principal))
 	(begin		
 		(try! (is-dao-or-extension))
@@ -90,6 +76,10 @@
 		(ok (map dao-burn-fixed-many-iter senders))))
 
 ;; read-only functions
+
+(define-read-only (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
+)
 
 (define-read-only (get-name)
 	(ok (var-get token-name)))
@@ -130,6 +120,18 @@
 (define-read-only (get-balance-fixed (account principal))
 	(ok (decimals-to-fixed (unwrap-panic (get-balance account)))))
 
+;; public calls
+
+(define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
+	(transfer-fixed (decimals-to-fixed amount) sender recipient memo))
+
+(define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
+	(begin
+		(asserts! (is-eq sender tx-sender) err-unauthorised)
+		(try! (ft-transfer? lqstx (fixed-to-decimals (convert-to-shares amount)) sender recipient))
+		(match memo to-print (print to-print) 0x)
+		(ok true)))	
+		
 ;; private functions
 
 (define-private (dao-burn-fixed-many-iter (item {amount: uint, sender: principal}))

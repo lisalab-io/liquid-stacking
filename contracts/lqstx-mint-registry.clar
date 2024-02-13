@@ -20,10 +20,10 @@
 (define-map mint-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: uint })
 (define-map burn-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: uint })
 
-(define-public (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
-
 ;; read-only calls
+
+(define-read-only (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (get-pending) PENDING)
 (define-read-only (get-finalized) FINALIZED)
@@ -46,9 +46,11 @@
 
 ;; governance calls
 
-(define-public (set-rewards-paid-upto (cycle uint))
+;; @dev this should be called after all strategies paid rewards for the relevant cycle
+(define-public (set-rewards-paid-upto (cycle uint) (vault-balance uint))
 	(begin 
 		(try! (is-dao-or-extension))
+		(try! (contract-call? .token-lqstx set-reward-multiplier vault-balance))
 		(ok (var-set rewards-paid-upto cycle))))
 
 (define-public (set-mint-request (request-id uint) (details { requested-by: principal, amount: uint, requested-at: uint, status: uint }))
@@ -75,4 +77,8 @@
     (begin 
         (try! (is-dao-or-extension))
         (as-contract (contract-call? token-trait transfer-fixed amount tx-sender recipient none))))
-	
+
+(define-public (stx-transfer (amount uint) (recipient principal))
+	(begin 
+		(try! (is-dao-or-extension))
+		(as-contract (stx-transfer? amount tx-sender recipient))))
