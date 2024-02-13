@@ -1,14 +1,11 @@
 ;; lqstx
 ;;
+(impl-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 
-(define-constant ERR-NOT-AUTHORIZED (err u1000))
+(define-constant err-unauthorised (err u3000))
 (define-constant ONE_8 u100000000)
 
 (define-fungible-token lqstx)
-
-(define-data-var contract-owner principal tx-sender)
-(define-map approved-minters principal bool)
-(define-map approved-oracles principal bool)
 
 (define-data-var token-name (string-ascii 32) "lqstx")
 (define-data-var token-symbol (string-ascii 10) "lqstx")
@@ -20,50 +17,31 @@
 
 ;; governance functions
 
-(define-public (set-contract-owner (owner principal))
+(define-public (dao-set-name (new-name (string-ascii 32)))
 	(begin
-		(try! (check-is-owner))
-		(ok (var-set contract-owner owner))))
-
-
-(define-public (set-name (new-name (string-ascii 32)))
-	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-name new-name))))
 
-(define-public (set-symbol (new-symbol (string-ascii 10)))
+(define-public (dao-set-symbol (new-symbol (string-ascii 10)))
 	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-symbol new-symbol))
 	)
 )
 
-(define-public (set-decimals (new-decimals uint))
+(define-public (dao-set-decimals (new-decimals uint))
 	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-decimals new-decimals))))
 
-(define-public (set-token-uri (new-uri (optional (string-utf8 256))))
+(define-public (dao-set-token-uri (new-uri (optional (string-utf8 256))))
 	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-uri new-uri))))
 
-(define-public (set-approved-minters (minter principal) (approved bool))
-	(begin
-		(try! (check-is-owner))
-		(ok (map-set approved-minters minter approved))))
-
-(define-public (set-approved-oracles (oracle principal) (approved bool))
-	(begin
-		(try! (check-is-owner))
-		(ok (map-set approved-oracles oracle approved))))
-
-;; priviledged functions
-
-;; TODO: called upon adding rewards
 (define-public (set-reward-multiplier (new-multiplier uint))
 	(begin 
-		(asserts! (or (is-ok (check-is-oracle)) (is-ok (check-is-owner))) ERR-NOT-AUTHORIZED)		
+		(try! (is-dao-or-extension))
 		(ok (var-set reward-multiplier new-multiplier))
 	)
 )
@@ -72,38 +50,36 @@
 	(set-reward-multiplier (+ (var-get reward-multiplier) increment))
 )
 
-(define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
-	(transfer-fixed (decimals-to-fixed amount) sender recipient memo))
-
-(define-public (mint (amount uint) (recipient principal))
-	(mint-fixed (decimals-to-fixed amount) recipient))
-
-(define-public (burn (amount uint) (sender principal))
-	(burn-fixed (decimals-to-fixed amount) sender))
-
-(define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
-	(begin
-		(asserts! (is-eq sender tx-sender) ERR-NOT-AUTHORIZED)
-		(try! (ft-transfer? lqstx (fixed-to-decimals (convert-to-shares amount)) sender recipient))
-		(match memo to-print (print to-print) 0x)
-		(ok true)))	
-
-(define-public (mint-fixed (amount uint) (recipient principal))
+(define-public (dao-mint (amount uint) (recipient principal))
 	(begin		
-		(asserts! (or (is-ok (check-is-minter)) (is-ok (check-is-owner))) ERR-NOT-AUTHORIZED)		
-		(ft-mint? lqstx (fixed-to-decimals (convert-to-shares amount)) recipient)))
+		(try! (is-dao-or-extension))
+		(ft-mint? lqstx (unwrap-panic (get-tokens-to-shares amount)) recipient)))
 
-(define-public (burn-fixed (amount uint) (sender principal))
-	(begin
-		(asserts! (or (is-ok (check-is-minter)) (is-ok (check-is-owner))) ERR-NOT-AUTHORIZED)
-		(ft-burn? lqstx (fixed-to-decimals (convert-to-shares amount)) sender)))
+(define-public (dao-mint-fixed (amount uint) (recipient principal))
+	(begin		
+		(try! (is-dao-or-extension))
+		(ft-mint? lqstx (fixed-to-decimals (unwrap-panic (get-tokens-to-shares amount))) recipient)))
 
-(define-public (burn-fixed-many (senders (list 200 {amount: uint, sender: principal})))
+(define-public (dao-burn-fixed (amount uint) (sender principal))
 	(begin
-		(asserts! (or (is-ok (check-is-minter)) (is-ok (check-is-owner))) ERR-NOT-AUTHORIZED)
-		(ok (map burn-fixed-many-iter senders))))
+		(try! (is-dao-or-extension))
+		(ft-burn? lqstx (fixed-to-decimals (unwrap-panic (get-tokens-to-shares amount))) sender)))
+
+(define-public (dao-burn (amount uint) (sender principal))
+	(begin
+		(try! (is-dao-or-extension))
+		(ft-burn? lqstx (unwrap-panic (get-tokens-to-shares amount)) sender)))
+
+(define-public (dao-burn-fixed-many (senders (list 200 {amount: uint, sender: principal})))
+	(begin
+		(try! (is-dao-or-extension))
+		(ok (map dao-burn-fixed-many-iter senders))))
 
 ;; read-only functions
+
+(define-read-only (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
+)
 
 (define-read-only (get-name)
 	(ok (var-get token-name)))
@@ -115,10 +91,10 @@
 	(ok (var-get token-decimals)))
 
 (define-read-only (get-balance (who principal))
-	(ok (convert-to-tokens (get-shares who))))
+	(get-shares-to-tokens (get-shares who)))
 
 (define-read-only (get-total-supply)
-	(ok (convert-to-tokens (get-total-shares))))
+	(get-shares-to-tokens (get-total-shares)))
 
 (define-read-only (get-token-uri)
 	(ok (var-get token-uri)))
@@ -129,17 +105,14 @@
 (define-read-only (get-total-shares)
 	(ft-get-supply lqstx))
 
-(define-read-only (convert-to-shares (amount uint))
-	(div-down amount (var-get reward-multiplier)))
+(define-read-only (get-tokens-to-shares (amount uint))
+	(ok (div-down amount (var-get reward-multiplier))))
 
-(define-read-only (convert-to-tokens (shares uint))
-	(mul-down shares (var-get reward-multiplier)))
-
-(define-read-only (get-contract-owner)
-	(ok (var-get contract-owner)))
+(define-read-only (get-shares-to-tokens (shares uint))
+	(ok (mul-down shares (var-get reward-multiplier))))
 
 (define-read-only (get-reward-multiplier)
-	(var-get reward-multiplier))
+	(ok (var-get reward-multiplier)))
 
 (define-read-only (get-total-supply-fixed)
 	(ok (decimals-to-fixed (unwrap-panic (get-total-supply)))))
@@ -147,19 +120,22 @@
 (define-read-only (get-balance-fixed (account principal))
 	(ok (decimals-to-fixed (unwrap-panic (get-balance account)))))
 
-(define-read-only (check-is-minter)
-	(ok (asserts! (default-to false (map-get? approved-minters tx-sender)) ERR-NOT-AUTHORIZED)))
+;; public calls
 
-(define-read-only (check-is-oracle)
-	(ok (asserts! (default-to false (map-get? approved-oracles tx-sender)) ERR-NOT-AUTHORIZED)))	
+(define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
+	(transfer-fixed (decimals-to-fixed amount) sender recipient memo))
+
+(define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
+	(begin
+		(asserts! (is-eq sender tx-sender) err-unauthorised)
+		(try! (ft-transfer? lqstx (fixed-to-decimals (unwrap-panic (get-tokens-to-shares amount))) sender recipient))
+		(match memo to-print (print to-print) 0x)
+		(ok true)))
 
 ;; private functions
 
-(define-private (burn-fixed-many-iter (item {amount: uint, sender: principal}))
-	(burn-fixed (get amount item) (get sender item)))
-
-(define-private (check-is-owner)
-	(ok (asserts! (is-eq tx-sender (var-get contract-owner)) ERR-NOT-AUTHORIZED)))
+(define-private (dao-burn-fixed-many-iter (item {amount: uint, sender: principal}))
+	(dao-burn-fixed (get amount item) (get sender item)))
 
 (define-private (pow-decimals)
 	(pow u10 (unwrap-panic (get-decimals))))
