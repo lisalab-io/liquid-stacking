@@ -36,12 +36,16 @@ epoch = 2.4
 path = "contracts/traits/proposal-trait.clar"
 epoch = 2.4
 
-[contracts.transfer-provider-trait]
-path = "contracts/traits/transfer-provider-trait.clar"
+[contracts.proxy-trait]
+path = "contracts/traits/proxy-trait.clar"
 epoch = 2.4
 
-[contracts.stx-transfer-provider]
-path = "contracts/transfer-providers/stx-transfer-provider.clar"
+[contracts.stx-transfer-proxy]
+path = "contracts/proxies/stx-transfer-proxy.clar"
+epoch = 2.4
+
+[contracts.stx-transfer-many-proxy]
+path = "contracts/proxies/stx-transfer-many-proxy.clar"
 epoch = 2.4
 
 [contracts.fastpool-strategy]
@@ -137,11 +141,11 @@ path = "contracts/extensions/fastpool-strategy-manager.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-endpoint]
-path = "contracts/lqstx-mint-endpoint.clar"
+path = "contracts/extensions/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-registry]
-path = "contracts/lqstx-mint-registry.clar"
+path = "contracts/extensions/lqstx-mint-registry.clar"
 epoch = 2.4
 
 [contracts.token-lqstx]
@@ -150,6 +154,14 @@ epoch = 2.4
 
 [contracts.token-wlqstx]
 path = "contracts/token-wlqstx.clar"
+epoch = 2.4
+
+[contracts.lisa-rebase]
+path = "contracts/extensions/lisa-rebase.clar"
+epoch = 2.4
+
+[contracts.rebase-1]
+path = "contracts/rules/rebase-1.clar"
 epoch = 2.4
 
 # [repl.analysis]

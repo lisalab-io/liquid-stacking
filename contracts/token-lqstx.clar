@@ -39,6 +39,13 @@
 		(try! (is-dao-or-extension))
 		(ok (var-set token-uri new-uri))))
 
+(define-public (set-reward-multiplier-from-balance (balance uint))
+	(begin 
+		(try! (is-dao-or-extension))
+		(ok (var-set reward-multiplier (/ balance (ft-get-supply lqstx))))
+	)
+)
+
 (define-public (set-reward-multiplier (new-multiplier uint))
 	(begin 
 		(try! (is-dao-or-extension))

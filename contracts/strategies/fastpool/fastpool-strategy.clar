@@ -2,9 +2,6 @@
 
 (define-constant err-not-vault-caller (err u2000))
 (define-constant err-invalid-payload (err u2001))
-(define-constant err-balance-insufficient (err u2002))
-
-(define-data-var amount-in-strategy uint u0)
 
 (define-constant member-list (list
 	(to-trait .fastpool-member1) (to-trait .fastpool-member2) (to-trait .fastpool-member3) (to-trait .fastpool-member4) (to-trait .fastpool-member5)
@@ -29,9 +26,7 @@
 	(let (
 		(member-principal (contract-of member))
 		(account (stx-account member-principal))
-		(total-balance (stx-get-balance member-principal))
 		(locked-amount (get locked account))
-		(unlocked-amount (get unlocked account))
 	)
 		(if (< amount locked-amount)
 			(begin
@@ -40,6 +35,7 @@
 			)
 		;; else
 			(let (
+				(unlocked-amount (get unlocked account))
 				(difference (- amount locked-amount))
 				(amount-transferred (if (> difference unlocked-amount) (- difference unlocked-amount) u0))
 				)
@@ -57,11 +53,10 @@
 (define-public (execute (payload (buff 2048)))
 	(let (
 		(amounts (unwrap! (from-consensus-buff? (list 20 uint) payload) err-invalid-payload))
-		(total-amount (fold sum (print (map process-strategy amounts member-list)) u0))
+		(amount-taken (fold sum (print (map process-strategy amounts member-list)) u0))
 		)
 		(try! (is-vault-caller))
-		(var-set amount-in-strategy (+ (var-get amount-in-strategy) total-amount))
-		(ok total-amount)
+		(ok amount-taken)
 	)
 )
 
@@ -76,11 +71,10 @@
 (define-public (refund (payload (buff 2048)))
 	(let (
 		(refunds (unwrap! (from-consensus-buff? (list 20 bool) payload) err-invalid-payload))
-		(total-amount (fold sum (print (map process-refund refunds member-list)) u0))
+		(amount-refunded (fold sum (print (map process-refund refunds member-list)) u0))
 		)
 		(try! (is-vault-caller))
-		(var-set amount-in-strategy (default-to u0 (safe-sub (var-get amount-in-strategy) total-amount)))
-		(ok total-amount)
+		(ok amount-refunded)
 	)
 )
 
@@ -92,7 +86,7 @@
 )
 
 (define-read-only (get-amount-in-strategy)
-	(ok (var-get amount-in-strategy))
+	(get-total-member-balances)
 )
 
 (define-private (get-member-balance-iter (member <pool-member>) (accumulator uint))
@@ -100,7 +94,7 @@
 )
 
 (define-read-only (get-total-member-balances)
-	(fold get-member-balance-iter member-list u0)
+	(ok (fold get-member-balance-iter member-list u0))
 )
 
 (define-private (get-total-member-locked-amount-iter (member <pool-member>) (accumulator uint))
@@ -109,10 +103,6 @@
 
 (define-read-only (get-total-member-locked-amount)
 	(fold get-total-member-locked-amount-iter member-list u0)
-)
-
-(define-private (safe-sub (a uint) (b uint))
-	(if (>= a b) (some (- a b)) none)
 )
 
 (define-read-only (to-trait (trait <pool-member>)) trait)
