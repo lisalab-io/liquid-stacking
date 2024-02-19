@@ -11,7 +11,7 @@
 			{extension: .fastpool-strategy-manager, enabled: true}
 			{extension: .lisa-rebase, enabled: true}
 			{extension: .rebase-1, enabled: true}
-			{extension: .operators-1, enabled: true}
+			{extension: .operators, enabled: true}
 		)))
 
 		;; Set initial operators
