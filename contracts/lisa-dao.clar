@@ -72,10 +72,10 @@
 
 ;; --- Extension requests
 
-(define-public (request-extension-callback (extension <extension-trait>) (memo (buff 34)))
+(define-public (request-extension-callback (extension <extension-trait>) (payload (buff 2048)))
 	(let ((sender tx-sender))
 		(asserts! (is-extension contract-caller) err-invalid-extension)
 		(asserts! (is-eq contract-caller (contract-of extension)) err-invalid-extension)
-		(as-contract (contract-call? extension callback sender memo))
+		(as-contract (contract-call? extension callback sender payload))
 	)
 )

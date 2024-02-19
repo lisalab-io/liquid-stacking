@@ -6,6 +6,8 @@
 			{extension: .deposit-stx, enabled: true}
 			{extension: .vault, enabled: true}
 			{extension: .fastpool-strategy-manager, enabled: true}
+			{extension: .lisa-rebase, enabled: true}
+			{extension: .rebase-1, enabled: true}
 		)))
 		(ok true)
 	)

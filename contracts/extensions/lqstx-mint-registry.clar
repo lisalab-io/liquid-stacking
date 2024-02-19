@@ -8,17 +8,17 @@
 (define-constant err-unauthorised (err u1000))
 (define-constant err-unknown-request-id (err u1008))
 
-(define-constant PENDING u0)
-(define-constant FINALIZED u1)
-(define-constant REVOKED u2)
+(define-constant PENDING 0x00)
+(define-constant FINALIZED 0x01)
+(define-constant REVOKED 0x02)
 
 (define-data-var rewards-paid-upto uint u0)
 
 (define-data-var mint-request-nonce uint u0)
 (define-data-var burn-request-nonce uint u0)
 
-(define-map mint-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: uint })
-(define-map burn-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: uint })
+(define-map mint-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: (buff 1) })
+(define-map burn-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: (buff 1) })
 
 ;; read-only calls
 
@@ -53,7 +53,7 @@
 		(try! (contract-call? .token-lqstx set-reward-multiplier vault-balance))
 		(ok (var-set rewards-paid-upto cycle))))
 
-(define-public (set-mint-request (request-id uint) (details { requested-by: principal, amount: uint, requested-at: uint, status: uint }))
+(define-public (set-mint-request (request-id uint) (details { requested-by: principal, amount: uint, requested-at: uint, status: (buff 1) }))
 	(let
 		(
 			(current-nonce (var-get mint-request-nonce))
@@ -63,7 +63,7 @@
 		(map-set mint-requests id details)
 		(ok id)))
 
-(define-public (set-burn-request (request-id uint) (details { requested-by: principal, amount: uint, requested-at: uint, status: uint }))
+(define-public (set-burn-request (request-id uint) (details { requested-by: principal, amount: uint, requested-at: uint, status: (buff 1) }))
 	(let
 		(
 			(current-nonce (var-get burn-request-nonce))
