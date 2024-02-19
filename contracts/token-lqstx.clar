@@ -134,7 +134,7 @@
 
 (define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
 	(begin
-		(asserts! (is-eq sender tx-sender) err-unauthorised)
+		(asserts! (or (is-eq sender contract-caller) (is-eq sender tx-sender)) err-unauthorised)
 		(try! (ft-transfer? lqstx (fixed-to-decimals (unwrap-panic (get-tokens-to-shares amount))) sender recipient))
 		(match memo to-print (print to-print) 0x)
 		(ok true)))

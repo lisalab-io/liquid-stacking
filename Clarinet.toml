@@ -24,6 +24,10 @@ epoch = 2.4
 path = "contracts/vault.clar"
 epoch = 2.4
 
+[contracts.treasury]
+path = "contracts/treasury.clar"
+epoch = 2.4
+
 [contracts.strategy-trait]
 path = "contracts/traits/strategy-trait.clar"
 epoch = 2.4
@@ -46,6 +50,14 @@ epoch = 2.4
 
 [contracts.stx-transfer-many-proxy]
 path = "contracts/proxies/stx-transfer-many-proxy.clar"
+epoch = 2.4
+
+[contracts.lqstx-transfer-proxy]
+path = "contracts/proxies/lqstx-transfer-proxy.clar"
+epoch = 2.4
+
+[contracts.lisa-transfer-proxy]
+path = "contracts/proxies/lisa-transfer-proxy.clar"
 epoch = 2.4
 
 [contracts.fastpool-strategy]
@@ -132,6 +144,14 @@ epoch = 2.4
 path = "contracts/strategies/fastpool/fastpool-member.clar"
 epoch = 2.4
 
+[contracts.sip-010-trait]
+path = "contracts/traits/sip-010-trait.clar"
+epoch = 2.4
+
+[contracts.sip-010-transferable-trait]
+path = "contracts/traits/sip-010-transferable-trait.clar"
+epoch = 2.4
+
 [contracts.sip-010-extensions-trait]
 path = "contracts/traits/sip-010-extensions-trait.clar"
 epoch = 2.4
@@ -156,12 +176,20 @@ epoch = 2.4
 path = "contracts/token-wlqstx.clar"
 epoch = 2.4
 
+[contracts.token-lisa]
+path = "contracts/token-lisa.clar"
+epoch = 2.4
+
 [contracts.lisa-rebase]
 path = "contracts/extensions/lisa-rebase.clar"
 epoch = 2.4
 
 [contracts.rebase-1]
 path = "contracts/rules/rebase-1.clar"
+epoch = 2.4
+
+[contracts.operators]
+path = "contracts/extensions/operators.clar"
 epoch = 2.4
 
 # [repl.analysis]
