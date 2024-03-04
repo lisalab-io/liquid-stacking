@@ -6,20 +6,21 @@
 (define-constant err-unauthorised (err u1000))
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
-)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
+
+;; privileged calls
 
 (define-public (fund-strategy (strategy <strategy-trait>) (payload (buff 2048)))
-	(let ((amount-taken (try! (as-contract (contract-call? strategy execute payload)))))
+	(begin
 		(try! (is-dao-or-extension))
-		(ok amount-taken)
+		(as-contract (contract-call? strategy execute payload))
 	)
 )
 
 (define-public (refund-strategy (strategy <strategy-trait>) (payload (buff 2048)))
-	(let ((amount-refunded (try! (as-contract (contract-call? strategy refund payload)))))
+	(begin
 		(try! (is-dao-or-extension))
-		(ok amount-refunded)
+		(as-contract (contract-call? strategy refund payload))
 	)
 )
 
@@ -29,3 +30,6 @@
 		(as-contract (contract-call? proxy proxy-call payload))
 	)
 )
+
+(define-public (callback (extension principal) (payload (buff 2048)))
+    (ok true))

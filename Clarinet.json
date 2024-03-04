@@ -1,5 +1,5 @@
 {
-  "name": "btc-bridge",
+  "name": "liquid-stacking-testing",
   "dependencies": {
     "alex_v1": {
       "commit": "dev",

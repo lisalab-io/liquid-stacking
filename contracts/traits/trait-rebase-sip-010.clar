@@ -1,7 +1,7 @@
 (define-trait rebase-sip-010-trait
 	(
         ;; Transfer from the caller to a new principal
-        (transfer (uint principal principal (optional (buff 34))) (response bool uint))
+        (transfer (uint principal principal (optional (buff 2048))) (response bool uint))
 
         ;; the human readable name of the token
         (get-name () (response (string-ascii 32) uint))
@@ -22,7 +22,7 @@
         (get-token-uri () (response (optional (string-utf8 256)) uint))
 
         ;; helper functions for 8-digit fixed notation
-        (transfer-fixed (uint principal principal (optional (buff 34))) (response bool uint))
+        (transfer-fixed (uint principal principal (optional (buff 2048))) (response bool uint))
         (get-balance-fixed (principal) (response uint uint))
         (get-total-supply-fixed () (response uint uint))    
 

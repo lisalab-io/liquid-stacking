@@ -2,18 +2,16 @@
 
 (define-public (execute (sender principal))
 	(begin
-		;; Enable core contracts
 		(try! (contract-call? .lisa-dao set-extensions (list
 			{extension: .lqstx-mint-endpoint, enabled: true}
-			{extension: .lqstx-mint-registry, enabled: true}
-			{extension: .vault, enabled: true}
+			{extension: .lqstx-vault, enabled: true}
 			{extension: .treasury, enabled: true}
 			{extension: .fastpool-strategy-manager, enabled: true}
 			{extension: .lisa-rebase, enabled: true}
 			{extension: .rebase-1, enabled: true}
-			{extension: .operators, enabled: true}
+			{extension: .operators, enabled: true}			
 		)))
-
+		
 		;; Set initial operators
 		(try! (contract-call? .operators set-operators (list
 			{operator: tx-sender, enabled: true}
@@ -29,7 +27,7 @@
 		;; Mint initial LISA token supply
 		(try! (contract-call? .token-lisa dao-mint-many (list
 			{recipient: .treasury, amount: u100000000000000}
-		)))
+		)))		
 		(ok true)
 	)
 )

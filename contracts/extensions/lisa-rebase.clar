@@ -11,9 +11,12 @@
 )
 
 (define-public (rebase (strategies (list 20 <strategy-trait>)))
-	(let ((total-stx (+ (stx-get-balance .vault) (try! (fold sum-strategy-amounts strategies (ok u0))))))
+	(let ((total-stx (- (+ (stx-get-balance .lqstx-vault) (try! (fold sum-strategy-amounts strategies (ok u0)))) (contract-call? .lqstx-mint-endpoint get-mint-requests-pending-amount))))
 		(try! (is-dao-or-extension))
-		(try! (contract-call? .token-lqstx set-reward-multiplier-from-balance total-stx))
+		(as-contract (try! (contract-call? .token-lqstx set-reserve total-stx)))
 		(ok total-stx)
 	)
 )
+
+(define-public (callback (extension principal) (payload (buff 2048)))
+    (ok true))
