@@ -18,7 +18,7 @@
 (define-data-var paused bool true)
 (define-data-var mint-delay uint u144) ;; mint available 1 day after cycle starts
 
-;; @dev test only 
+;; @dev used for testing only
 (define-data-var activation-block uint u0)
 (define-data-var reward-cycle-length uint u2016) ;; 2 weeks
 
@@ -69,17 +69,18 @@
             (vaulted-amount (contract-call? .token-vlqstx get-shares-to-tokens (get wrapped-amount request-details))))
         (asserts! (>= (stx-get-balance .lqstx-vault) vaulted-amount) err-request-pending)
         (ok { vaulted-amount: vaulted-amount, request-id-idx: request-id-idx })))
-;; @dev test only
+
 (define-read-only (get-reward-cycle (stacks-height uint))
-    ;; (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
-    (if (>= stacks-height (var-get activation-block))
-        (some (/ (- stacks-height (var-get activation-block)) (var-get reward-cycle-length)))
-        none))
+    (if (is-eq chain-id u1)
+        (some (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle))
+        (if (>= stacks-height (var-get activation-block))
+            (some (/ (- stacks-height (var-get activation-block)) (var-get reward-cycle-length)))
+            none)))            
 
-
-;; TODO: re-write based on POX
 (define-read-only (get-first-stacks-block-in-reward-cycle (reward-cycle uint))
-    (+ (var-get activation-block) (* (var-get reward-cycle-length) reward-cycle)))
+    (if (is-eq chain-id u1)
+        (contract-call? 'SP000000000000000000002Q6VF78.pox-3 reward-cycle-to-burn-height reward-cycle)
+        (+ (var-get activation-block) (* (var-get reward-cycle-length) reward-cycle))))
 
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
@@ -96,7 +97,7 @@
         (try! (is-dao-or-extension))
         (ok (var-set mint-delay new-delay))))
 
-;; @dev test only
+;; @dev used for testing only
 (define-public (set-reward-cycle-length (new-reward-cycle-length uint))
     (begin
         (try! (is-dao-or-extension))
