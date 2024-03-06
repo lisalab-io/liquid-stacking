@@ -40,7 +40,7 @@
 	(begin
 		(asserts! (is-eq sender tx-sender) err-unauthorised)
 		(try! (ft-transfer? vlqstx amount sender recipient))
-		(match memo to-print (print to-print) 0x)
+		(print { type: "transfer", amount: amount, sender: sender, recipient: recipient, memo: memo })
 		(ok true)))
 
 (define-public (mint (amount uint) (recipient principal))

@@ -114,7 +114,7 @@
 	(begin
 		(asserts! (is-eq sender tx-sender) err-unauthorised)
 		(try! (ft-transfer? lqstx (get-tokens-to-shares amount) sender recipient))
-		(match memo to-print (print to-print) 0x)
+		(print { type: "transfer", amount: amount, sender: sender, recipient: recipient, memo: memo })
 		(ok true)))
 
 ;; private functions
