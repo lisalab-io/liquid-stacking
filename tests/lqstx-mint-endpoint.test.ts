@@ -185,7 +185,6 @@ describe(contracts.endpoint, () => {
     const responses = requestBurn(payload);
     expect(responses[0].result).toBeOk(Cl.uint(0));
     expect(responses[1].result).toBeOk(Cl.bool(true));
-    console.log(responses[2].result);
     expect(responses[2].result).toBeOk(Cl.uint(100e6));
     expect(responses[3].result).toBeOk(Cl.uint(100e6));
     expect(responses[4].result).toBeOk(Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') }));
