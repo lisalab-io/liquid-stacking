@@ -8,28 +8,59 @@ import {
 	StacksPrivateKey,
 	StacksPublicKey,
 	Address,
+	// broadcastTransaction,
+	StacksMessageType,
 } from "@stacks/transactions";
 import { bytesToHex } from '@stacks/common';
 import fs from "fs";
 import { getStacksAddress, getStacksPrivateKeys, getStacksPubkeys } from "./config.ts";
-import { assertSigner, equalPubKeys } from "./utils.ts";
+import { assertSigner, equalByteArrays, verboseLog } from "./utils.ts";
 
 const planFile = "plan.json";
 
 const privateKeys = getStacksPrivateKeys();
 const address = getStacksAddress();
 const pubKeys = getStacksPubkeys();
+const pubKeysFromPrivate = privateKeys.map(sk => compressPublicKey(pubKeyfromPrivKey(sk.data).data));
 
 function signTx(tx: StacksTransaction, privateKeys: StacksPrivateKey[], pubKeys: StacksPublicKey[], checkSigner: Address) {
-	const signer = new TransactionSigner(tx);
-	let unusedPubkeys = pubKeys.slice();
-	for (const sk of privateKeys) {
-		const pk = compressPublicKey(pubKeyfromPrivKey(sk.data).data);
-		unusedPubkeys = unusedPubkeys.filter(epk => !equalPubKeys(epk, pk));
-		signer.signOrigin(sk);
+	const spendingCondition = tx.auth.spendingCondition as MultiSigSpendingCondition;
+
+	const signatureCount = spendingCondition.fields.reduce((sum, field) => sum + (field.contents.type === StacksMessageType.MessageSignature ? 1 : 0), 0);
+	if (signatureCount === spendingCondition.signaturesRequired) {
+		verboseLog(`Tried to sign tx ${tx.txid()} but it is already fully signed`);
+		return tx;
 	}
-	for (const pk of unusedPubkeys)
-		signer.appendOrigin(pk);
+
+	const signer = new TransactionSigner(tx);
+	const fields = spendingCondition.fields;
+	let signatures = 0;
+
+	for (let index = 0; index < fields.length; ++index) {
+		const field = fields[index];
+		if (field.contents.type !== StacksMessageType.PublicKey) {
+			++signatures;
+			continue;
+		}
+
+		const firstPubKey = field.contents.data as Uint8Array;
+
+		const matchingPubKeyIndex = pubKeysFromPrivate.findIndex(pubkey => equalByteArrays(pubkey.data, firstPubKey));
+		if (matchingPubKeyIndex === -1) {
+			verboseLog(`Next pubkey to sign tx ${tx.txid()} is ${bytesToHex(firstPubKey)}, but no private key is available for it. It is someone else's turn to sign.`);
+			break;
+		}
+
+		verboseLog(`Signing sighash ${tx.txid()} with key ${bytesToHex(pubKeysFromPrivate[matchingPubKeyIndex].data)}`);
+
+		// fields are always added to the end, so we have to remove it and manually move it to the right index
+		// we have to remove the old field first, otherwise signOrigin might fail if it gets more signatures than expected
+		fields.splice(index, 1);
+		signer.signOrigin(privateKeys[matchingPubKeyIndex]);
+		const newField = fields.pop()!;
+		fields.splice(index, 0, newField);
+		++signatures;
+	}
 
 	const fieldCount = (tx.auth.spendingCondition as MultiSigSpendingCondition).fields.length;
 
@@ -37,6 +68,9 @@ function signTx(tx: StacksTransaction, privateKeys: StacksPrivateKey[], pubKeys:
 		throw new Error(`Field count should be ${pubKeys.length} (num sigs + num unused pubkeys), but it is ${fieldCount}`);
 
 	assertSigner(tx.auth.spendingCondition, checkSigner);
+
+	if (signatures === spendingCondition.signaturesRequired)
+		verboseLog(`tx ${tx.txid()} is now fully signed`);
 
 	// try {
 	// 	const result = tx.verifyOrigin();
@@ -65,6 +99,9 @@ readPlan()
 	.then(plan => plan.map(tx => deserializeTransaction(tx)))
 	.then(plan => plan.map(tx => signTx(tx, privateKeys, pubKeys, address)))
 	.then(plan => {
+		// const testTx = plan.shift()!;
+		// broadcastTransaction(testTx, "mainnet").then(console.log);
+
 		fs.writeFileSync(planFile, JSON.stringify(plan.map(tx => bytesToHex(tx.serialize()))), "utf-8");
 		console.log(`Signed deploy plan written to ${planFile}`);
 	});

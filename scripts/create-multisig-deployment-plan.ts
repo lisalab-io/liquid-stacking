@@ -63,6 +63,13 @@ async function deployPlan(): Promise<PlanItem[]> {
 	return plan;
 }
 
+// adding fields on the unsigned tx makes it easier to manage
+function addPubkeyFields(tx: StacksTransaction, pubKeys: StacksPublicKey[]) {
+	for (const pk of pubKeys)
+		tx.appendPubkey(pk);
+	return tx;
+}
+
 async function createMultisigDeployTransaction(
 	contractName: string,
 	codeBody: string,
@@ -161,7 +168,7 @@ function findStxBootstrapAmountAtom(items: any[]) {
 
 deployPlan()
 	.then(plan => Promise.all(plan.map(item => createMultisigDeployTransaction(item.contractName, item.codeBody, feeMultiplier, nonce++, pubKeys.length, pubKeys, network, address))))
-	.then(plan => plan.map(transaction => bytesToHex(transaction.serialize())))
+	.then(plan => plan.map(transaction => bytesToHex(addPubkeyFields(transaction, pubKeys).serialize())))
 	.then(async (plan) => {
 		const bootstrapStxAmount = await findStxBootstrapAmount();
 		if (bootstrapStxAmount === null)
@@ -181,7 +188,7 @@ deployPlan()
 			address,
 			bootstrapStxAmount
 		);
-		plan.push(bytesToHex(tx.serialize()));
+		plan.push(bytesToHex(addPubkeyFields(tx, pubKeys).serialize()));
 		return plan;
 	})
 	.then(plan => {
