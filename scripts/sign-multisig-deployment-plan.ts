@@ -14,7 +14,7 @@ import {
 import { bytesToHex } from '@stacks/common';
 import fs from "fs";
 import { getStacksAddress, getStacksPrivateKeys, getStacksPubkeys } from "./config.ts";
-import { assertSigner, equalByteArrays, verboseLog } from "./utils.ts";
+import { assertSigner, equalByteArrays, readPlan, verboseLog } from "./utils.ts";
 
 const planFile = "plan.json";
 
@@ -84,24 +84,10 @@ function signTx(tx: StacksTransaction, privateKeys: StacksPrivateKey[], pubKeys:
 	return tx;
 }
 
-async function readPlan() {
-	const content = await fs.promises.readFile(planFile, "utf-8");
-	const plan = JSON.parse(content);
-	if (plan.constructor !== Array)
-		throw new Error(`Plan corrupt, not an array`);
-	for (const entry of plan)
-		if (typeof entry !== "string")
-			throw new Error(`Plan corrupt, entry not a string: ${entry}`);
-	return plan;
-}
-
 readPlan()
 	.then(plan => plan.map(tx => deserializeTransaction(tx)))
 	.then(plan => plan.map(tx => signTx(tx, privateKeys, pubKeys, address)))
 	.then(plan => {
-		// const testTx = plan.shift()!;
-		// broadcastTransaction(testTx, "mainnet").then(console.log);
-
 		fs.writeFileSync(planFile, JSON.stringify(plan.map(tx => bytesToHex(tx.serialize()))), "utf-8");
 		console.log(`Signed deploy plan written to ${planFile}`);
 	});

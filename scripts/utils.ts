@@ -1,6 +1,9 @@
 import { Address, SpendingCondition, StacksPublicKey } from "@stacks/transactions";
+import fs from "fs";
 
 const verbose = true;
+
+export const planFile = "plan.json";
 
 export function verboseLog(...args: any[]) {
 	verbose && console.log.apply(null, args);
@@ -24,4 +27,15 @@ export function equalByteArrays(a: Uint8Array, b: Uint8Array) {
 export function assertSigner(spendingCondition: SpendingCondition, signer: Address) {
 	if (spendingCondition.signer !== signer.hash160)
 		throw new Error(`Signer mismatch, expected ${signer}, got ${spendingCondition.signer}`);
+}
+
+export async function readPlan() {
+	const content = await fs.promises.readFile(planFile, "utf-8");
+	const plan = JSON.parse(content);
+	if (plan.constructor !== Array)
+		throw new Error(`Plan corrupt, not an array`);
+	for (const entry of plan)
+		if (typeof entry !== "string")
+			throw new Error(`Plan corrupt, entry not a string: ${entry}`);
+	return plan;
 }
