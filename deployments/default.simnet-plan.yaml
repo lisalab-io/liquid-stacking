@@ -39,7 +39,6 @@ genesis:
     - pox
     - pox-2
     - pox-3
-    - pox-4
     - lockup
     - costs-2
     - costs-3
@@ -54,6 +53,9 @@ plan:
             emulated-sender: SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE
             path: "./.cache/requirements/SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.clar"
             clarity-version: 1
+      epoch: "2.0"
+    - id: 1
+      transactions:
         - emulated-contract-publish:
             contract-name: trait-sip-010
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -99,9 +101,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts_modules/alex_v1/traits/trait-vault.clar
             clarity-version: 1
-      epoch: "2.1"
-    - id: 1
+      epoch: "2.05"
+    - id: 2
       transactions:
+        - emulated-contract-publish:
+            contract-name: pox-pools-1-cycle-v2
+            emulated-sender: SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX
+            path: "./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2.clar"
+            clarity-version: 2
         - emulated-contract-publish:
             contract-name: pox-fast-pool-v2
             emulated-sender: SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP
@@ -116,6 +123,159 @@ plan:
             contract-name: fastpool-member10
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member2
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member3
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member4
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member5
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member8
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-member9
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: strategy-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/strategy-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member1
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member10
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member2
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member3
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member4
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member5
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member8
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-member9
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-strategy
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/fastpool/fastpool-strategy.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: extension-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/extension-trait.clar
+            clarity-version: 2
+      epoch: "2.4"
+    - id: 3
+      transactions:
+        - emulated-contract-publish:
+            contract-name: proposal-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/proposal-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lisa-dao
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/lisa-dao.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: proxy-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/proxy-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-vault
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/lqstx-vault.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-strategy-manager
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/fastpool-strategy-manager.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: operators
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/operators.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: sip-010-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/sip-010-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-lisa
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/token-lisa.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: boot
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/boot.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member11
@@ -163,112 +323,9 @@ plan:
             path: contracts/strategies/fastpool/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: fastpool-member2
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: fastpool-member20
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member3
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member4
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member5
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member6
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member7
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member8
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member9
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: strategy-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/strategy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-strategy
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/fastpool/fastpool-strategy.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: extension-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/extension-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: proposal-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/proposal-trait.clar
-            clarity-version: 2
-      epoch: "2.4"
-    - id: 2
-      transactions:
-        - emulated-contract-publish:
-            contract-name: lisa-dao
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/lisa-dao.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: proxy-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/proxy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-vault
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/lqstx-vault.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-strategy-manager
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/fastpool-strategy-manager.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: operators
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/operators.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: sip-010-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/sip-010-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-lisa
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/token-lisa.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: boot
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/boot.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-mint-registry
@@ -300,6 +357,9 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 4
+      transactions:
         - emulated-contract-publish:
             contract-name: lisa-rebase
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -355,9 +415,6 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/stx-transfer-many-proxy.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 3
-      transactions:
         - emulated-contract-publish:
             contract-name: token-wlqstx
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
