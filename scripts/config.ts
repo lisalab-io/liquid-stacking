@@ -2,13 +2,16 @@ import fs from "fs";
 import { hexToBytes } from '@stacks/common';
 import { AddressHashMode, TransactionVersion, addressFromHashMode, createStacksPrivateKey, publicKeyFromBytes } from "@stacks/transactions";
 import { c32addressDecode } from 'c32check';
+import type { StacksNetworkName } from "@stacks/network";
 
 const secretsFile = "config.json";
+
 
 export type Config = {
 	secrets: string[],
 	pubkeys: string[],
-	address: string
+	address: string,
+	network: StacksNetworkName
 };
 
 let cache: Config | null = null;
@@ -49,4 +52,9 @@ export function getStacksAddress() {
 	const config = loadConfig();
 	const [_, hash160] = c32addressDecode(config.address);
 	return addressFromHashMode(AddressHashMode.SerializeP2WSH, TransactionVersion.Mainnet, hash160);
+}
+
+export function getNetwork() {
+	const config = loadConfig();
+	return config.network || "testnet";
 }

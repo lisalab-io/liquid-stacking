@@ -20,15 +20,14 @@ import { initSimnet } from "@hirosystems/clarinet-sdk";
 import fs from "fs";
 import { bytesToHex } from '@stacks/common';
 import YAML from "yaml";
-import { getStacksAddress, getStacksPubkeys } from "./config.ts";
-import { assertSigner, verboseLog } from "./utils.js";
+import { getNetwork, getStacksAddress, getStacksPubkeys } from "./config.ts";
+import { assertSigner, planFile, verboseLog } from "./utils.js";
 
 const manifestFile = "./Clarinet.toml";
 
-const planFile = "plan.json";
 const simnetDeployFile = "deployments/default.simnet-plan.yaml";
 
-const network = "mainnet";
+const network = getNetwork();
 const address = getStacksAddress();
 const pubKeys = getStacksPubkeys();
 let nonce = 0;
