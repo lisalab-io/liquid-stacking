@@ -89,7 +89,7 @@
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
 
-(define-read-only (is-whitelisted-or-default (user principal))
+(define-read-only (is-whitelisted-or-mint-for-all (user principal))
     (or (not (var-get use-whitelist)) (default-to false (map-get? whitelisted user))))
 
 ;; governance calls
@@ -135,7 +135,7 @@
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
-        (asserts! (is-whitelisted-or-default sender) err-not-whitelisted)
+        (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender .lqstx-vault))
         (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount))))
         (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending sender (unwrap-panic (as-max-len? (append (get-mint-requests-pending-or-default sender) request-id) u1000)))))
