@@ -29,7 +29,12 @@
 		;; Mint initial LISA token supply
 		(try! (contract-call? .token-lisa dao-mint-many (list
 			{recipient: .treasury, amount: u100000000000000}
-		)))		
+		)))	
+
+		;; Enable whitelist
+		(try! (contract-call? .lqstx-mint-endpoint set-use-whitelist true))
+		;; (try! (contract-call? .lqstx-mint-endpoint set-whitelisted-many (list ) (list )))
+
 		(ok true)
 	)
 )

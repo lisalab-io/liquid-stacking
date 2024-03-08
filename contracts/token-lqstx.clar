@@ -93,13 +93,11 @@
 (define-read-only (get-total-shares)
 	(ok (ft-get-supply lqstx)))
 
-;; TODO this can be attacked - need to check
 (define-read-only (get-tokens-to-shares (amount uint))
 	(if (is-eq (get-reserve) (ok u0))
 		amount
 		(/ (* amount (unwrap-panic (get-total-shares))) (unwrap-panic (get-reserve)))))
 
-;; TODO this can be attacked - need to check
 (define-read-only (get-shares-to-tokens (shares uint))
 	(if (is-eq (get-total-shares) (ok u0))
 		shares

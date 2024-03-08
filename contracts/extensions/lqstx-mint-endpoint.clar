@@ -8,6 +8,7 @@
 (define-constant err-paused (err u1001))
 (define-constant err-request-pending (err u1006))
 (define-constant err-request-finalized-or-revoked (err u1007))
+(define-constant err-not-whitelisted (err u1008))
 
 (define-constant PENDING 0x00)
 (define-constant FINALIZED 0x01)
@@ -21,6 +22,9 @@
 ;; @dev used for testing only
 (define-data-var activation-block uint u0)
 (define-data-var reward-cycle-length uint u2016) ;; 2 weeks
+
+(define-data-var use-whitelist bool false)
+(define-map whitelisted principal bool)
 
 ;; read-only calls
 
@@ -85,7 +89,23 @@
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
 
+(define-read-only (is-whitelisted-or-default (user principal))
+    (or (not (var-get use-whitelist)) (default-to false (map-get? whitelisted user))))
+
 ;; governance calls
+
+(define-public (set-use-whitelist (new-use bool))
+    (begin 
+        (try! (is-dao-or-extension))
+        (ok (var-set use-whitelist new-use))))
+
+(define-public (set-whitelisted (user principal) (new-whitelisted bool))
+    (begin 
+        (try! (is-dao-or-extension))
+        (ok (map-set whitelisted user new-whitelisted))))
+
+(define-public (set-whitelisted-many (users (list 1000 principal)) (new-whitelisteds (list 1000 bool)))
+    (fold check-err (map set-whitelisted users new-whitelisteds) (ok true)))
 
 (define-public (set-paused (new-paused bool))
     (begin
@@ -113,6 +133,7 @@
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
             (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
         (try! (is-paused-or-fail))
+        (asserts! (is-whitelisted-or-default sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender .lqstx-vault))
         (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount))))
         (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending sender (unwrap-panic (as-max-len? (append (get-mint-requests-pending-or-default sender) request-id) u1000)))))
