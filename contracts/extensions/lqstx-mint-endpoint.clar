@@ -102,10 +102,12 @@
 (define-public (set-whitelisted (user principal) (new-whitelisted bool))
     (begin 
         (try! (is-dao-or-extension))
-        (ok (map-set whitelisted user new-whitelisted))))
+        (set-whitelisted-private user new-whitelisted)))
 
 (define-public (set-whitelisted-many (users (list 1000 principal)) (new-whitelisteds (list 1000 bool)))
-    (fold check-err (map set-whitelisted users new-whitelisteds) (ok true)))
+    (begin
+        (try! (is-dao-or-extension))
+        (fold check-err (map set-whitelisted-private users new-whitelisteds) (ok true))))
 
 (define-public (set-paused (new-paused bool))
     (begin
@@ -232,4 +234,7 @@
     (match (slice? target (+ idx u1) (len target))
         some-value (unwrap-panic (as-max-len? (concat (unwrap-panic (slice? target u0 idx)) some-value) u1000))
         (unwrap-panic (slice? target u0 idx))))
+
+(define-private (set-whitelisted-private (user principal) (new-whitelisted bool))
+    (ok (map-set whitelisted user new-whitelisted)))
 

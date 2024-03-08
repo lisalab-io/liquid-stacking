@@ -251,24 +251,9 @@ plan:
             path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/fastpool-strategy-manager.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: operators
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/operators.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: sip-010-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: /Users/chanahn/githome/liquid-stacking/contracts/traits/sip-010-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-lisa
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/token-lisa.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: boot
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/boot.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-mint-registry
@@ -299,6 +284,21 @@ plan:
             contract-name: lqstx-mint-endpoint
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/lqstx-mint-endpoint.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: operators
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/operators.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-lisa
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: /Users/chanahn/githome/liquid-stacking/contracts/token-lisa.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: boot
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: /Users/chanahn/githome/liquid-stacking/contracts/boot.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lisa-rebase
