@@ -115,7 +115,7 @@
 ;; @returns (response bool uint)/ error
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
   (begin
-    (asserts! (is-eq sender tx-sender) ERR-NOT-AUTHORIZED)
+    (asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) ERR-NOT-AUTHORIZED)
    (contract-call? .token-lqstx transfer (/ (* amount (pow u10 (unwrap-panic (get-base-decimals)))) (pow-decimals)) sender recipient memo)
   )
 )

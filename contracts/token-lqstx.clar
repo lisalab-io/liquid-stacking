@@ -112,7 +112,7 @@
 
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
 	(begin
-		(asserts! (is-eq sender tx-sender) err-unauthorised)
+		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
 		(try! (ft-transfer? lqstx (get-tokens-to-shares amount) sender recipient))
 		(print { type: "transfer", amount: amount, sender: sender, recipient: recipient, memo: memo })
 		(ok true)))

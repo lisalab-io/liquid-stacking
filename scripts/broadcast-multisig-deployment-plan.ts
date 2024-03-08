@@ -1,12 +1,10 @@
 import {
 	deserializeTransaction,
-	// broadcastTransaction,
 	getNonce,
 	addressToString,
 	broadcastTransaction,
 	TxBroadcastResult,
 } from "@stacks/transactions";
-// import { bytesToHex } from '@stacks/common';
 import { getNetwork, getStacksAddress } from "./config.ts";
 import { readPlan, verboseLog } from "./utils.ts";
 

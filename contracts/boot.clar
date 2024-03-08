@@ -6,6 +6,7 @@
 	(begin
 		(try! (contract-call? .lisa-dao set-extensions (list
 			{extension: .lqstx-mint-endpoint, enabled: true}
+			{extension: .lqstx-mint-registry, enabled: true}
 			{extension: .lqstx-vault, enabled: true}
 			{extension: .treasury, enabled: true}
 			{extension: .fastpool-strategy-manager, enabled: true}

@@ -17,6 +17,3 @@
 		(ok total-stx)
 	)
 )
-
-(define-public (callback (extension principal) (payload (buff 2048)))
-    (ok true))

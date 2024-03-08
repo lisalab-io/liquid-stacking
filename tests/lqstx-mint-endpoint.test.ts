@@ -34,7 +34,7 @@ const prepareTest = () =>
         Cl.contractPrincipal(simnet.deployer, contracts.boot),
       ],
       simnet.deployer,
-    ),    
+    ),
   ]);
 
 const requestMint = () =>
@@ -66,7 +66,7 @@ const requestBurn = (payload: Buffer) =>
         Cl.uint(100e6)
       ],
       manager
-    ),      
+    ),
     tx.callPublicFn(
       contracts.rebase1,
       'rebase',
@@ -175,13 +175,13 @@ describe(contracts.endpoint, () => {
     const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
     simnet.mineEmptyBlocks(144); // mint-delay
-    
+
     const payload = simnet.callReadOnlyFn(
       contracts.strategy,
       'create-payload',
       [Cl.uint(100e6)],
       manager
-    ).result.buffer;    
+    ).result.buffer;
     const responses = requestBurn(payload);
     expect(responses[0].result).toBeOk(Cl.uint(0));
     expect(responses[1].result).toBeOk(Cl.bool(true));
@@ -204,7 +204,7 @@ describe(contracts.endpoint, () => {
       'create-payload',
       [Cl.uint(100e6)],
       manager
-    ).result.buffer;    
+    ).result.buffer;
     const burnResponses = requestBurn(payload);
     expect(burnResponses[0].result).toBeOk(Cl.uint(0));
     expect(burnResponses[1].result).toBeOk(Cl.bool(true));
@@ -226,7 +226,7 @@ describe(contracts.endpoint, () => {
         'rebase',
         [],
         oracle
-      ),            
+      ),
       tx.callPublicFn(
         contracts.rebase1,
         'finalize-burn',
@@ -244,7 +244,7 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeOk(Cl.uint(100e6));
     expect(responses[2].result).toBeOk(Cl.bool(true));
     expect(responses[3].result).toBeErr(Cl.uint(1007));
-    
+
   });
 
   it('can revoke burn', () => {
@@ -261,7 +261,7 @@ describe(contracts.endpoint, () => {
       'create-payload',
       [Cl.uint(100e6)],
       manager
-    ).result.buffer;    
+    ).result.buffer;
     const burnResponses = requestBurn(payload);
     expect(burnResponses[0].result).toBeOk(Cl.uint(0));
     expect(burnResponses[1].result).toBeOk(Cl.bool(true));
@@ -277,7 +277,7 @@ describe(contracts.endpoint, () => {
           Cl.uint(100e6)
         ],
         manager
-      ),           
+      ),
       tx.callPublicFn(
         contracts.endpoint,
         'revoke-burn',
@@ -356,7 +356,7 @@ describe(contracts.endpoint, () => {
         'finalize-mint',
         [Cl.uint(1)],
         bot
-      ),  
+      ),
       tx.callPublicFn(
         contracts.endpoint,
         'request-burn',
