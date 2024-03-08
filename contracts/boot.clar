@@ -18,8 +18,6 @@
 		;; Set initial operators
 		(try! (contract-call? .operators set-operators (list
 			{operator: tx-sender, enabled: true}
-			{operator: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, enabled: true}
-			{operator: 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, enabled: true}
 		)))
 		;; Set operator signal threshold
 		(try! (contract-call? .operators set-proposal-threshold 2))
@@ -30,7 +28,10 @@
 		;; Mint initial LISA token supply
 		(try! (contract-call? .token-lisa dao-mint-many (list
 			{recipient: .treasury, amount: u100000000000000}
-		)))		
+		)))
+
+		;; Note: tx-sender is .lisa-dao
+		(try! (stx-transfer? stx-bootstrap-amount tx-sender .treasury))
 		(ok true)
 	)
 )
