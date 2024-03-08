@@ -80,7 +80,7 @@
 
 ;; sip010-ft-trait
 
-(define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
+(define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
 	(begin
 		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-not-token-owner)
 		(ft-transfer? lisa amount sender recipient)

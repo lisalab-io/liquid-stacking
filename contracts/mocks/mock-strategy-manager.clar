@@ -1,4 +1,6 @@
-(define-constant err-unauthorised (err u10000))
+(impl-trait .extension-trait.extension-trait)
+
+(define-constant err-unauthorised (err u1000))
 
 (define-map authorised-managers principal bool)
 (map-set authorised-managers tx-sender true)
@@ -11,17 +13,17 @@
 	(default-to false (map-get? authorised-managers who))
 )
 
-(define-public (fund-strategy (amounts (list 20 uint)))
+(define-public (fund-strategy (amount uint))
 	(begin
 		(asserts! (is-authorised-manager tx-sender) err-unauthorised)
-		(contract-call? .lqstx-vault fund-strategy .fastpool-strategy (unwrap-panic (to-consensus-buff? amounts)))
+		(as-contract (contract-call? .lqstx-vault fund-strategy .mock-strategy (contract-call? .mock-strategy create-payload amount)))
 	)
 )
 
-(define-public (refund-strategy (selection (list 20 bool)))
+(define-public (refund-strategy (amount uint))
 	(begin
 		(asserts! (is-authorised-manager tx-sender) err-unauthorised)
-		(contract-call? .lqstx-vault refund-strategy .fastpool-strategy (unwrap-panic (to-consensus-buff? selection)))
+		(as-contract (contract-call? .lqstx-vault refund-strategy .mock-strategy (contract-call? .mock-strategy create-payload amount)))
 	)
 )
 
@@ -30,4 +32,8 @@
 		(try! (is-dao-or-extension))
 		(ok (map-set authorised-managers who enabled))
 	)
+)
+
+(define-public (callback (sender principal) (memo (buff 2048)))
+	(ok true)
 )

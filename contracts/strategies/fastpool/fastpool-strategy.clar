@@ -19,7 +19,7 @@
 )
 
 (define-read-only (is-vault-caller)
-	(ok (asserts! (is-eq tx-sender .vault) err-not-vault-caller))
+	(ok (asserts! (is-eq tx-sender .lqstx-vault) err-not-vault-caller))
 )
 
 (define-private (process-strategy (amount uint) (member <pool-member>))

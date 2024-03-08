@@ -20,8 +20,8 @@ epoch = 2.4
 path = "contracts/boot.clar"
 epoch = 2.4
 
-[contracts.vault]
-path = "contracts/vault.clar"
+[contracts.lqstx-vault]
+path = "contracts/extensions/lqstx-vault.clar"
 epoch = 2.4
 
 [contracts.treasury]
@@ -148,6 +148,10 @@ epoch = 2.4
 path = "contracts/traits/sip-010-trait.clar"
 epoch = 2.4
 
+[contracts.rebase-strategy-trait]
+path = "contracts/traits/rebase-strategy-trait.clar"
+epoch = 2.4
+
 [contracts.sip-010-transferable-trait]
 path = "contracts/traits/sip-010-transferable-trait.clar"
 epoch = 2.4
@@ -165,19 +169,23 @@ path = "contracts/extensions/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-registry]
-path = "contracts/extensions/lqstx-mint-registry.clar"
+path = "contracts/lqstx-mint-registry.clar"
 epoch = 2.4
 
 [contracts.token-lqstx]
 path = "contracts/token-lqstx.clar"
 epoch = 2.4
 
-[contracts.token-wlqstx]
-path = "contracts/token-wlqstx.clar"
+[contracts.token-vlqstx]
+path = "contracts/token-vlqstx.clar"
 epoch = 2.4
 
 [contracts.token-lisa]
 path = "contracts/token-lisa.clar"
+epoch = 2.4
+
+[contracts.token-wlqstx]
+path = "contracts/wrapped-tokens/token-wlqstx.clar"
 epoch = 2.4
 
 [contracts.lisa-rebase]
@@ -191,6 +199,62 @@ epoch = 2.4
 [contracts.operators]
 path = "contracts/extensions/operators.clar"
 epoch = 2.4
+
+[contracts.rebase-mock]
+path = "contracts/mocks/rebase-mock.clar"
+epoch = 2.4
+
+[contracts.mock-strategy]
+path = "contracts/mocks/mock-strategy.clar"
+epoch = 2.4
+
+[contracts.mock-strategy-manager]
+path = "contracts/mocks/mock-strategy-manager.clar"
+epoch = 2.4
+
+[contracts.regtest-boot]
+path = "contracts/regtest-boot.clar"
+epoch = 2.4
+
+[contracts.amm-swap-pool-v1-1]
+path = "contracts_modules/alex_v1/pool/amm-swap-pool-v1-1.clar"
+depends_on = ["trait-ownable", "trait-sip-010", "token-amm-swap-pool-v1-1"]
+
+[contracts.token-amm-swap-pool-v1-1]
+path = "contracts_modules/alex_v1/pool-token/token-amm-swap-pool-v1-1.clar"
+depends_on = ["trait-ownable", "trait-semi-fungible", "alex-vault-v1-1"]
+
+[contracts.alex-vault-v1-1]
+path = "contracts_modules/alex_v1/alex-vault-v1-1.clar"
+depends_on = [
+  "trait-vault",
+  "trait-sip-010",
+  "trait-flash-loan-user",
+  "trait-ownable",
+  "trait-semi-fungible"
+]
+
+[contracts.trait-vault]
+path = "contracts_modules/alex_v1/traits/trait-vault.clar"
+depends_on = ["trait-sip-010", "trait-flash-loan-user"]
+
+[contracts.trait-ownable]
+path = "contracts_modules/alex_v1/traits/trait-ownable.clar"
+depends_on = []
+
+[contracts.trait-flash-loan-user]
+path = "contracts_modules/alex_v1/traits/trait-flash-loan-user.clar"
+depends_on = ["trait-sip-010"]
+
+[contracts.trait-semi-fungible]
+path = "contracts_modules/alex_v1/traits/trait-semi-fungible.clar"
+depends_on = []
+
+[contracts.token-wstx]
+path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
+
+[contracts.trait-sip-010]
+path = "contracts_modules/alex_v1/traits/trait-sip-010.clar"
 
 # [repl.analysis]
 # passes = ["check_checker"]
