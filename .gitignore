@@ -12,5 +12,3 @@ coverage
 costs-reports.json
 node_modules
 contracts_modules
-plan.json
-config.json
