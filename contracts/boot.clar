@@ -1,7 +1,5 @@
 (impl-trait .proposal-trait.proposal-trait)
 
-(define-constant stx-bootstrap-amount u10000)
-
 (define-public (execute (sender principal))
 	(begin
 		(try! (contract-call? .lisa-dao set-extensions (list
