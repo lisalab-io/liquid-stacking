@@ -13,7 +13,7 @@ import {
 	FungibleConditionCode,
 	ClarityValue,
 	contractPrincipalCV,
-	standardPrincipalCV,
+	makeUnsignedSTXTokenTransfer
 } from "@stacks/transactions";
 import type { StacksNetworkName } from "@stacks/network";
 import { initSimnet } from "@hirosystems/clarinet-sdk";
@@ -24,8 +24,8 @@ import { getNetwork, getStacksAddress, getStacksPubkeys } from "./config.ts";
 import { assertSigner, planFile, verboseLog } from "./utils.js";
 
 const manifestFile = "./Clarinet.toml";
-
 const simnetDeployFile = "deployments/default.simnet-plan.yaml";
+const lisaDaoContractName = "lisa-dao";
 
 const network = getNetwork();
 const address = getStacksAddress();
@@ -42,6 +42,8 @@ type PlanItem = {
 	clarityVersion: number
 };
 
+verboseLog(`Using address ${addressToString(address)}`);
+
 async function deployPlan(): Promise<PlanItem[]> {
 	const simnet = await initSimnet(manifestFile);
 	simnet.getContractsInterfaces(); // creates simnet deploy plan
@@ -49,7 +51,7 @@ async function deployPlan(): Promise<PlanItem[]> {
 	const plan = simnetPlan.plan.batches.flatMap(
 		(batch: any) => batch.transactions.map((transaction: any) => {
 			const item = transaction['emulated-contract-publish'];
-			if (!(item.path as string).startsWith("contracts_modules/") && !(item.path as string).startsWith("./.cache/"))
+			if (!(item.path as string).startsWith("contracts_modules/") && !(item.path as string).startsWith("./.cache/") && !(item.path as string).startsWith("contracts/mocks/"))
 				return {
 					contractName: item['contract-name'],
 					codeBody: fs.readFileSync(item.path, 'utf-8'),
@@ -99,6 +101,34 @@ async function createMultisigDeployTransaction(
 	return tx;
 }
 
+async function createMultisigStxTransaction(
+	amount: bigint,
+	recipient: string,
+	feeMultiplier: number,
+	nonce: number,
+	numSignatures: number,
+	pubkeys: StacksPublicKey[],
+	signer: Address) {
+	const publicKeys = pubkeys.map(pk => bytesToHex(pk.data));
+	const tx = await makeUnsignedSTXTokenTransfer({
+		numSignatures,
+		publicKeys,
+		recipient,
+		fee: 1,
+		nonce,
+		network,
+		amount,
+		anchorMode: AnchorMode.OnChainOnly
+	});
+	// makeUnsignedContractCall() forces a AddressHashMode.SerializeP2SH spending condition, so we construct it manually
+	// and replace it.
+	tx.auth.spendingCondition = createMultiSigSpendingCondition(AddressHashMode.SerializeP2WSH, numSignatures, publicKeys, nonce, 1);
+	assertSigner(tx.auth.spendingCondition, signer);
+	const calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	tx.setFee(calculatedFee);
+	return tx;
+}
+
 async function createMultisigBootTransaction(
 	contractAddress: string,
 	contractName: string,
@@ -110,7 +140,8 @@ async function createMultisigBootTransaction(
 	pubkeys: StacksPublicKey[],
 	network: StacksNetworkName,
 	signer: Address,
-	stxSpendAmount: number): Promise<StacksTransaction> {
+	stxSpendAmount: number,
+	stxSpenderAddress: string): Promise<StacksTransaction> {
 	const publicKeys = pubkeys.map(pk => bytesToHex(pk.data));
 	const tx = await makeUnsignedContractCall({
 		numSignatures,
@@ -124,7 +155,7 @@ async function createMultisigBootTransaction(
 		fee: 1,
 		anchorMode: AnchorMode.OnChainOnly,
 		postConditionMode: PostConditionMode.Deny,
-		postConditions: [createSTXPostCondition(addressToString(signer), FungibleConditionCode.Equal, stxSpendAmount)]
+		postConditions: [createSTXPostCondition(stxSpenderAddress, FungibleConditionCode.Equal, stxSpendAmount)]
 	});
 	// makeUnsignedContractCall() forces a AddressHashMode.SerializeP2SH spending condition, so we construct it manually
 	// and replace it.
@@ -174,24 +205,37 @@ deployPlan()
 			throw new Error("Could not find stx-bootstrap-amount constant in boot contract");
 		verboseLog(`Boot contract STX bootstrap amount is ${bootstrapStxAmount}`);
 		const addressString = addressToString(address);
-		const tx = await createMultisigBootTransaction(
-			addressString,
-			"lisa-dao",
-			"construct",
-			[contractPrincipalCV(addressString, "lisa-dao"), standardPrincipalCV(addressString)],
+
+		const fundingTx = await createMultisigStxTransaction(
+			bootstrapStxAmount,
+			`${addressString}.${lisaDaoContractName}`,
 			feeMultiplier,
-			++nonce,
+			nonce++,
+			pubKeys.length,
+			pubKeys,
+			address
+		);
+
+		const bootTx = await createMultisigBootTransaction(
+			addressString,
+			lisaDaoContractName,
+			"construct",
+			[contractPrincipalCV(addressString, "boot")],
+			feeMultiplier,
+			nonce++,
 			pubKeys.length,
 			pubKeys,
 			network,
 			address,
-			bootstrapStxAmount
+			bootstrapStxAmount,
+			`${addressString}.${lisaDaoContractName}`
 		);
-		plan.push(bytesToHex(addPubkeyFields(tx, pubKeys).serialize()));
+		plan.push(bytesToHex(addPubkeyFields(fundingTx, pubKeys).serialize()));
+		plan.push(bytesToHex(addPubkeyFields(bootTx, pubKeys).serialize()));
 		return plan;
 	})
 	.then(plan => {
 		fs.writeFileSync(planFile, JSON.stringify(plan), "utf-8");
 		verboseLog(`Last nonce is ${nonce}`);
-		console.log(`Deploy plan written to ${planFile}`);
+		console.log(`Deploy plan written to ${planFile}, total of ${plan.length} transactions`);
 	});
