@@ -8,8 +8,6 @@
 
 (define-data-var token-decimals uint u8)
 
-(define-data-var contract-owner principal tx-sender)
-
 ;; errors
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-MINT-FAILED (err u6002))
@@ -17,45 +15,34 @@
 (define-constant ERR-TRANSFER-FAILED (err u3000))
 (define-constant ERR-NOT-SUPPORTED (err u6004))
 
-(define-read-only (get-contract-owner)
-  (ok (var-get contract-owner))
-)
-
-(define-public (set-contract-owner (owner principal))
-  (begin
-    (try! (check-is-owner))
-    (ok (var-set contract-owner owner))
-  )
-)
-
-(define-private (check-is-owner)
-  (ok (asserts! (is-eq tx-sender (var-get contract-owner)) ERR-NOT-AUTHORIZED))
+(define-public (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) ERR-NOT-AUTHORIZED))
 )
 
 (define-public (set-name (new-name (string-ascii 32)))
 	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-name new-name))
 	)
 )
 
 (define-public (set-symbol (new-symbol (string-ascii 10)))
 	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-symbol new-symbol))
 	)
 )
 
 (define-public (set-decimals (new-decimals uint))
 	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-decimals new-decimals))
 	)
 )
 
 (define-public (set-token-uri (new-uri (optional (string-utf8 256))))
 	(begin
-		(try! (check-is-owner))
+		(try! (is-dao-or-extension))
 		(ok (var-set token-uri new-uri))
 	)
 )
@@ -210,6 +197,3 @@
 
 (define-read-only (get-reserve-fixed)
 	(ok (* (unwrap-panic (contract-call? .token-lqstx get-reserve)) u100)))
-
-;; contract initialisation
-(set-contract-owner .executor-dao)
