@@ -44,11 +44,10 @@
 		(proposal-height (get proposed-at proposal-data))
 		(signals (+ (get signals proposal-data) (if for 1 -1)))
 		(threshold-met (>= signals (var-get proposal-threshold)))
-		(sender tx-sender)
 		)
 		(try! (is-operator))
 		(asserts! (check-validity proposal-height) err-proposal-expired)
-		(asserts! (<=
+		(asserts! (<
 			;; operator can signal again on a proposal that was resubmitted
 			(default-to u0 (map-get? proposal-signals { proposal: proposal-principal, operator: tx-sender }))
 			proposal-height)
@@ -57,7 +56,7 @@
 		(map-set proposal-signals { proposal: proposal-principal, operator: tx-sender } burn-block-height)
 		(map-set proposals proposal-principal (merge proposal-data {signals: signals, executed: threshold-met}))
 		(if threshold-met
-			(contract-call? .lisa-dao execute proposal sender)
+			(contract-call? .lisa-dao execute proposal tx-sender)
 			(ok false)
 		)
 	)
