@@ -27,7 +27,11 @@ path = "contracts/extensions/lqstx-vault.clar"
 epoch = 2.4
 
 [contracts.treasury]
-path = "contracts/treasury.clar"
+path = "contracts/extensions/treasury.clar"
+epoch = 2.4
+
+[contracts.token-vesting]
+path = "contracts/extensions/token-vesting.clar"
 epoch = 2.4
 
 [contracts.strategy-trait]
@@ -211,7 +215,7 @@ path = "contracts/extensions/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-registry]
-path = "contracts/lqstx-mint-registry.clar"
+path = "contracts/extensions/lqstx-mint-registry.clar"
 epoch = 2.4
 
 [contracts.token-lqstx]

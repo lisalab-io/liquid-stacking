@@ -6,32 +6,31 @@
 			{extension: .lqstx-mint-endpoint, enabled: true}
 			{extension: .lqstx-vault, enabled: true}
 			{extension: .treasury, enabled: true}
+			{extension: .token-vesting, enabled: true}
 			{extension: .stacking-pool-strategy-manager, enabled: true}
 			{extension: .lisa-rebase, enabled: true}
 			{extension: .rebase-1, enabled: true}
-			{extension: .operators, enabled: true}			
+			{extension: .operators, enabled: true}
 		)))
 		
 		;; Set initial operators
 		(try! (contract-call? .operators set-operators (list
-			{operator: tx-sender, enabled: true}
-			;; {operator: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, enabled: true}
-			;; {operator: 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, enabled: true}
-			;; two from ALEX
+			;; three from ALEX
 			{ operator: 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7, enabled: true }
 			{ operator: 'SPHFAXDZVFHMY8YR3P9J7ZCV6N89SBET203ZAY25, enabled: true }
-			;; two from Ryder/FAST Pool
+			{ operator: 'SPSZ26REB731JN8H00TD010S600F4AB4Z8F0JRB7, enabled: true }
+			;; three from Ryder/FAST Pool
 		)))
-		;; Set operator signal threshold, i.e. 3-of-4
-		(try! (contract-call? .operators set-proposal-threshold 3))
+		;; Set operator signal threshold, i.e. 4-of-6
+		(try! (contract-call? .operators set-proposal-threshold 4))
 
-		;; Set initial Fastpool strategy managers
+		;; Set initial strategy managers
 		(try! (contract-call? .stacking-pool-strategy-manager set-authorised-manager tx-sender true))
 
 		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list
-			{recipient: .treasury, amount: u1000000000000000}
-		)))	
+			{ recipient: .treasury, amount: u1000000000000000 }
+		)))
 
 		;; Enable whitelist
 		(try! (contract-call? .lqstx-mint-endpoint set-use-whitelist true))
