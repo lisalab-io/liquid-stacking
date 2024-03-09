@@ -361,6 +361,21 @@ plan:
     - id: 4
       transactions:
         - emulated-contract-publish:
+            contract-name: operators
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/operators.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-lisa
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: /Users/chanahn/githome/liquid-stacking/contracts/token-lisa.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: boot
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: /Users/chanahn/githome/liquid-stacking/contracts/boot.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: lisa-rebase
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/lisa-rebase.clar
