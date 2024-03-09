@@ -51,7 +51,7 @@ export function getStacksPubkeys() {
 export function getStacksAddress() {
 	const config = loadConfig();
 	const [_, hash160] = c32addressDecode(config.address);
-	return addressFromHashMode(AddressHashMode.SerializeP2WSH, TransactionVersion.Mainnet, hash160);
+	return addressFromHashMode(AddressHashMode.SerializeP2WSH, getNetwork() === "mainnet" ? TransactionVersion.Mainnet : TransactionVersion.Testnet, hash160);
 }
 
 export function getNetwork() {

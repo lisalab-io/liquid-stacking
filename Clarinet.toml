@@ -226,10 +226,6 @@ epoch = 2.4
 path = "contracts/token-lisa.clar"
 epoch = 2.4
 
-[contracts.token-wlqstx]
-path = "contracts/wrapped-tokens/token-wlqstx.clar"
-epoch = 2.4
-
 [contracts.lisa-rebase]
 path = "contracts/extensions/lisa-rebase.clar"
 epoch = 2.4
@@ -252,6 +248,14 @@ epoch = 2.4
 
 [contracts.mock-strategy-manager]
 path = "contracts/mocks/mock-strategy-manager.clar"
+epoch = 2.4
+
+[contracts.token-wlqstx]
+path = "contracts/mocks/token-wlqstx.clar"
+epoch = 2.4
+
+[contracts.mock-proposal]
+path = "contracts/mocks/mock-proposal.clar"
 epoch = 2.4
 
 [contracts.regtest-boot]

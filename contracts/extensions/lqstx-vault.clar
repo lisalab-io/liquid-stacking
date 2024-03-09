@@ -30,6 +30,3 @@
 		(as-contract (contract-call? proxy proxy-call payload))
 	)
 )
-
-(define-public (callback (extension principal) (payload (buff 2048)))
-    (ok true))

@@ -8,7 +8,17 @@
 			{extension: .rebase-mock, enabled: true}
 			{extension: .mock-strategy-manager, enabled: true}
 			{extension: .lqstx-vault, enabled: true}
+			{extension: .operators, enabled: true}			
 		)))
+		
+		;; Set initial operators
+		(try! (contract-call? .operators set-operators (list
+			{operator: tx-sender, enabled: true}	
+			{operator: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, enabled: true}
+			{operator: 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND, enabled: true}
+		)))
+		(try! (contract-call? .operators set-proposal-threshold 2))
+		
 		(try! (contract-call? .lqstx-mint-endpoint set-paused false))
 		(try! (contract-call? .lqstx-mint-endpoint set-reward-cycle-length u200))
 		(try! (contract-call? .lqstx-mint-endpoint set-mint-delay u14))
