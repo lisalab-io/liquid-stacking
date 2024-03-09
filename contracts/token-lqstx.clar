@@ -93,13 +93,11 @@
 (define-read-only (get-total-shares)
 	(ok (ft-get-supply lqstx)))
 
-;; TODO this can be attacked - need to check
 (define-read-only (get-tokens-to-shares (amount uint))
 	(if (is-eq (get-reserve) (ok u0))
 		amount
 		(/ (* amount (unwrap-panic (get-total-shares))) (unwrap-panic (get-reserve)))))
 
-;; TODO this can be attacked - need to check
 (define-read-only (get-shares-to-tokens (shares uint))
 	(if (is-eq (get-total-shares) (ok u0))
 		shares
@@ -112,7 +110,7 @@
 
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
 	(begin
-		(asserts! (is-eq sender tx-sender) err-unauthorised)
+		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
 		(try! (ft-transfer? lqstx (get-tokens-to-shares amount) sender recipient))
 		(print { type: "transfer", amount: amount, sender: sender, recipient: recipient, memo: memo })
 		(ok true)))

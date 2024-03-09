@@ -8,6 +8,7 @@
 (define-constant err-paused (err u1001))
 (define-constant err-request-pending (err u1006))
 (define-constant err-request-finalized-or-revoked (err u1007))
+(define-constant err-not-whitelisted (err u1008))
 
 (define-constant PENDING 0x00)
 (define-constant FINALIZED 0x01)
@@ -21,6 +22,9 @@
 ;; @dev used for testing only
 (define-data-var activation-block uint u0)
 (define-data-var reward-cycle-length uint u2016) ;; 2 weeks
+
+(define-data-var use-whitelist bool false)
+(define-map whitelisted principal bool)
 
 ;; read-only calls
 
@@ -85,7 +89,25 @@
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
 
+(define-read-only (is-whitelisted-or-mint-for-all (user principal))
+    (or (not (var-get use-whitelist)) (default-to false (map-get? whitelisted user))))
+
 ;; governance calls
+
+(define-public (set-use-whitelist (new-use bool))
+    (begin 
+        (try! (is-dao-or-extension))
+        (ok (var-set use-whitelist new-use))))
+
+(define-public (set-whitelisted (user principal) (new-whitelisted bool))
+    (begin 
+        (try! (is-dao-or-extension))
+        (set-whitelisted-private user new-whitelisted)))
+
+(define-public (set-whitelisted-many (users (list 1000 principal)) (new-whitelisteds (list 1000 bool)))
+    (begin
+        (try! (is-dao-or-extension))
+        (fold check-err (map set-whitelisted-private users new-whitelisteds) (ok true))))
 
 (define-public (set-paused (new-paused bool))
     (begin
@@ -111,11 +133,12 @@
             (sender tx-sender)
             (cycle (unwrap-panic (get-reward-cycle block-height)))
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
-            (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details)))))
+            (request-id (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details))))
         (try! (is-paused-or-fail))
+        (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender .lqstx-vault))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending sender (unwrap-panic (as-max-len? (append (get-mint-requests-pending-or-default sender) request-id) u1000)))))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending sender (unwrap-panic (as-max-len? (append (get-mint-requests-pending-or-default sender) request-id) u1000))))
         (print { type: "mint-request", id: request-id, details: request-details })
         (ok request-id)))
 
@@ -126,10 +149,10 @@
             (request-id-idx (try! (validate-mint-request request-id))))
         (try! (is-paused-or-fail))
         (try! (is-dao-or-extension))
-        (as-contract (try! (contract-call? .token-lqstx dao-mint (get amount request-details) (get requested-by request-details))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: FINALIZED }))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details)))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx))))
+        (try! (contract-call? .token-lqstx dao-mint (get amount request-details) (get requested-by request-details)))
+        (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: FINALIZED })))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
         (ok true)))
 
 (define-public (finalize-mint-many (request-ids (list 1000 uint)))
@@ -143,10 +166,10 @@
         (try! (is-paused-or-fail))
         (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
         (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
-        (as-contract (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get amount request-details), recipient: (get requested-by request-details) })))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: REVOKED }))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details)))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx))))
+        (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get amount request-details), recipient: (get requested-by request-details) }))))
+        (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: REVOKED })))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
         (ok true)))
 
 (define-public (request-burn (amount uint) (rebase-trait <rebase-strategy-trait>))
@@ -156,11 +179,11 @@
             (cycle (unwrap-panic (get-reward-cycle block-height)))
             (vlqstx-amount (contract-call? .token-vlqstx get-tokens-to-shares amount))
             (request-details { requested-by: sender, amount: amount, wrapped-amount: vlqstx-amount, requested-at: cycle, status: PENDING })
-            (request-id (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details)))))
+            (request-id (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details))))
         (try! (is-paused-or-fail))
         (try! (contract-call? .token-vlqstx mint amount sender))
         (try! (contract-call? .token-vlqstx transfer vlqstx-amount sender .lqstx-mint-registry none))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending sender (unwrap-panic (as-max-len? (append (get-burn-requests-pending-or-default sender) request-id) u1000)))))
+        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending sender (unwrap-panic (as-max-len? (append (get-burn-requests-pending-or-default sender) request-id) u1000))))
         (match (contract-call? rebase-trait finalize-burn request-id)
             ok-value (ok { request-id: request-id, status: FINALIZED })
             err-value (begin (print { type: "burn-request", id: request-id, details: request-details, finalize-err: err-value }) (ok { request-id: request-id, status: PENDING })))))           
@@ -168,16 +191,16 @@
 (define-public (finalize-burn (request-id uint))
     (let (
             (request-details (try! (get-burn-request-or-fail request-id)))
-            (transfer-vlqstx (as-contract (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) tx-sender .token-vlqstx))))
+            (transfer-vlqstx (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx)))
             (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
             (validation-data (try! (validate-burn-request request-id))))
         (try! (is-paused-or-fail))    
         (try! (is-dao-or-extension))
-        (as-contract (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) tx-sender)))
-        (as-contract (try! (contract-call? .token-lqstx dao-burn (get vaulted-amount validation-data) tx-sender)))
-        (as-contract (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get vaulted-amount validation-data), recipient: (get requested-by request-details) })))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: FINALIZED }))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests (get request-id-idx validation-data)))))
+        (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
+        (try! (contract-call? .token-lqstx dao-burn (get vaulted-amount validation-data) (as-contract tx-sender)))
+        (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get vaulted-amount validation-data), recipient: (get requested-by request-details) }))))
+        (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: FINALIZED })))
+        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests (get request-id-idx validation-data))))
         (ok true)))
 
 (define-public (finalize-burn-many (request-ids (list 1000 uint)))
@@ -192,15 +215,12 @@
         (try! (is-paused-or-fail))
         (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
         (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
-        (as-contract (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) tx-sender .token-vlqstx)))
-        (as-contract (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) tx-sender)))
-        (as-contract (try! (contract-call? .token-lqstx transfer lqstx-amount tx-sender (get requested-by request-details) none)))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED }))))
-        (as-contract (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests request-id-idx))))
+        (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx))
+        (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
+        (try! (contract-call? .token-lqstx transfer lqstx-amount (as-contract tx-sender) (get requested-by request-details) none))
+        (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
+        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests request-id-idx)))
         (ok true)))
-
-(define-public (callback (extension principal) (payload (buff 2048)))
-    (ok true))
 
 (define-private (check-err (result (response bool uint)) (prior (response bool uint)))
     (match prior
@@ -211,4 +231,7 @@
     (match (slice? target (+ idx u1) (len target))
         some-value (unwrap-panic (as-max-len? (concat (unwrap-panic (slice? target u0 idx)) some-value) u1000))
         (unwrap-panic (slice? target u0 idx))))
+
+(define-private (set-whitelisted-private (user principal) (new-whitelisted bool))
+    (ok (map-set whitelisted user new-whitelisted)))
 

@@ -8,6 +8,9 @@
   "scripts": {
     "multisig-plan": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/create-multisig-deployment-plan.ts",
     "multisig-sign": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/sign-multisig-deployment-plan.ts",
+    "multisig-broadcast": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/broadcast-multisig-deployment-plan.ts",
+    "multisig-analyse": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/analyse-multisig-deployment-plan.ts",
+    "get-keys": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/get-secret-pubkeys.ts",
     "setup:clarity": "./scripts/clarinet_manager.sh clean && ./scripts/clarinet_manager.sh install",
     "test": "vitest run",
     "test:report": "vitest run -- --coverage --costs",

@@ -38,20 +38,20 @@
 
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
 	(begin
-		(asserts! (is-eq sender tx-sender) err-unauthorised)
+		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
 		(try! (ft-transfer? vlqstx amount sender recipient))
 		(print { type: "transfer", amount: amount, sender: sender, recipient: recipient, memo: memo })
 		(ok true)))
 
 (define-public (mint (amount uint) (recipient principal))
 	(begin 
-		(asserts! (is-eq recipient tx-sender) err-unauthorised)				
+		(asserts! (or (is-eq tx-sender recipient) (is-eq contract-caller recipient)) err-unauthorised)				
 		(try! (ft-mint? vlqstx (get-tokens-to-shares amount) recipient))
 		(contract-call? .token-lqstx transfer amount recipient (as-contract tx-sender) none)))
 
 (define-public (burn (amount uint) (sender principal))
 	(begin
-		(asserts! (is-eq sender tx-sender) err-unauthorised)
+		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
 		(as-contract (try! (contract-call? .token-lqstx transfer (get-shares-to-tokens amount) tx-sender sender none)))
 		(ft-burn? vlqstx amount sender)))
 
