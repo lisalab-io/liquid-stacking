@@ -58,3 +58,7 @@ export function getNetwork() {
 	const config = loadConfig();
 	return config.network || "testnet";
 }
+
+export function isMainnet() {
+	return getNetwork() === "mainnet";
+}

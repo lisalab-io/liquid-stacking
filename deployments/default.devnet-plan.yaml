@@ -86,166 +86,22 @@ plan:
     - id: 2
       transactions:
         - requirement-publish:
+            contract-id: SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2
+            remap-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            remap-principals:
+              SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+              SP000000000000000000002Q6VF78: ST000000000000000000002AMW42H
+            cost: 198950
+            path: "./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2.clar"
+            clarity-version: 2
+        - requirement-publish:
             contract-id: SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2
             remap-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             remap-principals:
               SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+              SP000000000000000000002Q6VF78: ST000000000000000000002AMW42H
             cost: 180760
             path: "./.cache/requirements/SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2.clar"
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member1
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member10
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member11
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member12
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member13
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member14
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member15
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member16
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member17
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member18
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member19
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member2
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member20
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member3
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member4
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member5
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member6
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member7
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member8
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-member9
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10160
-            path: contracts/strategies/fastpool/fastpool-member.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: strategy-trait
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 1820
-            path: contracts/traits/strategy-trait.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-strategy
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 33860
-            path: contracts/strategies/fastpool/fastpool-strategy.clar
-            anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: extension-trait
@@ -261,42 +117,11 @@ plan:
             path: contracts/traits/proposal-trait.clar
             anchor-block-only: true
             clarity-version: 2
-      epoch: "2.4"
-    - id: 3
-      transactions:
         - contract-publish:
             contract-name: lisa-dao
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             cost: 24960
             path: contracts/lisa-dao.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: proxy-trait
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 790
-            path: contracts/traits/proxy-trait.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: lqstx-vault
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 9320
-            path: contracts/extensions/lqstx-vault.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: fastpool-strategy-manager
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 10830
-            path: contracts/extensions/fastpool-strategy-manager.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: operators
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 33060
-            path: contracts/extensions/operators.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
@@ -307,24 +132,31 @@ plan:
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: token-lisa
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 28900
-            path: contracts/token-lisa.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
-            contract-name: boot
-            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 12620
-            path: contracts/boot.clar
-            anchor-block-only: true
-            clarity-version: 2
-        - contract-publish:
             contract-name: lqstx-mint-registry
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             cost: 36450
-            path: contracts/lqstx-mint-registry.clar
+            path: contracts/aux/lqstx-mint-registry.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: proxy-trait
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 790
+            path: contracts/traits/proxy-trait.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: strategy-trait
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 1820
+            path: contracts/traits/strategy-trait.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: lqstx-vault
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 9320
+            path: contracts/extensions/lqstx-vault.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
@@ -344,7 +176,7 @@ plan:
         - contract-publish:
             contract-name: token-lqstx
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 39130
+            cost: 38230
             path: contracts/token-lqstx.clar
             anchor-block-only: true
             clarity-version: 2
@@ -358,10 +190,261 @@ plan:
         - contract-publish:
             contract-name: lqstx-mint-endpoint
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 124190
+            cost: 134940
             path: contracts/extensions/lqstx-mint-endpoint.clar
             anchor-block-only: true
             clarity-version: 2
+        - contract-publish:
+            contract-name: operators
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 33360
+            path: contracts/extensions/operators.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member1
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member10
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member2
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member3
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member4
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member5
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member6
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member7
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member8
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+      epoch: "2.4"
+    - id: 3
+      transactions:
+        - contract-publish:
+            contract-name: fastpool-member9
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member1
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member10
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member2
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member3
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member4
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member5
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member6
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member7
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member8
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: xverse-member9
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 12670
+            path: contracts/strategies/fastpool/xverse-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: public-pools-strategy
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 33570
+            path: contracts/strategies/fastpool/public-pools-strategy.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: public-pools-strategy-manager
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10930
+            path: contracts/extensions/public-pools-strategy-manager.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: token-lisa
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 28900
+            path: contracts/token-lisa.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: boot
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 19750
+            path: contracts/boot.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member11
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member12
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member13
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member14
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member15
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member16
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member17
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member18
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member19
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: fastpool-member20
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 10150
+            path: contracts/strategies/fastpool/fastpool-member.clar
+            anchor-block-only: true
+            clarity-version: 2
+      epoch: "2.4"
+    - id: 4
+      transactions:
         - contract-publish:
             contract-name: lisa-rebase
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -384,6 +467,13 @@ plan:
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
+            contract-name: mock-proposal
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 2510
+            path: contracts/mocks/mock-proposal.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
             contract-name: mock-strategy
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             cost: 10120
@@ -400,7 +490,7 @@ plan:
         - contract-publish:
             contract-name: rebase-1
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 900
+            cost: 950
             path: contracts/rules/rebase-1.clar
             anchor-block-only: true
             clarity-version: 2
@@ -414,7 +504,7 @@ plan:
         - contract-publish:
             contract-name: regtest-boot
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 8580
+            cost: 12450
             path: contracts/regtest-boot.clar
             anchor-block-only: true
             clarity-version: 2
@@ -439,21 +529,29 @@ plan:
             path: contracts/proxies/stx-transfer-many-proxy.clar
             anchor-block-only: true
             clarity-version: 2
-      epoch: "2.4"
-    - id: 4
-      transactions:
+        - contract-publish:
+            contract-name: token-vesting
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 39230
+            path: contracts/extensions/token-vesting.clar
+            anchor-block-only: true
+            clarity-version: 2
         - contract-publish:
             contract-name: token-wlqstx
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 53570
-            path: contracts/wrapped-tokens/token-wlqstx.clar
+            cost: 56200
+            path: contracts/mocks/token-wlqstx.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: treasury
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             cost: 10790
-            path: contracts/treasury.clar
+            path: contracts/extensions/treasury.clar
             anchor-block-only: true
             clarity-version: 2
+        # - stx-transfer:
+        #     amount: 10000000
+        #     from: 
+        #     to: SN3V8VHJH9XZ52EARC2XHYAKPFBZRY78VQD3N9GJM
       epoch: "2.4"

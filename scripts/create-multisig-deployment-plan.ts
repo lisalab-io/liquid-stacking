@@ -20,18 +20,43 @@ import { initSimnet } from "@hirosystems/clarinet-sdk";
 import fs from "fs";
 import { bytesToHex } from '@stacks/common';
 import YAML from "yaml";
-import { getNetwork, getStacksAddress, getStacksPubkeys } from "./config.ts";
-import { assertSigner, planFile, verboseLog } from "./utils.js";
+import { getNetwork, getStacksAddress, getStacksPubkeys, isMainnet } from "./config.ts";
+import { assertSigner, planFile, verboseLog } from "./utils.ts";
 
 const manifestFile = "./Clarinet.toml";
 const simnetDeployFile = "deployments/default.simnet-plan.yaml";
 const lisaDaoContractName = "lisa-dao";
 
+const contractsToSkip = [
+	"regtest-boot",
+	"token-vesting",
+];
+
 const network = getNetwork();
+const mainnetDeploy = isMainnet();
 const address = getStacksAddress();
 const pubKeys = getStacksPubkeys();
 let nonce = 0;
 const feeMultiplier = 1;
+
+const testnetAddressReplacements = {
+	// zero address
+	"SP000000000000000000002Q6VF78": "ST000000000000000000002AMW42H",
+	// fastpool address
+	"SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP": "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+	// sip010 trait address
+	"SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE": "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+	// pool helper address
+	"SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX": "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+
+	// replace operators with clarinet testnet addresses
+	"SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7": "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+	"SPHFAXDZVFHMY8YR3P9J7ZCV6N89SBET203ZAY25": "ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5",
+	"SPSZ26REB731JN8H00TD010S600F4AB4Z8F0JRB7": "ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG",
+	"SP12BFYTH3NJ6N63KE0S50GHSYV0M91NGQND2B704": "ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC",
+	"SP1ZPTDQ3801C1AYEZ37NJWNDZ3HM60HC2TCFP228": "ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND",
+	"SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B": "ST2REHHS5J3CERCRBEPMGH7921Q6PYKAADT7JP2VB"
+};
 
 const multisigSpendConditionByteLength = 66; // don't change
 
@@ -44,6 +69,18 @@ type PlanItem = {
 
 verboseLog(`Using address ${addressToString(address)}`);
 
+function shouldDeployContract(contractPath: string) {
+	// if (!isMainnet())
+	// 	return true;
+	return !contractPath.startsWith("contracts_modules/") && !contractPath.startsWith("./.cache/") && !contractPath.startsWith("contracts/mocks/");
+}
+
+function replaceMainnetToTestnetAddresses(codeBody: string) {
+	for (const [find, replace] of Object.entries(testnetAddressReplacements))
+		codeBody = codeBody.replace(new RegExp(find, 'g'), replace);
+	return codeBody;
+}
+
 async function deployPlan(): Promise<PlanItem[]> {
 	const simnet = await initSimnet(manifestFile);
 	simnet.getContractsInterfaces(); // creates simnet deploy plan
@@ -51,13 +88,19 @@ async function deployPlan(): Promise<PlanItem[]> {
 	const plan = simnetPlan.plan.batches.flatMap(
 		(batch: any) => batch.transactions.map((transaction: any) => {
 			const item = transaction['emulated-contract-publish'];
-			if (!(item.path as string).startsWith("contracts_modules/") && !(item.path as string).startsWith("./.cache/") && !(item.path as string).startsWith("contracts/mocks/"))
+			if (shouldDeployContract(item.path as string)) {
+				const codeBody = fs.readFileSync(item.path, 'utf-8');
+				const deployCodeBody = mainnetDeploy ? codeBody : replaceMainnetToTestnetAddresses(codeBody);
+				if (codeBody !== deployCodeBody) {
+					verboseLog(`Made testnet address replacements in ${item['contract-name']}`);
+				}
 				return {
 					contractName: item['contract-name'],
-					codeBody: fs.readFileSync(item.path, 'utf-8'),
+					codeBody: replaceMainnetToTestnetAddresses(deployCodeBody),
 					path: item.path,
 					clarityVersion: item['clarity-version']
 				};
+			}
 			return null;
 		})
 	).filter((item: any) => item !== null);
@@ -140,7 +183,7 @@ async function createMultisigBootTransaction(
 	pubkeys: StacksPublicKey[],
 	network: StacksNetworkName,
 	signer: Address,
-	stxSpendAmount: number,
+	stxSpendAmount: bigint,
 	stxSpenderAddress: string): Promise<StacksTransaction> {
 	const publicKeys = pubkeys.map(pk => bytesToHex(pk.data));
 	const tx = await makeUnsignedContractCall({
@@ -155,7 +198,7 @@ async function createMultisigBootTransaction(
 		fee: 1,
 		anchorMode: AnchorMode.OnChainOnly,
 		postConditionMode: PostConditionMode.Deny,
-		postConditions: [createSTXPostCondition(stxSpenderAddress, FungibleConditionCode.Equal, stxSpendAmount)]
+		postConditions: stxSpendAmount <= 0 ? [] : [createSTXPostCondition(stxSpenderAddress, FungibleConditionCode.Equal, stxSpendAmount)]
 	});
 	// makeUnsignedContractCall() forces a AddressHashMode.SerializeP2SH spending condition, so we construct it manually
 	// and replace it.
@@ -179,7 +222,7 @@ async function findStxBootstrapAmount() {
 	return findStxBootstrapAmountAtom(boot.expressions);
 }
 
-function findStxBootstrapAmountAtom(items: any[]) {
+function findStxBootstrapAmountAtom(items: any[]): bigint | null {
 	for (let i = 0; i < items.length; ++i) {
 		const item = items[i];
 		if (item.expr?.List?.length === 3) {
@@ -197,24 +240,33 @@ function findStxBootstrapAmountAtom(items: any[]) {
 }
 
 deployPlan()
+	.then(plan => plan.filter(item => {
+		if (contractsToSkip.indexOf(item.contractName) !== -1) {
+			verboseLog(`Skipping contract "${item.contractName}" because it is listed in contractsToSkip`);
+			return false;
+		}
+		return true;
+	}))
 	.then(plan => Promise.all(plan.map(item => createMultisigDeployTransaction(item.contractName, item.codeBody, feeMultiplier, nonce++, pubKeys.length, pubKeys, network, address))))
 	.then(plan => plan.map(transaction => bytesToHex(addPubkeyFields(transaction, pubKeys).serialize())))
 	.then(async (plan) => {
-		const bootstrapStxAmount = await findStxBootstrapAmount();
-		if (bootstrapStxAmount === null)
-			throw new Error("Could not find stx-bootstrap-amount constant in boot contract");
-		verboseLog(`Boot contract STX bootstrap amount is ${bootstrapStxAmount}`);
 		const addressString = addressToString(address);
 
-		const fundingTx = await createMultisigStxTransaction(
-			bootstrapStxAmount,
-			`${addressString}.${lisaDaoContractName}`,
-			feeMultiplier,
-			nonce++,
-			pubKeys.length,
-			pubKeys,
-			address
-		);
+		const bootstrapStxAmount = await findStxBootstrapAmount();
+		if (bootstrapStxAmount !== null) {
+			verboseLog(`Boot contract STX bootstrap amount is ${bootstrapStxAmount}, creating funding transaction`);
+
+			const fundingTx = await createMultisigStxTransaction(
+				bootstrapStxAmount,
+				`${addressString}.${lisaDaoContractName}`,
+				feeMultiplier,
+				nonce++,
+				pubKeys.length,
+				pubKeys,
+				address
+			);
+			plan.push(bytesToHex(addPubkeyFields(fundingTx, pubKeys).serialize()));
+		}
 
 		const bootTx = await createMultisigBootTransaction(
 			addressString,
@@ -227,10 +279,10 @@ deployPlan()
 			pubKeys,
 			network,
 			address,
-			bootstrapStxAmount,
+			bootstrapStxAmount ?? 0n,
 			`${addressString}.${lisaDaoContractName}`
 		);
-		plan.push(bytesToHex(addPubkeyFields(fundingTx, pubKeys).serialize()));
+
 		plan.push(bytesToHex(addPubkeyFields(bootTx, pubKeys).serialize()));
 		return plan;
 	})
