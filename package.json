@@ -11,6 +11,7 @@
     "multisig-broadcast": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/broadcast-multisig-deployment-plan.ts",
     "multisig-analyse": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/analyse-multisig-deployment-plan.ts",
     "get-keys": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/get-secret-pubkeys.ts",
+    "generate-secret": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/generate-secret.ts",
     "setup:clarity": "./scripts/clarinet_manager.sh clean && ./scripts/clarinet_manager.sh install",
     "test": "vitest run",
     "test:report": "vitest run -- --coverage --costs",
