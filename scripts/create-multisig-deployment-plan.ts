@@ -37,7 +37,8 @@ const mainnetDeploy = isMainnet();
 const address = getStacksAddress();
 const pubKeys = getStacksPubkeys();
 let nonce = 0;
-const feeMultiplier = 1;
+const feeMultiplier = 10000;
+const feeCap = 0;//15 * 1000000; // 15 STX
 
 const testnetAddressReplacements = {
 	// zero address
@@ -59,6 +60,8 @@ const testnetAddressReplacements = {
 };
 
 const multisigSpendConditionByteLength = 66; // don't change
+
+let tempTotalFee = 0n;
 
 type PlanItem = {
 	contractName: string,
@@ -138,9 +141,12 @@ async function createMultisigDeployTransaction(
 	// and replace it.
 	tx.auth.spendingCondition = createMultiSigSpendingCondition(AddressHashMode.SerializeP2WSH, numSignatures, publicKeys, nonce, 1);
 	assertSigner(tx.auth.spendingCondition, checkSigner);
-	const calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	if (feeCap > 0 && calculatedFee > feeCap)
+		calculatedFee = feeCap;
 	tx.setFee(calculatedFee);
-	verboseLog(`Created multisig contract deploy transaction for ${contractName}`);
+	verboseLog(`Created multisig contract deploy transaction for ${contractName}, calculated fee is ${calculatedFee}`);
+	tempTotalFee += BigInt(calculatedFee);
 	return tx;
 }
 
@@ -167,8 +173,11 @@ async function createMultisigStxTransaction(
 	// and replace it.
 	tx.auth.spendingCondition = createMultiSigSpendingCondition(AddressHashMode.SerializeP2WSH, numSignatures, publicKeys, nonce, 1);
 	assertSigner(tx.auth.spendingCondition, signer);
-	const calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	if (feeCap > 0 && calculatedFee > feeCap)
+		calculatedFee = feeCap;
 	tx.setFee(calculatedFee);
+	tempTotalFee += BigInt(calculatedFee);
 	return tx;
 }
 
@@ -204,8 +213,11 @@ async function createMultisigBootTransaction(
 	// and replace it.
 	tx.auth.spendingCondition = createMultiSigSpendingCondition(AddressHashMode.SerializeP2WSH, numSignatures, publicKeys, nonce, 1);
 	assertSigner(tx.auth.spendingCondition, signer);
-	const calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	if (feeCap > 0 && calculatedFee > feeCap)
+		calculatedFee = feeCap;
 	tx.setFee(calculatedFee);
+	tempTotalFee += BigInt(calculatedFee);
 	verboseLog(`Created boot transaction`);
 	return tx;
 }
@@ -288,6 +300,6 @@ deployPlan()
 	})
 	.then(plan => {
 		fs.writeFileSync(planFile, JSON.stringify(plan), "utf-8");
-		verboseLog(`Last nonce is ${nonce}`);
+		verboseLog(`Last nonce is ${nonce}, total fee: ${Number(tempTotalFee) / 1000000} STX`);
 		console.log(`Deploy plan written to ${planFile}, total of ${plan.length} transactions`);
 	});
