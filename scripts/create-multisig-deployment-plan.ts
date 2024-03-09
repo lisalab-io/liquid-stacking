@@ -99,7 +99,7 @@ async function deployPlan(): Promise<PlanItem[]> {
 				}
 				return {
 					contractName: item['contract-name'],
-					codeBody: replaceMainnetToTestnetAddresses(deployCodeBody),
+					codeBody: deployCodeBody,
 					path: item.path,
 					clarityVersion: item['clarity-version']
 				};
