@@ -53,7 +53,7 @@
 				true
 				true
 			)))
-
+		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-paused false))
 		(ok true)
 	)
 )

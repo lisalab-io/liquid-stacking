@@ -17,11 +17,11 @@
 (define-constant max-uint u340282366920938463463374607431768211455)
 
 (define-data-var paused bool true)
-(define-data-var mint-delay uint u144) ;; mint available 1 day after cycle starts
+(define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
 
 ;; @dev used for testing only
-(define-data-var activation-block uint u0)
-(define-data-var reward-cycle-length uint u2016) ;; 2 weeks
+;; (define-data-var activation-block uint u0)
+;; (define-data-var reward-cycle-length uint u2016) ;; 2 weeks
 
 (define-data-var use-whitelist bool false)
 (define-map whitelisted principal bool)
@@ -120,10 +120,10 @@
         (ok (var-set mint-delay new-delay))))
 
 ;; @dev used for testing only
-(define-public (set-reward-cycle-length (new-reward-cycle-length uint))
-    (begin
-        (try! (is-dao-or-extension))
-        (ok (var-set reward-cycle-length new-reward-cycle-length))))
+;; (define-public (set-reward-cycle-length (new-reward-cycle-length uint))
+;;     (begin
+;;         (try! (is-dao-or-extension))
+;;         (ok (var-set reward-cycle-length new-reward-cycle-length))))
 
 ;; public calls
 
