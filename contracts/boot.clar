@@ -24,8 +24,8 @@
 		;; Set operator signal threshold, i.e. 4-of-6
 		(try! (contract-call? .operators set-proposal-threshold 4))
 
-		;; Set initial strategy managers
-		(try! (contract-call? .stacking-pool-strategy-manager set-authorised-manager tx-sender true))
+		;; Set initial strategy managers, sender is the deployer
+		(try! (contract-call? .stacking-pool-strategy-manager set-authorised-manager sender true))
 
 		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list
