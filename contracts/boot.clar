@@ -20,6 +20,9 @@
 			{ operator: 'SPHFAXDZVFHMY8YR3P9J7ZCV6N89SBET203ZAY25, enabled: true }
 			{ operator: 'SPSZ26REB731JN8H00TD010S600F4AB4Z8F0JRB7, enabled: true }
 			;; three from Ryder/FAST Pool
+			{ operator: 'SP12BFYTH3NJ6N63KE0S50GHSYV0M91NGQND2B704, enabled: true }
+			{ operator: 'SP1ZPTDQ3801C1AYEZ37NJWNDZ3HM60HC2TCFP228, enabled: true }
+			{ operator: 'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B, enabled: true }
 		)))
 		;; Set operator signal threshold, i.e. 4-of-6
 		(try! (contract-call? .operators set-proposal-threshold 4))
