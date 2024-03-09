@@ -6,8 +6,8 @@
 (define-constant member-list (list
 	(to-trait .fastpool-member1) (to-trait .fastpool-member2) (to-trait .fastpool-member3) (to-trait .fastpool-member4) (to-trait .fastpool-member5)
 	(to-trait .fastpool-member6) (to-trait .fastpool-member7) (to-trait .fastpool-member8) (to-trait .fastpool-member9) (to-trait .fastpool-member10)
-	(to-trait .fastpool-member11) (to-trait .fastpool-member12) (to-trait .fastpool-member13) (to-trait .fastpool-member14) (to-trait .fastpool-member15)
-	(to-trait .fastpool-member16) (to-trait .fastpool-member17) (to-trait .fastpool-member18) (to-trait .fastpool-member19) (to-trait .fastpool-member20)
+	(to-trait .xverse-member1) (to-trait .xverse-member2) (to-trait .xverse-member3) (to-trait .xverse-member4) (to-trait .xverse-member5)
+	(to-trait .xverse-member6) (to-trait .xverse-member7) (to-trait .xverse-member8) (to-trait .xverse-member9) (to-trait .xverse-member10)
 ))
 
 (define-trait pool-member

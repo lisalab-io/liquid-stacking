@@ -6,7 +6,7 @@
 			{extension: .lqstx-mint-endpoint, enabled: true}
 			{extension: .lqstx-vault, enabled: true}
 			{extension: .treasury, enabled: true}
-			{extension: .fastpool-strategy-manager, enabled: true}
+			{extension: .stacking-pool-strategy-manager, enabled: true}
 			{extension: .lisa-rebase, enabled: true}
 			{extension: .rebase-1, enabled: true}
 			{extension: .operators, enabled: true}			
@@ -26,7 +26,7 @@
 		(try! (contract-call? .operators set-proposal-threshold 3))
 
 		;; Set initial Fastpool strategy managers
-		(try! (contract-call? .fastpool-strategy-manager set-authorised-manager tx-sender true))
+		(try! (contract-call? .stacking-pool-strategy-manager set-authorised-manager tx-sender true))
 
 		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list

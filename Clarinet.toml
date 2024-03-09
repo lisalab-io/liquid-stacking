@@ -8,6 +8,8 @@ cache_dir = "./.cache"
 
 [[project.requirements]]
 contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
+[[project.requirements]]
+contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2"
 
 [[project.requirements]]
 contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard"
@@ -60,8 +62,8 @@ epoch = 2.4
 path = "contracts/proxies/lisa-transfer-proxy.clar"
 epoch = 2.4
 
-[contracts.fastpool-strategy]
-path = "contracts/strategies/fastpool/fastpool-strategy.clar"
+[contracts.stacking-pool-strategy]
+path = "contracts/strategies/fastpool/stacking-pool-strategy.clar"
 epoch = 2.4
 
 [contracts.fastpool-member1]
@@ -144,6 +146,46 @@ epoch = 2.4
 path = "contracts/strategies/fastpool/fastpool-member.clar"
 epoch = 2.4
 
+[contracts.xverse-member1]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member2]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member3]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member4]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member5]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member6]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member7]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member8]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member9]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-member10]
+path = "contracts/strategies/fastpool/xverse-member.clar"
+epoch = 2.4
+
 [contracts.sip-010-trait]
 path = "contracts/traits/sip-010-trait.clar"
 epoch = 2.4
@@ -160,8 +202,8 @@ epoch = 2.4
 path = "contracts/traits/sip-010-extensions-trait.clar"
 epoch = 2.4
 
-[contracts.fastpool-strategy-manager]
-path = "contracts/extensions/fastpool-strategy-manager.clar"
+[contracts.stacking-pool-strategy-manager]
+path = "contracts/extensions/stacking-pool-strategy-manager.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-endpoint]
@@ -235,7 +277,7 @@ depends_on = [
   "trait-sip-010",
   "trait-flash-loan-user",
   "trait-ownable",
-  "trait-semi-fungible"
+  "trait-semi-fungible",
 ]
 
 [contracts.trait-vault]
