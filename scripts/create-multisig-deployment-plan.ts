@@ -21,7 +21,7 @@ import fs from "fs";
 import { bytesToHex } from '@stacks/common';
 import YAML from "yaml";
 import { getNetwork, getStacksAddress, getStacksPubkeys } from "./config.ts";
-import { assertSigner, planFile, verboseLog } from "./utils.js";
+import { assertSigner, planFile, verboseLog } from "./utils.ts";
 
 const manifestFile = "./Clarinet.toml";
 const simnetDeployFile = "deployments/default.simnet-plan.yaml";
@@ -140,7 +140,7 @@ async function createMultisigBootTransaction(
 	pubkeys: StacksPublicKey[],
 	network: StacksNetworkName,
 	signer: Address,
-	stxSpendAmount: number,
+	stxSpendAmount: bigint,
 	stxSpenderAddress: string): Promise<StacksTransaction> {
 	const publicKeys = pubkeys.map(pk => bytesToHex(pk.data));
 	const tx = await makeUnsignedContractCall({
@@ -155,7 +155,7 @@ async function createMultisigBootTransaction(
 		fee: 1,
 		anchorMode: AnchorMode.OnChainOnly,
 		postConditionMode: PostConditionMode.Deny,
-		postConditions: [createSTXPostCondition(stxSpenderAddress, FungibleConditionCode.Equal, stxSpendAmount)]
+		postConditions: stxSpendAmount <= 0 ? [] : [createSTXPostCondition(stxSpenderAddress, FungibleConditionCode.Equal, stxSpendAmount)]
 	});
 	// makeUnsignedContractCall() forces a AddressHashMode.SerializeP2SH spending condition, so we construct it manually
 	// and replace it.
@@ -179,7 +179,7 @@ async function findStxBootstrapAmount() {
 	return findStxBootstrapAmountAtom(boot.expressions);
 }
 
-function findStxBootstrapAmountAtom(items: any[]) {
+function findStxBootstrapAmountAtom(items: any[]): bigint | null {
 	for (let i = 0; i < items.length; ++i) {
 		const item = items[i];
 		if (item.expr?.List?.length === 3) {
@@ -200,21 +200,23 @@ deployPlan()
 	.then(plan => Promise.all(plan.map(item => createMultisigDeployTransaction(item.contractName, item.codeBody, feeMultiplier, nonce++, pubKeys.length, pubKeys, network, address))))
 	.then(plan => plan.map(transaction => bytesToHex(addPubkeyFields(transaction, pubKeys).serialize())))
 	.then(async (plan) => {
-		const bootstrapStxAmount = await findStxBootstrapAmount();
-		if (bootstrapStxAmount === null)
-			throw new Error("Could not find stx-bootstrap-amount constant in boot contract");
-		verboseLog(`Boot contract STX bootstrap amount is ${bootstrapStxAmount}`);
 		const addressString = addressToString(address);
 
-		const fundingTx = await createMultisigStxTransaction(
-			bootstrapStxAmount,
-			`${addressString}.${lisaDaoContractName}`,
-			feeMultiplier,
-			nonce++,
-			pubKeys.length,
-			pubKeys,
-			address
-		);
+		const bootstrapStxAmount = await findStxBootstrapAmount();
+		if (bootstrapStxAmount !== null) {
+			verboseLog(`Boot contract STX bootstrap amount is ${bootstrapStxAmount}, creating funding transaction`);
+
+			const fundingTx = await createMultisigStxTransaction(
+				bootstrapStxAmount,
+				`${addressString}.${lisaDaoContractName}`,
+				feeMultiplier,
+				nonce++,
+				pubKeys.length,
+				pubKeys,
+				address
+			);
+			plan.push(bytesToHex(addPubkeyFields(fundingTx, pubKeys).serialize()));
+		}
 
 		const bootTx = await createMultisigBootTransaction(
 			addressString,
@@ -227,10 +229,10 @@ deployPlan()
 			pubKeys,
 			network,
 			address,
-			bootstrapStxAmount,
+			bootstrapStxAmount ?? 0n,
 			`${addressString}.${lisaDaoContractName}`
 		);
-		plan.push(bytesToHex(addPubkeyFields(fundingTx, pubKeys).serialize()));
+
 		plan.push(bytesToHex(addPubkeyFields(bootTx, pubKeys).serialize()));
 		return plan;
 	})
