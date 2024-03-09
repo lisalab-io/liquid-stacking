@@ -1,7 +1,5 @@
 (impl-trait .proposal-trait.proposal-trait)
 
-(define-constant stx-bootstrap-amount u10000)
-
 (define-public (execute (sender principal))
 	(begin
 		(try! (contract-call? .lisa-dao set-extensions (list
@@ -24,15 +22,15 @@
 			{ operator: 'SPHFAXDZVFHMY8YR3P9J7ZCV6N89SBET203ZAY25, enabled: true }
 			;; two from Ryder/FAST Pool
 		)))
-		;; Set operator signal threshold
+		;; Set operator signal threshold, i.e. 3-of-4
 		(try! (contract-call? .operators set-proposal-threshold 3))
 
 		;; Set initial Fastpool strategy managers
 		(try! (contract-call? .fastpool-strategy-manager set-authorised-manager tx-sender true))
 
-		;; Mint initial LISA token supply
+		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list
-			{recipient: .treasury, amount: u100000000000000}
+			{recipient: .treasury, amount: u1000000000000000}
 		)))	
 
 		;; Enable whitelist
