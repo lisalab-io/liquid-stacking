@@ -1,5 +1,3 @@
-(impl-trait .extension-trait.extension-trait)
-
 (define-constant err-unauthorised (err u1000))
 
 (define-map authorised-managers principal bool)
@@ -32,8 +30,4 @@
 		(try! (is-dao-or-extension))
 		(ok (map-set authorised-managers who enabled))
 	)
-)
-
-(define-public (callback (sender principal) (memo (buff 2048)))
-	(ok true)
 )

@@ -10,7 +10,7 @@
 (define-constant proposal-validity-period u144)
 
 (define-data-var proposal-threshold int 1)
-(define-data-var operators-update-height uint block-height)
+(define-data-var operators-update-height uint burn-block-height)
 
 (define-map operators principal bool)
 (define-map proposals principal { proposed-at: uint, signals: int, executed: bool })
@@ -32,7 +32,7 @@
 
 (define-private (check-validity (proposed-at uint))
 	(and
-		(< block-height (+ proposed-at proposal-validity-period))
+		(< burn-block-height (+ proposed-at proposal-validity-period))
 		(< (var-get operators-update-height) proposed-at)
 	)
 )
@@ -53,7 +53,7 @@
 			proposal-height)
 			err-already-signalled
 		)
-		(map-set proposal-signals { proposal: proposal-principal, operator: tx-sender } block-height)
+		(map-set proposal-signals { proposal: proposal-principal, operator: tx-sender } burn-block-height)
 		(map-set proposals proposal-principal (merge proposal-data {signals: signals, executed: threshold-met}))
 		(if threshold-met
 			(contract-call? .lisa-dao execute proposal tx-sender)
@@ -71,7 +71,7 @@
 			true)
 			err-reused-proposal
 		)
-		(map-set proposals proposal-principal { proposed-at: block-height, signals: 0, executed: false })
+		(map-set proposals proposal-principal { proposed-at: burn-block-height, signals: 0, executed: false })
 		(signal proposal true)
 	)
 )
@@ -81,7 +81,7 @@
 (define-public (set-operators (entries (list 20 {operator: principal, enabled: bool})))
 	(begin
 		(try! (is-dao-or-extension))
-		(var-set operators-update-height block-height)
+		(var-set operators-update-height burn-block-height)
 		(ok (map set-operator entries))
 	)
 )
@@ -90,7 +90,7 @@
 	(begin
 		(try! (is-dao-or-extension))
 		(asserts! (> threshold 0) err-unauthorised)
-		(var-set operators-update-height block-height)
+		(var-set operators-update-height burn-block-height)
 		(ok (var-set proposal-threshold threshold))
 	)
 )
