@@ -62,8 +62,8 @@ epoch = 2.4
 path = "contracts/proxies/lisa-transfer-proxy.clar"
 epoch = 2.4
 
-[contracts.fastpool-strategy]
-path = "contracts/strategies/fastpool/fastpool-strategy.clar"
+[contracts.stacking-pool-strategy]
+path = "contracts/strategies/fastpool/stacking-pool-strategy.clar"
 epoch = 2.4
 
 [contracts.fastpool-member1]
@@ -202,8 +202,8 @@ epoch = 2.4
 path = "contracts/traits/sip-010-extensions-trait.clar"
 epoch = 2.4
 
-[contracts.fastpool-strategy-manager]
-path = "contracts/extensions/fastpool-strategy-manager.clar"
+[contracts.stacking-pool-strategy-manager]
+path = "contracts/extensions/stacking-pool-strategy-manager.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-endpoint]
