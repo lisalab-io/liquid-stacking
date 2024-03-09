@@ -3,14 +3,14 @@
 (define-public (execute (sender principal))
 	(begin
 		(try! (contract-call? .lisa-dao set-extensions (list
-			{extension: .lqstx-mint-endpoint, enabled: true}
-			{extension: .lqstx-vault, enabled: true}
-			{extension: .treasury, enabled: true}
-			{extension: .token-vesting, enabled: true}
-			{extension: .stacking-pool-strategy-manager, enabled: true}
-			{extension: .lisa-rebase, enabled: true}
-			{extension: .rebase-1, enabled: true}
-			{extension: .operators, enabled: true}
+			{ extension: .lqstx-mint-endpoint, enabled: true }
+			{ extension: .lqstx-vault, enabled: true }
+			{ extension: .treasury, enabled: true }
+			{ extension: .token-vesting, enabled: true }
+			{ extension: .public-pools-strategy-manager, enabled: true }
+			{ extension: .lisa-rebase, enabled: true }
+			{ extension: .rebase-1, enabled: true }
+			{ extension: .operators, enabled: true }
 		)))
 		
 		;; Set initial operators
@@ -28,7 +28,7 @@
 		(try! (contract-call? .operators set-proposal-threshold 4))
 
 		;; Set initial strategy managers, sender is the deployer
-		(try! (contract-call? .stacking-pool-strategy-manager set-authorised-manager sender true))
+		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager sender true))
 
 		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list
@@ -43,8 +43,12 @@
 				'SP2VZBR9GCVM33BN0WXA05VJP6QV7CJ3Z3SQKJ5HH
 				'SP12BFYTH3NJ6N63KE0S50GHSYV0M91NGQND2B704
 				'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B
-			) 
+				'SPFJVM9Y1A4KJ31T8ZBDESZH36YGPDAZ9WXEFC53
+			)
 			(list 
+				true
+				true
+				true
 				true
 				true
 			)))

@@ -1,19 +1,32 @@
 (define-constant err-unauthorised (err u5000))
-(define-constant pool-reward-pox-addr (tuple (hashbytes 0x) (version 0x)))
+
+(define-data-var pool-reward-pox-addr
+	{ hashbytes: (buff 32), version: (buff 1) }
+	{ hashbytes: 0x827a04335a9eb22cb46979f180670c8e7ba453b5, version: 0x04 }
+)
+
 (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller 'SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2 none))
 
+(define-read-only (is-dao-or-extension)
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
+)
+
+(define-public (set-pool-reward-pox-addr (new-address { hashbytes: (buff 32), version: (buff 1) }))
+	(begin
+		(try! (is-dao-or-extension))
+		(ok (var-set pool-reward-pox-addr new-address))
+	)
+)
+
 (define-read-only (is-strategy-caller)
-	(ok (asserts! (is-eq contract-caller .stacking-pool-strategy) err-unauthorised))
+	(ok (asserts! (is-eq contract-caller .public-pools-strategy) err-unauthorised))
 )
 
 (define-public (delegate-stx (amount uint))
 	(begin
 		(try! (is-strategy-caller))
 		(try! (as-contract (contract-call? 'SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2 delegate-stx 
-			amount 
-			'SPXVRSEH2BKSXAEJ00F1BY562P45D5ERPSKR4Q33 none (some (tuple (hashbytes 0xdb14133a9dbb1d0e16b60513453e48b6ff2847a9) (version 0x04)))
-			pool-reward-pox-addr
-			none)))
+			amount 'SPXVRSEH2BKSXAEJ00F1BY562P45D5ERPSKR4Q33 none none (var-get pool-reward-pox-addr) none)))
 		(ok true)
 	)
 )

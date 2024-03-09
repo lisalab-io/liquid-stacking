@@ -3,7 +3,7 @@
 (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2 none))
 
 (define-read-only (is-strategy-caller)
-	(ok (asserts! (is-eq contract-caller .stacking-pool-strategy) err-unauthorised))
+	(ok (asserts! (is-eq contract-caller .public-pools-strategy) err-unauthorised))
 )
 
 (define-public (delegate-stx (amount uint))

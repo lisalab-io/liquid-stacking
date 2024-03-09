@@ -66,128 +66,88 @@ epoch = 2.4
 path = "contracts/proxies/lisa-transfer-proxy.clar"
 epoch = 2.4
 
-[contracts.stacking-pool-strategy]
-path = "contracts/strategies/fastpool/stacking-pool-strategy.clar"
+[contracts.public-pools-strategy]
+path = "contracts/strategies/public-pools/public-pools-strategy.clar"
 epoch = 2.4
 
 [contracts.fastpool-member1]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member2]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member3]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member4]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member5]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member6]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member7]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member8]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member9]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member10]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member11]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member12]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member13]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member14]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member15]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member16]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member17]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member18]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member19]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
-epoch = 2.4
-
-[contracts.fastpool-member20]
-path = "contracts/strategies/fastpool/fastpool-member.clar"
+path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member1]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member2]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member3]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member4]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member5]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member6]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member7]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member8]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member9]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member10]
-path = "contracts/strategies/fastpool/xverse-member.clar"
+path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
 [contracts.sip-010-trait]
@@ -206,8 +166,8 @@ epoch = 2.4
 path = "contracts/traits/sip-010-extensions-trait.clar"
 epoch = 2.4
 
-[contracts.stacking-pool-strategy-manager]
-path = "contracts/extensions/stacking-pool-strategy-manager.clar"
+[contracts.public-pools-strategy-manager]
+path = "contracts/extensions/public-pools-strategy-manager.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-endpoint]
@@ -215,7 +175,7 @@ path = "contracts/extensions/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-registry]
-path = "contracts/extensions/lqstx-mint-registry.clar"
+path = "contracts/aux/lqstx-mint-registry.clar"
 epoch = 2.4
 
 [contracts.token-lqstx]
