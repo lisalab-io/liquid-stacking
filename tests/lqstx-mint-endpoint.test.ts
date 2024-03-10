@@ -9,7 +9,7 @@ const bot = accounts.get('wallet_3')!;
 const manager = accounts.get('wallet_4')!;
 
 const contracts = {
-  endpoint: 'lqstx-mint-endpoint',
+  endpoint: 'lqstx-mint-endpoint-v1-01',
   registry: 'lqstx-mint-registry',
   vault: 'lqstx-vault',
   lqstx: 'token-lqstx',
@@ -76,11 +76,10 @@ const requestBurn = (payload: Buffer) =>
       oracle
     ),
     tx.callPublicFn(
-      contracts.endpoint,
+      contracts.rebase1,
       'request-burn',
       [
         Cl.uint(100e6),
-        Cl.contractPrincipal(simnet.deployer, contracts.rebase1),
       ],
       user
     ),
@@ -360,11 +359,10 @@ describe(contracts.endpoint, () => {
         bot
       ),
       tx.callPublicFn(
-        contracts.endpoint,
+        contracts.rebase1,
         'request-burn',
         [
           Cl.uint(100e6),
-          Cl.contractPrincipal(simnet.deployer, contracts.rebase1),
         ],
         user
       ),

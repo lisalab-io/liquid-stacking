@@ -2,7 +2,6 @@
 ;; lqstx-mint-endpoint-v1-01
 ;;
 (use-trait sip-010-trait .sip-010-trait.sip-010-trait)
-(use-trait rebase-strategy-trait .rebase-strategy-trait.rebase-strategy-trait)
 
 (define-constant err-unauthorised (err u1000))
 (define-constant err-paused (err u1001))
@@ -20,8 +19,8 @@
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
 
 ;; @dev used for testing only
-;; (define-data-var activation-block uint u0)
-;; (define-data-var reward-cycle-length uint u2016) ;; 2 weeks
+(define-data-var activation-block uint u0)
+(define-data-var reward-cycle-length uint u2016) ;; 2 weeks
 
 (define-data-var use-whitelist bool false)
 (define-map whitelisted principal bool)
@@ -120,10 +119,10 @@
         (ok (var-set mint-delay new-delay))))
 
 ;; @dev used for testing only
-;; (define-public (set-reward-cycle-length (new-reward-cycle-length uint))
-;;     (begin
-;;         (try! (is-dao-or-extension))
-;;         (ok (var-set reward-cycle-length new-reward-cycle-length))))
+(define-public (set-reward-cycle-length (new-reward-cycle-length uint))
+    (begin
+        (try! (is-dao-or-extension))
+        (ok (var-set reward-cycle-length new-reward-cycle-length))))
 
 ;; public calls
 
@@ -172,21 +171,20 @@
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
         (ok true)))
 
-(define-public (request-burn (amount uint) (rebase-trait <rebase-strategy-trait>))
+(define-public (request-burn (sender principal) (amount uint))
     (let (
-            (sender tx-sender)
             ;; @dev requested-at not used for burn
             (cycle (unwrap-panic (get-reward-cycle block-height)))
             (vlqstx-amount (contract-call? .token-vlqstx get-tokens-to-shares amount))
             (request-details { requested-by: sender, amount: amount, wrapped-amount: vlqstx-amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details))))
         (try! (is-paused-or-fail))
-        (try! (contract-call? .token-vlqstx mint amount sender))
-        (try! (contract-call? .token-vlqstx transfer vlqstx-amount sender .lqstx-mint-registry none))
+        (try! (is-dao-or-extension))
+        (try! (contract-call? .token-vlqstx mint amount tx-sender))
+        (try! (contract-call? .token-vlqstx transfer vlqstx-amount tx-sender .lqstx-mint-registry none))
         (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending sender (unwrap-panic (as-max-len? (append (get-burn-requests-pending-or-default sender) request-id) u1000))))
-        (match (contract-call? rebase-trait finalize-burn request-id)
-            ok-value (ok { request-id: request-id, status: FINALIZED })
-            err-value (begin (print { type: "burn-request", id: request-id, details: request-details, finalize-err: err-value }) (ok { request-id: request-id, status: PENDING })))))           
+        (print { type: "burn-request", id: request-id, details: request-details }) 
+        (ok { request-id: request-id, status: PENDING })))         
 
 (define-public (finalize-burn (request-id uint))
     (let (
