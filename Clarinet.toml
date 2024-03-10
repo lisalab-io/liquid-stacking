@@ -170,12 +170,12 @@ epoch = 2.4
 path = "contracts/extensions/public-pools-strategy-manager.clar"
 epoch = 2.4
 
-[contracts.lqstx-mint-endpoint]
+[contracts.lqstx-mint-endpoint-v1-01]
 path = "contracts/extensions/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
-[contracts.lqstx-mint-endpoint-v1-01]
-path = "contracts/extensions/lqstx-mint-endpoint-v1-01.clar"
+[contracts.lqstx-mint-endpoint]
+path = "contracts/deployed/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-registry]

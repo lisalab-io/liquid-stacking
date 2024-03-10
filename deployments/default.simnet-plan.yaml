@@ -177,7 +177,7 @@ plan:
         - emulated-contract-publish:
             contract-name: lqstx-mint-endpoint-v1-01
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/lqstx-mint-endpoint-v1-01.clar
+            path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: operators
@@ -320,7 +320,7 @@ plan:
         - emulated-contract-publish:
             contract-name: lqstx-mint-endpoint
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/lqstx-mint-endpoint.clar
+            path: contracts/deployed/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-transfer-proxy
