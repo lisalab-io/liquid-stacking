@@ -132,17 +132,17 @@
         (try! (contract-call? .token-lqstx transfer lqstx-amount (as-contract tx-sender) (get requested-by request-details) none))
         (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
         (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests request-id-idx)))
-        (ok true)))        
+        (ok true)))
 
 ;; governance calls
 
 (define-public (set-use-whitelist (new-use bool))
-    (begin 
+    (begin
         (try! (is-dao-or-extension))
         (ok (var-set use-whitelist new-use))))
 
 (define-public (set-whitelisted (user principal) (new-whitelisted bool))
-    (begin 
+    (begin
         (try! (is-dao-or-extension))
         (set-whitelisted-private user new-whitelisted)))
 
@@ -201,8 +201,8 @@
         (try! (contract-call? .token-vlqstx mint amount tx-sender))
         (try! (contract-call? .token-vlqstx transfer vlqstx-amount tx-sender .lqstx-mint-registry none))
         (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending sender (unwrap-panic (as-max-len? (append (get-burn-requests-pending-or-default sender) request-id) u1000))))
-        (print { type: "burn-request", id: request-id, details: request-details }) 
-        (ok { request-id: request-id, status: PENDING })))         
+        (print { type: "burn-request", id: request-id, details: request-details })
+        (ok { request-id: request-id, status: PENDING })))
 
 (define-public (finalize-burn (request-id uint))
     (let (
@@ -210,7 +210,7 @@
             (transfer-vlqstx (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx)))
             (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
             (validation-data (try! (validate-burn-request request-id))))
-        (try! (is-paused-or-fail))    
+        (try! (is-paused-or-fail))
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
         (try! (contract-call? .token-lqstx dao-burn (get vaulted-amount validation-data) (as-contract tx-sender)))

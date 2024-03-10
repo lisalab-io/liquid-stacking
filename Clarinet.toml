@@ -8,6 +8,7 @@ cache_dir = "./.cache"
 
 [[project.requirements]]
 contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
+
 [[project.requirements]]
 contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2"
 
