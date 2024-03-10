@@ -18,9 +18,9 @@
 (define-data-var paused bool true)
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
 
-;; @dev used for testing only
-(define-data-var activation-block uint u0)
-(define-data-var reward-cycle-length uint u2016) ;; 2 weeks
+;; corresponds to `first-burnchain-block-height` and `pox-reward-cycle-length` in pox-3
+(define-data-var activation-burn-block uint u666050)
+(define-data-var reward-cycle-length uint u2100)
 
 (define-data-var use-whitelist bool false)
 (define-map whitelisted principal bool)
@@ -61,7 +61,7 @@
     (let (
             (request-details (try! (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id)))
             (request-id-idx (unwrap! (index-of? (get-mint-requests-pending-or-default (get requested-by request-details)) request-id) err-request-finalized-or-revoked)))
-        (asserts! (>= block-height (+ (get-first-stacks-block-in-reward-cycle (+ (get requested-at request-details) u1)) (var-get mint-delay))) err-request-pending)
+        (asserts! (>= burn-block-height (+ (get-first-burn-block-in-reward-cycle (+ (get requested-at request-details) u1)) (var-get mint-delay))) err-request-pending)
         (ok request-id-idx)))
 
 ;; @dev it favours smaller amounts as we do not allow partial burn
@@ -73,17 +73,13 @@
         (asserts! (>= (stx-get-balance .lqstx-vault) vaulted-amount) err-request-pending)
         (ok { vaulted-amount: vaulted-amount, request-id-idx: request-id-idx })))
 
-;; @dev used for testing only
-(define-read-only (get-reward-cycle (stacks-height uint))
-    (some (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle)))
-    ;; (if (>= stacks-height (var-get activation-block))
-    ;;     (some (/ (- stacks-height (var-get activation-block)) (var-get reward-cycle-length)))
-    ;;     none))            
+(define-read-only (get-reward-cycle (burn-block uint))
+    (if (>= burn-block (var-get activation-burn-block))
+        (some (/ (- burn-block (var-get activation-burn-block)) (var-get reward-cycle-length)))
+        none))            
 
-;; @dev used for testing only
-(define-read-only (get-first-stacks-block-in-reward-cycle (reward-cycle uint))
-    (contract-call? 'SP000000000000000000002Q6VF78.pox-3 reward-cycle-to-burn-height reward-cycle))
-    ;; (+ (var-get activation-block) (* (var-get reward-cycle-length) reward-cycle)))
+(define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
+    (+ (var-get activation-burn-block) (* (var-get reward-cycle-length) reward-cycle)))
 
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
@@ -97,7 +93,7 @@
 (define-public (request-mint (amount uint))
     (let (
             (sender tx-sender)
-            (cycle (unwrap-panic (get-reward-cycle block-height)))
+            (cycle (unwrap-panic (get-reward-cycle burn-block-height)))
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details))))
         (try! (is-paused-or-fail))
@@ -165,7 +161,11 @@
         (try! (is-dao-or-extension))
         (ok (var-set mint-delay new-delay))))
 
-;; @dev used for testing only
+(define-public (set-activation-burn-block (new-activation-burn-block uint))
+    (begin
+        (try! (is-dao-or-extension))
+        (ok (var-set activation-burn-block new-activation-burn-block))))
+
 (define-public (set-reward-cycle-length (new-reward-cycle-length uint))
     (begin
         (try! (is-dao-or-extension))
@@ -192,7 +192,7 @@
 (define-public (request-burn (sender principal) (amount uint))
     (let (
             ;; @dev requested-at not used for burn
-            (cycle (unwrap-panic (get-reward-cycle block-height)))
+            (cycle (unwrap-panic (get-reward-cycle burn-block-height)))
             (vlqstx-amount (contract-call? .token-vlqstx get-tokens-to-shares amount))
             (request-details { requested-by: sender, amount: amount, wrapped-amount: vlqstx-amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details))))
