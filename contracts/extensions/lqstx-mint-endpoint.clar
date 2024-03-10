@@ -91,6 +91,53 @@
 (define-read-only (is-whitelisted-or-mint-for-all (user principal))
     (or (not (var-get use-whitelist)) (default-to false (map-get? whitelisted user))))
 
+;; public calls
+
+;; @dev the requestor stx is held by the contract until mint can be finalized.
+(define-public (request-mint (amount uint))
+    (let (
+            (sender tx-sender)
+            (cycle (unwrap-panic (get-reward-cycle block-height)))
+            (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
+            (request-id (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details))))
+        (try! (is-paused-or-fail))
+        (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
+        (try! (stx-transfer? amount sender .lqstx-vault))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending sender (unwrap-panic (as-max-len? (append (get-mint-requests-pending-or-default sender) request-id) u1000))))
+        (print { type: "mint-request", id: request-id, details: request-details })
+        (ok request-id)))
+
+(define-public (revoke-mint (request-id uint))
+    (let (
+            (request-details (try! (get-mint-request-or-fail request-id)))
+            (mint-requests (get-mint-requests-pending-or-default (get requested-by request-details)))
+            (request-id-idx (unwrap! (index-of? mint-requests request-id) err-request-finalized-or-revoked)))
+        (try! (is-paused-or-fail))
+        (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
+        (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
+        (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get amount request-details), recipient: (get requested-by request-details) }))))
+        (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: REVOKED })))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
+        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
+        (ok true)))
+
+(define-public (revoke-burn (request-id uint))
+    (let (
+            (request-details (try! (get-burn-request-or-fail request-id)))
+            (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
+            (request-id-idx (unwrap! (index-of? burn-requests request-id) err-request-finalized-or-revoked))
+            (lqstx-amount (contract-call? .token-vlqstx get-shares-to-tokens (get wrapped-amount request-details))))
+        (try! (is-paused-or-fail))
+        (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
+        (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
+        (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx))
+        (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
+        (try! (contract-call? .token-lqstx transfer lqstx-amount (as-contract tx-sender) (get requested-by request-details) none))
+        (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
+        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests request-id-idx)))
+        (ok true)))        
+
 ;; governance calls
 
 (define-public (set-use-whitelist (new-use bool))
@@ -124,22 +171,7 @@
         (try! (is-dao-or-extension))
         (ok (var-set reward-cycle-length new-reward-cycle-length))))
 
-;; public calls
-
-;; @dev the requestor stx is held by the contract until mint can be finalized.
-(define-public (request-mint (amount uint))
-    (let (
-            (sender tx-sender)
-            (cycle (unwrap-panic (get-reward-cycle block-height)))
-            (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
-            (request-id (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details))))
-        (try! (is-paused-or-fail))
-        (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
-        (try! (stx-transfer? amount sender .lqstx-vault))
-        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
-        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending sender (unwrap-panic (as-max-len? (append (get-mint-requests-pending-or-default sender) request-id) u1000))))
-        (print { type: "mint-request", id: request-id, details: request-details })
-        (ok request-id)))
+;; privileged calls
 
 (define-public (finalize-mint (request-id uint))
     (let (
@@ -156,20 +188,6 @@
 
 (define-public (finalize-mint-many (request-ids (list 1000 uint)))
     (fold check-err (map finalize-mint request-ids) (ok true)))
-
-(define-public (revoke-mint (request-id uint))
-    (let (
-            (request-details (try! (get-mint-request-or-fail request-id)))
-            (mint-requests (get-mint-requests-pending-or-default (get requested-by request-details)))
-            (request-id-idx (unwrap! (index-of? mint-requests request-id) err-request-finalized-or-revoked)))
-        (try! (is-paused-or-fail))
-        (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
-        (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
-        (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get amount request-details), recipient: (get requested-by request-details) }))))
-        (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: REVOKED })))
-        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
-        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
-        (ok true)))
 
 (define-public (request-burn (sender principal) (amount uint))
     (let (
@@ -204,21 +222,7 @@
 (define-public (finalize-burn-many (request-ids (list 1000 uint)))
     (fold check-err (map finalize-burn request-ids) (ok true)))
 
-(define-public (revoke-burn (request-id uint))
-    (let (
-            (request-details (try! (get-burn-request-or-fail request-id)))
-            (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
-            (request-id-idx (unwrap! (index-of? burn-requests request-id) err-request-finalized-or-revoked))
-            (lqstx-amount (contract-call? .token-vlqstx get-shares-to-tokens (get wrapped-amount request-details))))
-        (try! (is-paused-or-fail))
-        (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
-        (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
-        (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx))
-        (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
-        (try! (contract-call? .token-lqstx transfer lqstx-amount (as-contract tx-sender) (get requested-by request-details) none))
-        (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
-        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests request-id-idx)))
-        (ok true)))
+;; private calls
 
 (define-private (check-err (result (response bool uint)) (prior (response bool uint)))
     (match prior
