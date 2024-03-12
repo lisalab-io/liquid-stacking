@@ -359,10 +359,22 @@ describe(contracts.endpoint, () => {
     );
     expect(response.result).toBeOk(Cl.uint(100e6));
 
+    response = simnet.callReadOnlyFn(
+      contracts.lqstx,
+      'get-share',
+      [Cl.standardPrincipal(user)],
+      user
+    );
+    expect(response.result).toBeOk(Cl.uint(100e6));
+
+    // receive rewards
     response = simnet.transferSTX(1_000_000e6, `${simnet.deployer}.fastpool-member1`, oracle);
+    response = simnet.transferSTX(1_000_000e6, `${simnet.deployer}.fastpool-member2`, oracle);
+    response = simnet.transferSTX(1_000_000e6, `${simnet.deployer}.fastpool-member3`, oracle);
+    response = simnet.transferSTX(1_000_000e6, `${simnet.deployer}.fastpool-member4`, oracle);
 
     response = simnet.callPublicFn(contracts.rebase1, 'rebase', [], oracle);
-    expect(response.result).toBeOk(Cl.uint(101_000_100e6));
+    expect(response.result).toBeOk(Cl.uint(104_000_100e6));
 
     response = simnet.callReadOnlyFn(
       contracts.lqstx,
@@ -370,7 +382,15 @@ describe(contracts.endpoint, () => {
       [Cl.standardPrincipal(user)],
       user
     );
-    expect(response.result).toBeOk(Cl.uint(100_999_999));
+    expect(response.result).toBeOk(Cl.uint(103_999_996));
+
+    response = simnet.callReadOnlyFn(
+      contracts.lqstx,
+      'get-share',
+      [Cl.standardPrincipal(user)],
+      user
+    );
+    expect(response.result).toBeOk(Cl.uint(100e6));
   });
 
   it('can set up amm pool', () => {
