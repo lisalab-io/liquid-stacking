@@ -1,5 +1,13 @@
 import { tx } from '@hirosystems/clarinet-sdk';
-import { BufferCV, Cl, ResponseOkCV, TupleCV, UIntCV, cvToString } from '@stacks/transactions';
+import {
+  BufferCV,
+  Cl,
+  ResponseOkCV,
+  TupleCV,
+  UIntCV,
+  callReadOnlyFunction,
+  cvToString,
+} from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 
 const mintDelay = 432;
@@ -9,6 +17,7 @@ const oracle = accounts.get('wallet_2')!;
 const bot = accounts.get('wallet_3')!;
 const manager = accounts.get('deployer')!;
 const operator = accounts.get('wallet_4')!;
+const user2 = accounts.get('wallet_5')!;
 
 const contracts = {
   endpoint: 'lqstx-mint-endpoint-v1-01',
@@ -285,14 +294,91 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeOk(Cl.bool(true));
   });
 
+  it('can rebase', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    let response;
+    response = simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(100e6)], user);
+    expect(response.result).toBeOk(Cl.uint(1));
+    response = simnet.callPublicFn(
+      contracts.endpoint,
+      'request-mint',
+      [Cl.uint(100_000_000e6)],
+      user2
+    );
+    expect(response.result).toBeOk(Cl.uint(2));
+
+    goToNextCycle(); // go to the next cycle
+    simnet.mineEmptyBlocks(mintDelay + 1); // mint-delay
+
+    response = simnet.callPublicFn(contracts.rebase1, 'rebase', [], oracle);
+    expect(response.result).toBeOk(Cl.uint(0));
+
+    response = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    expect(response.result).toBeOk(Cl.bool(true));
+    response = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(2)], bot);
+    expect(response.result).toBeOk(Cl.bool(true));
+
+    response = simnet.callPublicFn(
+      contracts.manager,
+      'fund-strategy',
+      [
+        Cl.list([
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+          Cl.uint(5_000_000e6),
+        ]),
+      ],
+      manager
+    );
+    response = simnet.callPublicFn(contracts.rebase1, 'rebase', [], oracle);
+    expect(response.result).toBeOk(Cl.uint(100_000_100e6));
+
+    response = simnet.callReadOnlyFn(
+      contracts.lqstx,
+      'get-balance',
+      [Cl.standardPrincipal(user)],
+      user
+    );
+    expect(response.result).toBeOk(Cl.uint(100e6));
+
+    response = simnet.transferSTX(1_000_000e6, `${simnet.deployer}.fastpool-member1`, oracle);
+
+    response = simnet.callPublicFn(contracts.rebase1, 'rebase', [], oracle);
+    expect(response.result).toBeOk(Cl.uint(101_000_100e6));
+
+    response = simnet.callReadOnlyFn(
+      contracts.lqstx,
+      'get-balance',
+      [Cl.standardPrincipal(user)],
+      user
+    );
+    expect(response.result).toBeOk(Cl.uint(100_999_999));
+  });
+
   it('can set up amm pool', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
 
-    const cycle = getRewardCycle();
-    const blocksToMine = getBlocksToStartOfCycle(cycle + 1n);
-    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
+    goToNextCycle(); // go to the next cycle
 
     const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
     expect(finaliseErr.result).toBeErr(Cl.uint(1006));
