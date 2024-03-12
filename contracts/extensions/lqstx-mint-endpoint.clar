@@ -76,7 +76,7 @@
 (define-read-only (get-reward-cycle (burn-block uint))
     (if (>= burn-block (var-get activation-burn-block))
         (some (/ (- burn-block (var-get activation-burn-block)) (var-get reward-cycle-length)))
-        none))            
+        none))
 
 (define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
     (+ (var-get activation-burn-block) (* (var-get reward-cycle-length) reward-cycle)))
