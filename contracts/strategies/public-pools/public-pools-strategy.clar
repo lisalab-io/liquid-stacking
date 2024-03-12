@@ -90,7 +90,8 @@
 )
 
 (define-private (get-member-balance-iter (member <pool-member>) (accumulator uint))
-	(+ (stx-get-balance (contract-of member)) accumulator)
+	(let ((member-account (stx-account (contract-of member))))
+		(+ (get locked member-account) (get unlocked member-account) accumulator))
 )
 
 (define-read-only (get-total-member-balances)

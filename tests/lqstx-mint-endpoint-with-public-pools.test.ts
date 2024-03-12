@@ -1,0 +1,321 @@
+import { tx } from '@hirosystems/clarinet-sdk';
+import { BufferCV, Cl, ResponseOkCV, TupleCV, UIntCV, cvToString } from '@stacks/transactions';
+import { describe, expect, it } from 'vitest';
+
+const mintDelay = 432;
+const accounts = simnet.getAccounts();
+const user = accounts.get('wallet_1')!;
+const oracle = accounts.get('wallet_2')!;
+const bot = accounts.get('wallet_3')!;
+const manager = accounts.get('deployer')!;
+const operator = accounts.get('wallet_4')!;
+
+const contracts = {
+  endpoint: 'lqstx-mint-endpoint-v1-01',
+  registry: 'lqstx-mint-registry',
+  vault: 'lqstx-vault',
+  lqstx: 'token-lqstx',
+  vlqstx: 'token-vlqstx',
+  wstx: 'token-wstx',
+  strategy: 'public-pools-strategy',
+  rebase: 'lisa-rebase',
+  rebase1: 'rebase-1',
+  amm: 'amm-swap-pool-v1-1',
+  wlqstx: 'token-wlqstx',
+  dao: 'lisa-dao',
+  boot: 'simnet-boot',
+  manager: 'public-pools-strategy-manager',
+  operators: 'operators',
+  proposal: 'mock-proposal',
+};
+
+const prepareTest = () =>
+  simnet.mineBlock([
+    tx.callPublicFn(
+      contracts.dao,
+      'construct',
+      [Cl.contractPrincipal(simnet.deployer, contracts.boot)],
+      simnet.deployer
+    ),
+  ]);
+
+const getRewardCycle = () => {
+  return (
+    simnet.callReadOnlyFn(
+      contracts.endpoint,
+      'get-reward-cycle',
+      [Cl.uint(simnet.blockHeight)],
+      user
+    ).result as ResponseOkCV<UIntCV>
+  ).value.value;
+};
+
+const getBlocksToStartOfCycle = (cycle: bigint) => {
+  return (
+    Number(
+      (
+        simnet.callReadOnlyFn(
+          contracts.endpoint,
+          'get-first-burn-block-in-reward-cycle',
+          [Cl.uint(cycle)],
+          user
+        ).result as ResponseOkCV<UIntCV>
+      ).value
+    ) - simnet.blockHeight
+  );
+};
+const goToNextCycle = () => {
+  const cycle = getRewardCycle();
+  const blocksToMine = getBlocksToStartOfCycle(cycle + 1n);
+
+  simnet.mineEmptyBlocks(blocksToMine);
+};
+
+const requestMint = () =>
+  simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(100e6)], user);
+
+// lock 99 stx and request burn of 1 stx
+const requestBurn = () =>
+  simnet.mineBlock([
+    tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+    tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+    tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(100e6)])], manager),
+    tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+    tx.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(1e6)], user),
+  ]);
+
+describe(contracts.endpoint, () => {
+  it('can request mint', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+    const response = requestMint();
+    expect(response.result).toBeOk(Cl.uint(1));
+  });
+
+  it('can finalize mint', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+
+    goToNextCycle();
+
+    const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    expect(finaliseErr.result).toBeErr(Cl.uint(1006));
+
+    simnet.mineEmptyBlocks(mintDelay + 1); // mint-delay
+
+    let responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
+    ]);
+    expect(responses[0].result).toBeOk(Cl.bool(true));
+    expect(responses[1].result).toBeErr(Cl.uint(1007));
+  });
+
+  it('can revoke mint', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+
+    let responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
+    ]);
+    expect(responses[0].result).toBeErr(Cl.uint(1000));
+    expect(responses[1].result).toBeOk(Cl.bool(true));
+
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay + 1);
+    responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+    ]);
+    expect(responses[0].result).toBeErr(Cl.uint(1007));
+  });
+
+  it('can request burn', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay + 1);
+
+    const responses = requestBurn();
+    expect(responses[0].result).toBeOk(Cl.uint(0));
+    expect(responses[1].result).toBeOk(Cl.bool(true));
+    expect(responses[2].result).toBeOk(Cl.uint(100e6));
+    expect(responses[3].result).toBeOk(Cl.uint(100e6));
+    console.log(cvToString(responses[4].result));
+    expect(responses[4].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
+  });
+
+  it('can finalize burn', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay + 1);
+
+    const burnResponses = requestBurn();
+    expect(burnResponses[0].result).toBeOk(Cl.uint(0));
+    expect(burnResponses[1].result).toBeOk(Cl.bool(true));
+    expect(burnResponses[2].result).toBeOk(Cl.uint(100e6));
+    expect(burnResponses[3].result).toBeOk(Cl.uint(100e6));
+    expect(burnResponses[4].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
+
+    const responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
+      tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+      tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], user),
+    ]);
+    expect(responses[0].result).toBeOk(Cl.uint(1e6));
+    expect(responses[1].result).toBeOk(Cl.uint(100e6));
+    expect(responses[2].result).toBeOk(Cl.bool(true));
+    expect(responses[3].result).toBeErr(Cl.uint(1007));
+  });
+
+  it('can revoke burn', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay + 1);
+
+    const burnResponses = requestBurn();
+    expect(burnResponses[0].result).toBeOk(Cl.uint(0));
+    expect(burnResponses[1].result).toBeOk(Cl.bool(true));
+    expect(burnResponses[2].result).toBeOk(Cl.uint(100e6));
+    expect(burnResponses[3].result).toBeOk(Cl.uint(100e6));
+    expect(burnResponses[4].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
+
+    const responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
+      tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], user),
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+    ]);
+    expect(responses[0].result).toBeOk(Cl.uint(1e6));
+    expect(responses[1].result).toBeErr(Cl.uint(1000));
+    expect(responses[2].result).toBeOk(Cl.bool(true));
+    expect(responses[3].result).toBeErr(Cl.uint(1007));
+  });
+
+  it('can interact with strategies', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+
+    const cycle = (
+      simnet.callReadOnlyFn(
+        contracts.endpoint,
+        'get-reward-cycle',
+        [Cl.uint(simnet.blockHeight)],
+        user
+      ).result as ResponseOkCV<UIntCV>
+    ).value.value;
+    const blocksToMine =
+      Number(
+        (
+          simnet.callReadOnlyFn(
+            contracts.endpoint,
+            'get-first-burn-block-in-reward-cycle',
+            [Cl.uint(cycle + 1n)],
+            user
+          ).result as UIntCV
+        ).value
+      ) - simnet.blockHeight;
+    simnet.mineEmptyBlocks(blocksToMine - 100);
+
+    let responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(100e6)])], bot),
+      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(100e6)])], manager),
+    ]);
+    expect(responses[0].result).toBeErr(Cl.uint(1006)); // request pending
+    expect(responses[1].result).toBeErr(Cl.uint(3000)); // not authorized
+    expect(responses[2].result).toBeOk(Cl.uint(100e6)); // 100 stx transferred, 99 stx locked
+
+    const stxAccountFastPoolMember1 = simnet.runSnippet(
+      `(stx-account '${simnet.deployer}.fastpool-member1)`
+    ) as TupleCV<{ locked: UIntCV }>;
+    expect(stxAccountFastPoolMember1.data.locked).toBeUint(99e6);
+
+    goToNextCycle(); // go to the next cycle
+    simnet.mineEmptyBlocks(mintDelay + 1); // mint-delay
+
+    responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(100e6)], user),
+      tx.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(1e6)], user),
+      tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], bot),
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
+      tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+      tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
+    ]);
+    expect(responses[0].result).toBeOk(Cl.bool(true));
+    expect(responses[1].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
+    console.log(responses[2].result);
+    expect(responses[2].result).toBeErr(Cl.uint(1)); // not enough funds
+    expect(responses[3].result).toBeErr(Cl.uint(1006)); // request pending
+    expect(responses[4].result).toBeErr(Cl.uint(3000)); // not authorized
+    expect(responses[5].result).toBeOk(Cl.uint(1e6)); // refund 1 stx
+    expect(responses[6].result).toBeOk(Cl.uint(0)); // refund 0 stx
+    expect(responses[7].result).toBeOk(Cl.uint(100e6)); // rebase 100 stx
+    expect(responses[8].result).toBeErr(Cl.uint(1006)); // request pending
+
+    // refund remaining stx after unlock
+    goToNextCycle();
+
+    responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
+      tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
+    ]);
+    console.log(responses.map(r => r.result));
+    expect(responses[0].result).toBeOk(Cl.uint(99e6));
+    expect(responses[1].result).toBeOk(Cl.bool(true));
+  });
+
+  it('can set up amm pool', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+
+    const cycle = getRewardCycle();
+    const blocksToMine = getBlocksToStartOfCycle(cycle + 1n);
+    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
+
+    const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    expect(finaliseErr.result).toBeErr(Cl.uint(1006));
+
+    simnet.mineEmptyBlocks(mintDelay + 1); // mint-delay
+
+    let responses = simnet.mineBlock([
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(
+        contracts.amm,
+        'create-pool',
+        [
+          Cl.principal(simnet.deployer + '.' + contracts.wstx),
+          Cl.principal(simnet.deployer + '.' + contracts.wlqstx),
+          Cl.uint(1e8),
+          Cl.principal(user),
+          Cl.uint(1e8),
+          Cl.uint(1e8),
+        ],
+        user
+      ),
+    ]);
+    expect(responses[0].result).toBeOk(Cl.bool(true));
+    expect(responses[1].result).toBeOk(Cl.bool(true));
+  });
+});
