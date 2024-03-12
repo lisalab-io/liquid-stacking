@@ -3,7 +3,8 @@
 (define-public (execute (sender principal))
 	(begin
 		(try! (contract-call? .lisa-dao set-extensions (list
-			{ extension: .lqstx-mint-endpoint, enabled: true }
+			{ extension: .lqstx-mint-endpoint, enabled: false }
+			{ extension: .lqstx-mint-endpoint-v1-01, enabled: true }
 			{ extension: .lqstx-vault, enabled: true }
 			{ extension: .treasury, enabled: true }
 			{ extension: .token-vesting, enabled: true }
@@ -28,6 +29,7 @@
 		(try! (contract-call? .operators set-proposal-threshold 4))
 
 		;; Set initial strategy managers, sender is the deployer
+		;; TODO add manager
 		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager sender true))
 
 		;; Mint max LISA token supply (1bn)
@@ -36,8 +38,8 @@
 		)))
 
 		;; Enable whitelist
-		(try! (contract-call? .lqstx-mint-endpoint set-use-whitelist true))
-		(try! (contract-call? .lqstx-mint-endpoint set-whitelisted-many 
+		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-use-whitelist true))
+		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-whitelisted-many 
 			(list 
 				'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7
 				'SP2VZBR9GCVM33BN0WXA05VJP6QV7CJ3Z3SQKJ5HH
@@ -52,7 +54,7 @@
 				true
 				true
 			)))
-
+		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-paused false))
 		(ok true)
 	)
 )

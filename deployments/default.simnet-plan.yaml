@@ -155,11 +155,6 @@ plan:
             path: contracts/extensions/lqstx-vault.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: rebase-strategy-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/rebase-strategy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: stx-transfer-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/stx-transfer-proxy.clar
@@ -175,7 +170,7 @@ plan:
             path: contracts/token-vlqstx.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint
+            contract-name: lqstx-mint-endpoint-v1-01
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
@@ -229,14 +224,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 3
-      transactions:
         - emulated-contract-publish:
             contract-name: fastpool-member9
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 3
+      transactions:
         - emulated-contract-publish:
             contract-name: xverse-member1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -318,6 +313,16 @@ plan:
             path: contracts/proxies/lisa-transfer-proxy.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: rebase-strategy-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/deployed/rebase-strategy-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/deployed/lqstx-mint-endpoint.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: lqstx-transfer-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/lqstx-transfer-proxy.clar
@@ -348,6 +353,14 @@ plan:
             path: contracts/mocks/rebase-mock.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: rebase-strategy-trait-v1-01
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/rebase-strategy-trait.clar
+            clarity-version: 2
+      epoch: "2.4"
+    - id: 4
+      transactions:
+        - emulated-contract-publish:
             contract-name: regtest-boot
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/regtest-boot.clar
@@ -357,9 +370,6 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/traits/sip-010-extensions-trait.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 4
-      transactions:
         - emulated-contract-publish:
             contract-name: sip-010-transferable-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM

@@ -9,7 +9,7 @@ const bot = accounts.get('wallet_3')!;
 const manager = accounts.get('wallet_4')!;
 
 const contracts = {
-  endpoint: 'lqstx-mint-endpoint',
+  endpoint: 'lqstx-mint-endpoint-v1-01',
   registry: 'lqstx-mint-registry',
   vault: 'lqstx-vault',
   lqstx: 'token-lqstx',
@@ -76,11 +76,10 @@ const requestBurn = (payload: Buffer) =>
       oracle
     ),
     tx.callPublicFn(
-      contracts.endpoint,
+      contracts.rebase1,
       'request-burn',
       [
         Cl.uint(100e6),
-        Cl.contractPrincipal(simnet.deployer, contracts.rebase1),
       ],
       user
     ),
@@ -89,7 +88,6 @@ const requestBurn = (payload: Buffer) =>
 describe(contracts.endpoint, () => {
   it('can request mint', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
-
     const response = requestMint();
     expect(response.result).toBeOk(Cl.uint(1));
   });
@@ -100,7 +98,7 @@ describe(contracts.endpoint, () => {
     expect(requestMint().result).toBeOk(Cl.uint(1));
 
     const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
 
     const finaliseErr = simnet.callPublicFn(
@@ -154,7 +152,7 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeOk(Cl.bool(true));
 
     const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
     simnet.mineEmptyBlocks(144); // mint-delay
 
@@ -174,7 +172,7 @@ describe(contracts.endpoint, () => {
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
     const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
     simnet.mineEmptyBlocks(144); // mint-delay
 
@@ -197,7 +195,7 @@ describe(contracts.endpoint, () => {
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
     const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
     simnet.mineEmptyBlocks(144); // mint-delay
 
@@ -254,7 +252,7 @@ describe(contracts.endpoint, () => {
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
     const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
     simnet.mineEmptyBlocks(144); // mint-delay
 
@@ -318,7 +316,7 @@ describe(contracts.endpoint, () => {
     ).result.buffer;
 
     const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine - 100);
 
     let responses = simnet.mineBlock([
@@ -360,11 +358,10 @@ describe(contracts.endpoint, () => {
         bot
       ),
       tx.callPublicFn(
-        contracts.endpoint,
+        contracts.rebase1,
         'request-burn',
         [
           Cl.uint(100e6),
-          Cl.contractPrincipal(simnet.deployer, contracts.rebase1),
         ],
         user
       ),
@@ -427,7 +424,7 @@ describe(contracts.endpoint, () => {
     expect(requestMint().result).toBeOk(Cl.uint(1));
 
     const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-stacks-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
     simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
 
     const finaliseErr = simnet.callPublicFn(

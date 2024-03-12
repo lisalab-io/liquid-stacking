@@ -8,6 +8,7 @@ cache_dir = "./.cache"
 
 [[project.requirements]]
 contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
+
 [[project.requirements]]
 contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2"
 
@@ -155,6 +156,10 @@ path = "contracts/traits/sip-010-trait.clar"
 epoch = 2.4
 
 [contracts.rebase-strategy-trait]
+path = "contracts/deployed/rebase-strategy-trait.clar"
+epoch = 2.4
+
+[contracts.rebase-strategy-trait-v1-01]
 path = "contracts/traits/rebase-strategy-trait.clar"
 epoch = 2.4
 
@@ -170,8 +175,12 @@ epoch = 2.4
 path = "contracts/extensions/public-pools-strategy-manager.clar"
 epoch = 2.4
 
-[contracts.lqstx-mint-endpoint]
+[contracts.lqstx-mint-endpoint-v1-01]
 path = "contracts/extensions/lqstx-mint-endpoint.clar"
+epoch = 2.4
+
+[contracts.lqstx-mint-endpoint]
+path = "contracts/deployed/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-registry]

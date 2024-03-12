@@ -1,4 +1,4 @@
-(define-constant err-unauthorised (err u10000))
+(define-constant err-unauthorised (err u3000))
 
 (define-map authorised-managers principal bool)
 (map-set authorised-managers tx-sender true)
