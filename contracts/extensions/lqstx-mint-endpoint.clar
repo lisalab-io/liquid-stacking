@@ -19,8 +19,9 @@
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
 
 ;; corresponds to `first-burnchain-block-height` and `pox-reward-cycle-length` in pox-3
-(define-data-var activation-burn-block uint u666050)
-(define-data-var reward-cycle-length uint u2100)
+(define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
+(define-constant activation-burn-block (get first-burnchain-block-height pox-info))
+(define-constant reward-cycle-length (get reward-cycle-length pox-info))
 
 (define-data-var use-whitelist bool false)
 (define-map whitelisted principal bool)
@@ -74,12 +75,12 @@
         (ok { vaulted-amount: vaulted-amount, request-id-idx: request-id-idx })))
 
 (define-read-only (get-reward-cycle (burn-block uint))
-    (if (>= burn-block (var-get activation-burn-block))
-        (some (/ (- burn-block (var-get activation-burn-block)) (var-get reward-cycle-length)))
+    (if (>= burn-block activation-burn-block)
+        (some (/ (- burn-block activation-burn-block) reward-cycle-length))
         none))
 
 (define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
-    (+ (var-get activation-burn-block) (* (var-get reward-cycle-length) reward-cycle)))
+    (+ activation-burn-block (* reward-cycle-length reward-cycle)))
 
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
@@ -160,16 +161,6 @@
     (begin
         (try! (is-dao-or-extension))
         (ok (var-set mint-delay new-delay))))
-
-(define-public (set-activation-burn-block (new-activation-burn-block uint))
-    (begin
-        (try! (is-dao-or-extension))
-        (ok (var-set activation-burn-block new-activation-burn-block))))
-
-(define-public (set-reward-cycle-length (new-reward-cycle-length uint))
-    (begin
-        (try! (is-dao-or-extension))
-        (ok (var-set reward-cycle-length new-reward-cycle-length))))
 
 ;; privileged calls
 
