@@ -37,7 +37,8 @@ const mainnetDeploy = isMainnet();
 const address = getStacksAddress();
 const pubKeys = getStacksPubkeys();
 let nonce = 0;
-const feeMultiplier = 10000;
+const feeMultiplier = 10000; // transaction bytes * feeMultiplier
+const feeAddition = 1; // add a flat amount on top
 const feeCap = 0;//15 * 1000000; // 15 STX
 
 const testnetAddressReplacements = {
@@ -141,7 +142,7 @@ async function createMultisigDeployTransaction(
 	// and replace it.
 	tx.auth.spendingCondition = createMultiSigSpendingCondition(AddressHashMode.SerializeP2WSH, numSignatures, publicKeys, nonce, 1);
 	assertSigner(tx.auth.spendingCondition, checkSigner);
-	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier + feeAddition;
 	if (feeCap > 0 && calculatedFee > feeCap)
 		calculatedFee = feeCap;
 	tx.setFee(calculatedFee);
@@ -173,7 +174,7 @@ async function createMultisigStxTransaction(
 	// and replace it.
 	tx.auth.spendingCondition = createMultiSigSpendingCondition(AddressHashMode.SerializeP2WSH, numSignatures, publicKeys, nonce, 1);
 	assertSigner(tx.auth.spendingCondition, signer);
-	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier + feeAddition;
 	if (feeCap > 0 && calculatedFee > feeCap)
 		calculatedFee = feeCap;
 	tx.setFee(calculatedFee);
@@ -213,7 +214,7 @@ async function createMultisigBootTransaction(
 	// and replace it.
 	tx.auth.spendingCondition = createMultiSigSpendingCondition(AddressHashMode.SerializeP2WSH, numSignatures, publicKeys, nonce, 1);
 	assertSigner(tx.auth.spendingCondition, signer);
-	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier;
+	let calculatedFee = (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) * feeMultiplier + feeAddition;
 	if (feeCap > 0 && calculatedFee > feeCap)
 		calculatedFee = feeCap;
 	tx.setFee(calculatedFee);
