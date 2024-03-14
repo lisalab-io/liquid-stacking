@@ -41,7 +41,9 @@
 (define-public (set-reserve (new-reserve uint))
 	(begin 
 		(try! (is-dao-or-extension))
-		(ok (var-set reserve new-reserve))))
+		(var-set reserve new-reserve)
+		(print {notification: "rebase", payload: {reserve: (var-get reserve), total-shares: (ft-get-supply lqstx)}})
+		(ok true)))
 
 (define-public (add-reserve (increment uint))
 	(set-reserve (+ (var-get reserve) increment)))
