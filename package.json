@@ -13,7 +13,7 @@
     "get-keys": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/get-secret-pubkeys.ts",
     "generate-secret": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/generate-secret.ts",
     "setup:clarity": "./scripts/clarinet_manager.sh clean && ./scripts/clarinet_manager.sh install",
-    "test": "vitest run",
+    "test": "./scripts/prepare_tests.sh && vitest run && ./scripts/revert_prepare_tests.sh",
     "test:report": "vitest run -- --coverage --costs",
     "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test:report\""
   },
