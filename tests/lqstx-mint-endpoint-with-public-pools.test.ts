@@ -284,6 +284,7 @@ describe(contracts.endpoint, () => {
 
     // refund remaining stx after unlock
     goToNextCycle();
+    simnet.mineEmptyBlocks(1);
 
     responses = simnet.mineBlock([
       tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
