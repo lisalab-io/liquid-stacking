@@ -113,7 +113,8 @@
 			(shares (get-tokens-to-shares amount)))
 		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
 		(try! (ft-transfer? lqstx shares sender recipient))
-		(print { notification: "transfer", payload: { amount: amount, shares: shares, sender: sender, recipient: recipient, memo: memo } })
+		(match memo to-print (print to-print) 0x)
+		(print { notification: "transfer", payload: { amount: amount, shares: shares, sender: sender, recipient: recipient } })
 		(ok true)))
 
 ;; private functions
