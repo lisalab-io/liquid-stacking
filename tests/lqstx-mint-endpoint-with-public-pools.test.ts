@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BUSL-1.1
+
 import { tx } from '@hirosystems/clarinet-sdk';
 import {
   BufferCV,

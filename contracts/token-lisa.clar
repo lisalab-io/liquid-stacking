@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (impl-trait .sip-010-trait.sip-010-trait)
 
 (define-constant err-unauthorised (err u3000))

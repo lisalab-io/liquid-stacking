@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (define-constant err-unauthorised (err u3000))
 
 (define-map authorised-managers principal bool)

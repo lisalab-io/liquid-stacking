@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (impl-trait .proposal-trait.proposal-trait)
 
 (define-public (execute (sender principal))

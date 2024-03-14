@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (impl-trait .strategy-trait.strategy-trait)
 
 (define-constant err-not-vault-caller (err u2000))

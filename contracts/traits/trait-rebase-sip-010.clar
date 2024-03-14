@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (define-trait rebase-sip-010-trait
 	(
         ;; Transfer from the caller to a new principal

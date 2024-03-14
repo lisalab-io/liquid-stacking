@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BUSL-1.1
+
 import { tx } from '@hirosystems/clarinet-sdk';
 import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';

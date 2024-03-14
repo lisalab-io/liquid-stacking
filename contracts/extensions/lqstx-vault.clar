@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 ;; This contract holds the STX of the members
 
 (use-trait strategy-trait .strategy-trait.strategy-trait)
