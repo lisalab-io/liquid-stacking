@@ -251,6 +251,7 @@ describe(contracts.endpoint, () => {
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1006)); // request pending
     expect(responses[1].result).toBeErr(Cl.uint(3000)); // not authorized
+    responses[2].events.map((e: any) => console.log(e.data.contract_identifier, e.data.value));
     expect(responses[2].result).toBeOk(Cl.uint(100e6)); // 100 stx transferred, 99 stx locked
 
     const stxAccountFastPoolMember1 = simnet.runSnippet(
