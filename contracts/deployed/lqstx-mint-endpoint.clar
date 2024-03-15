@@ -79,14 +79,14 @@
 
 ;; @dev used for testing only
 (define-read-only (get-reward-cycle (stacks-height uint))
-    ;; (some (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle)))
+    ;; (some (contract-call? 'ST000000000000000000002AMW42H.pox-3 current-pox-reward-cycle)))
     (if (>= stacks-height (var-get activation-block))
         (some (/ (- stacks-height (var-get activation-block)) (var-get reward-cycle-length)))
         none))            
 
 ;; @dev used for testing only
 (define-read-only (get-first-stacks-block-in-reward-cycle (reward-cycle uint))
-    ;; (contract-call? 'SP000000000000000000002Q6VF78.pox-3 reward-cycle-to-burn-height reward-cycle))
+    ;; (contract-call? 'ST000000000000000000002AMW42H.pox-3 reward-cycle-to-burn-height reward-cycle))
     (+ (var-get activation-block) (* (var-get reward-cycle-length) reward-cycle)))
 
 (define-read-only (get-mint-delay)
