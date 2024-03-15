@@ -1,4 +1,7 @@
 
+;; SPDX-License-Identifier: BUSL-1.1
+
+
 (define-constant PENDING 0x00)
 (define-constant FINALIZED 0x01)
 (define-constant REVOKED 0x02)

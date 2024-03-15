@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BUSL-1.1
+
 import fs from "fs";
 import { hexToBytes } from '@stacks/common';
 import { AddressHashMode, TransactionVersion, addressFromHashMode, createStacksPrivateKey, publicKeyFromBytes } from "@stacks/transactions";

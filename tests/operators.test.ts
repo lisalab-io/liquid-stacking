@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BUSL-1.1
+
 import { ParsedTransactionResult, tx } from '@hirosystems/clarinet-sdk';
 import { BooleanCV, Cl, IntCV, SomeCV, TupleCV, UIntCV } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';

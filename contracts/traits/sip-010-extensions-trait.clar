@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (define-trait sip-010-extensions-trait
   (
     (mint (uint principal) (response bool uint))
