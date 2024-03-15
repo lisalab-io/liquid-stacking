@@ -84,14 +84,14 @@ const goToNextCycle = () => {
 };
 
 const requestMint = () =>
-  simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(100e6)], user);
+  simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(1_000_000e6)], user);
 
 // lock 99 stx and request burn of 1 stx
 const requestBurn = () =>
   simnet.mineBlock([
     tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
     tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
-    tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(100e6)])], manager),
+    tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(1_000_000e6)])], manager),
     tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
     tx.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(1e6)], user),
   ]);
@@ -246,17 +246,17 @@ describe(contracts.endpoint, () => {
 
     let responses = simnet.mineBlock([
       tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
-      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(100e6)])], bot),
-      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(100e6)])], manager),
+      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(1_000_000e6)])], bot),
+      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(1_000_000e6)])], manager),
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1006)); // request pending
     expect(responses[1].result).toBeErr(Cl.uint(3000)); // not authorized
-    responses[2].events.map((e: any) => console.log(e.data.contract_identifier, e.data.value));
-    expect(responses[2].result).toBeOk(Cl.uint(100e6)); // 100 stx transferred, 99 stx locked
+    responses[2].events.map((e: any) => console.log(e));
+    expect(responses[2].result).toBeOk(Cl.uint(1_000_000e6)); // 100 stx transferred, 99 stx locked
 
     const stxAccountFastPoolMember1 = simnet.runSnippet(
       `(stx-account '${simnet.deployer}.fastpool-member1)`
-    ) as TupleCV<{ locked: UIntCV }>;
+    ) as TupleCV<{ locked: UIntCV, unlocked: UIntCV }>;
     expect(stxAccountFastPoolMember1.data.locked).toBeUint(99e6);
 
     goToNextCycle(); // go to the next cycle
