@@ -273,7 +273,6 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
     );
-    console.log(responses[2].result);
     expect(responses[2].result).toBeErr(Cl.uint(1)); // not enough funds
     expect(responses[3].result).toBeErr(Cl.uint(1006)); // request pending
     expect(responses[4].result).toBeErr(Cl.uint(3000)); // not authorized
@@ -290,7 +289,6 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
       tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
     ]);
-    console.log(responses.map(r => r.result));
     expect(responses[0].result).toBeOk(Cl.uint(99e6));
     expect(responses[1].result).toBeOk(Cl.bool(true));
   });

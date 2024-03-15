@@ -7,6 +7,7 @@ const user = accounts.get('wallet_1')!;
 const oracle = accounts.get('wallet_2')!;
 const bot = accounts.get('wallet_3')!;
 const manager = accounts.get('wallet_4')!;
+const operator3 = accounts.get('wallet_5')!;
 
 const contracts = {
   endpoint: 'lqstx-mint-endpoint-v1-01',
@@ -25,6 +26,7 @@ const contracts = {
   manager: 'mock-strategy-manager',
   operators: 'operators',
   proposal: 'mock-proposal',
+  proposal2: 'mock-proposal',
 };
 
 const prepareTest = () =>
@@ -73,12 +75,28 @@ describe('operators contract', () => {
     expect(responses[1].result).toBeOk(Cl.bool(false));
 
     responses = simnet.mineBlock([
+      // signal from non-operator fails with unauthorized
       tx.callPublicFn(
         contracts.operators,
         'signal',
         [Cl.contractPrincipal(simnet.deployer, contracts.proposal), Cl.bool(true)],
         bot
       ),
+      // second signal from 1st operator fails with double signal error
+      tx.callPublicFn(
+        contracts.operators,
+        'signal',
+        [Cl.contractPrincipal(simnet.deployer, contracts.proposal), Cl.bool(true)],
+        simnet.deployer
+      ),
+      // signal from 2nd operator
+      tx.callPublicFn(
+        contracts.operators,
+        'signal',
+        [Cl.contractPrincipal(simnet.deployer, contracts.proposal), Cl.bool(true)],
+        manager
+      ),
+      // 2nd signal from 2nd operator fails as proposal expired
       tx.callPublicFn(
         contracts.operators,
         'signal',
@@ -87,7 +105,41 @@ describe('operators contract', () => {
       ),
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1001));
-    expect(responses[1].result).toBeOk(Cl.bool(true));
+    expect(responses[1].result).toBeErr(Cl.uint(1002)); // err-already-signalled
+    expect(responses[2].result).toBeOk(Cl.bool(true));
+    expect(responses[3].result).toBeErr(Cl.uint(1003)); // err-proposal-expired
+  });
+
+  it('contra operator out-weighs two pro operators', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
+    let response;
+    response = simnet.callPublicFn(
+      contracts.operators,
+      'propose',
+      [Cl.contractPrincipal(simnet.deployer, contracts.proposal)],
+      simnet.deployer
+    );
+    expect(response.result).toBeOk(Cl.bool(false));
+
+    let responses = simnet.mineBlock([
+      // signal from 2nd operator against proposal
+      tx.callPublicFn(
+        contracts.operators,
+        'signal',
+        [Cl.contractPrincipal(simnet.deployer, contracts.proposal), Cl.bool(false)],
+        manager
+      ),
+      // signal from 3nd operator for proposal
+      tx.callPublicFn(
+        contracts.operators,
+        'signal',
+        [Cl.contractPrincipal(simnet.deployer, contracts.proposal), Cl.bool(true)],
+        operator3
+      ),
+    ]);
+    expect(responses[0].result).toBeOk(Cl.bool(false));
+    expect(responses[1].result).toBeOk(Cl.bool(false));
   });
 
   it('signals should be reset when reproposed', () => {

@@ -1,5 +1,5 @@
 import { tx } from '@hirosystems/clarinet-sdk';
-import { Cl } from '@stacks/transactions';
+import { Cl, ResponseOkCV, UIntCV } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 
 const accounts = simnet.getAccounts();
@@ -24,66 +24,64 @@ const contracts = {
   boot: 'regtest-boot',
   manager: 'mock-strategy-manager',
   operators: 'operators',
-  proposal: 'mock-proposal'
-}
+  proposal: 'mock-proposal',
+};
+const mintDelay = 144;
 
 const prepareTest = () =>
   simnet.mineBlock([
     tx.callPublicFn(
       contracts.dao,
       'construct',
-      [
-        Cl.contractPrincipal(simnet.deployer, contracts.boot),
-      ],
-      simnet.deployer,
+      [Cl.contractPrincipal(simnet.deployer, contracts.boot)],
+      simnet.deployer
     ),
   ]);
 
 const requestMint = () =>
-  simnet.callPublicFn(
-    contracts.endpoint,
-    'request-mint',
-    [Cl.uint(100e6)],
-    user,
-  )
+  simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(100e6)], user);
 
 const requestBurn = (payload: Buffer) =>
   simnet.mineBlock([
-    tx.callPublicFn(
-      contracts.rebase1,
-      'rebase',
-      [],
-      oracle
-    ),
-    tx.callPublicFn(
-      contracts.rebase1,
-      'finalize-mint',
-      [Cl.uint(1)],
-      bot
-    ),
-    tx.callPublicFn(
-      contracts.manager,
-      'fund-strategy',
-      [
-        Cl.uint(100e6)
-      ],
-      manager
-    ),
-    tx.callPublicFn(
-      contracts.rebase1,
-      'rebase',
-      [],
-      oracle
-    ),
-    tx.callPublicFn(
-      contracts.rebase1,
-      'request-burn',
-      [
-        Cl.uint(100e6),
-      ],
-      user
-    ),
+    tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+    tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+    tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.uint(100e6)], manager),
+    tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+    tx.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(100e6)], user),
   ]);
+
+const getRewardCycle = () => {
+  return (
+    simnet.callReadOnlyFn(
+      contracts.endpoint,
+      'get-reward-cycle',
+      [Cl.uint(simnet.blockHeight)],
+      user
+    ).result as ResponseOkCV<UIntCV>
+  ).value.value;
+};
+
+const getBlocksToStartOfCycle = (cycle: bigint) => {
+  return (
+    Number(
+      (
+        simnet.callReadOnlyFn(
+          contracts.endpoint,
+          'get-first-burn-block-in-reward-cycle',
+          [Cl.uint(cycle)],
+          user
+        ).result as ResponseOkCV<UIntCV>
+      ).value
+    ) - simnet.blockHeight
+  );
+};
+
+const goToNextCycle = () => {
+  const cycle = getRewardCycle();
+  const blocksToMine = getBlocksToStartOfCycle(cycle + 1n);
+
+  simnet.mineEmptyBlocks(blocksToMine);
+};
 
 describe(contracts.endpoint, () => {
   it('can request mint', () => {
@@ -97,33 +95,16 @@ describe(contracts.endpoint, () => {
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
 
-    const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
-    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
+    goToNextCycle();
 
-    const finaliseErr = simnet.callPublicFn(
-      contracts.rebase1,
-      'finalize-mint',
-      [Cl.uint(1)],
-      bot
-    );
+    const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
     expect(finaliseErr.result).toBeErr(Cl.uint(1006));
 
-    simnet.mineEmptyBlocks(144); // mint-delay
+    simnet.mineEmptyBlocks(mintDelay);
 
     let responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-mint',
-        [Cl.uint(1)],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.endpoint,
-        'revoke-mint',
-        [Cl.uint(1)],
-        user
-      ),
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
     ]);
     expect(responses[0].result).toBeOk(Cl.bool(true));
     expect(responses[1].result).toBeErr(Cl.uint(1007));
@@ -135,34 +116,17 @@ describe(contracts.endpoint, () => {
     expect(requestMint().result).toBeOk(Cl.uint(1));
 
     let responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.endpoint,
-        'revoke-mint',
-        [Cl.uint(1)],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.endpoint,
-        'revoke-mint',
-        [Cl.uint(1)],
-        user
-      ),
+      tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1000));
     expect(responses[1].result).toBeOk(Cl.bool(true));
 
-    const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
-    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
-    simnet.mineEmptyBlocks(144); // mint-delay
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay); // mint-delay
 
     responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-mint',
-        [Cl.uint(1)],
-        bot
-      )
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1007));
   });
@@ -171,10 +135,8 @@ describe(contracts.endpoint, () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
-    const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
-    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
-    simnet.mineEmptyBlocks(144); // mint-delay
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay);
 
     const payload = simnet.callReadOnlyFn(
       contracts.strategy,
@@ -187,17 +149,18 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeOk(Cl.bool(true));
     expect(responses[2].result).toBeOk(Cl.uint(100e6));
     expect(responses[3].result).toBeOk(Cl.uint(100e6));
-    expect(responses[4].result).toBeOk(Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') }));
+    expect(responses[4].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
   });
 
   it('can finalize burn', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
-    const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
-    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
-    simnet.mineEmptyBlocks(144); // mint-delay
+
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay);
 
     const payload = simnet.callReadOnlyFn(
       contracts.strategy,
@@ -210,51 +173,28 @@ describe(contracts.endpoint, () => {
     expect(burnResponses[1].result).toBeOk(Cl.bool(true));
     expect(burnResponses[2].result).toBeOk(Cl.uint(100e6));
     expect(burnResponses[3].result).toBeOk(Cl.uint(100e6));
-    expect(burnResponses[4].result).toBeOk(Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') }));
+    expect(burnResponses[4].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
 
     const responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.manager,
-        'refund-strategy',
-        [
-          Cl.uint(100e6)
-        ],
-        manager
-      ),
-      tx.callPublicFn(
-        contracts.rebase1,
-        'rebase',
-        [],
-        oracle
-      ),
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-burn',
-        [Cl.uint(1)],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.endpoint,
-        'revoke-burn',
-        [Cl.uint(1)],
-        user
-      ),
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.uint(100e6)], manager),
+      tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+      tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], user),
     ]);
     expect(responses[0].result).toBeOk(Cl.uint(100e6));
     expect(responses[1].result).toBeOk(Cl.uint(100e6));
     expect(responses[2].result).toBeOk(Cl.bool(true));
     expect(responses[3].result).toBeErr(Cl.uint(1007));
-
   });
 
   it('can revoke burn', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
-    const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
-    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
-    simnet.mineEmptyBlocks(144); // mint-delay
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay);
 
     const payload = simnet.callReadOnlyFn(
       contracts.strategy,
@@ -267,40 +207,38 @@ describe(contracts.endpoint, () => {
     expect(burnResponses[1].result).toBeOk(Cl.bool(true));
     expect(burnResponses[2].result).toBeOk(Cl.uint(100e6));
     expect(burnResponses[3].result).toBeOk(Cl.uint(100e6));
-    expect(burnResponses[4].result).toBeOk(Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') }));
+    expect(burnResponses[4].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
 
     const responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.manager,
-        'refund-strategy',
-        [
-          Cl.uint(100e6)
-        ],
-        manager
-      ),
-      tx.callPublicFn(
-        contracts.endpoint,
-        'revoke-burn',
-        [Cl.uint(1)],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.endpoint,
-        'revoke-burn',
-        [Cl.uint(1)],
-        user
-      ),
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-mint',
-        [Cl.uint(1)],
-        bot
-      )
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.uint(100e6)], manager),
+      tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], user),
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
     ]);
     expect(responses[0].result).toBeOk(Cl.uint(100e6));
     expect(responses[1].result).toBeErr(Cl.uint(1000));
     expect(responses[2].result).toBeOk(Cl.bool(true));
     expect(responses[3].result).toBeErr(Cl.uint(1007));
+  });
+
+  it('can request burn and finalized immediately', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+    expect(requestMint().result).toBeOk(Cl.uint(1));
+
+    let response;
+    response = simnet.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(100e6)], user);
+    expect(response.result).toBeErr(Cl.uint(1)); // not enough funds
+
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay);
+    response = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    expect(response.result).toBeOk(Cl.bool(true));
+    response = simnet.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(100e6)], user);
+    expect(response.result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.buffer(new Uint8Array([1])) })
+    );
   });
 
   it('can interact with strategies', () => {
@@ -308,108 +246,36 @@ describe(contracts.endpoint, () => {
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
 
-    const payload = simnet.callReadOnlyFn(
-      contracts.strategy,
-      'create-payload',
-      [Cl.uint(100e6)],
-      manager
-    ).result.buffer;
-
-    const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
+    const cycle = getRewardCycle();
+    const blocksToMine = getBlocksToStartOfCycle(cycle + 1n);
     simnet.mineEmptyBlocks(blocksToMine - 100);
 
     let responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-mint',
-        [Cl.uint(1)],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.manager,
-        'fund-strategy',
-        [
-          Cl.uint(100e6)
-        ],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.manager,
-        'fund-strategy',
-        [
-          Cl.uint(100e6)
-        ],
-        manager
-      ),
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.uint(100e6)], bot),
+      tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.uint(100e6)], manager),
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1006));
     expect(responses[1].result).toBeErr(Cl.uint(1000));
     expect(responses[2].result).toBeOk(Cl.uint(100e6));
 
     simnet.mineEmptyBlocks(99); // go to the next cycle
-    simnet.mineEmptyBlocks(144); // mint-delay
+    simnet.mineEmptyBlocks(mintDelay);
 
     responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-mint',
-        [Cl.uint(1)],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.rebase1,
-        'request-burn',
-        [
-          Cl.uint(100e6),
-        ],
-        user
-      ),
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-burn',
-        [Cl.uint(1)],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.manager,
-        'refund-strategy',
-        [
-          Cl.uint(100e6)
-        ],
-        bot
-      ),
-      tx.callPublicFn(
-        contracts.manager,
-        'refund-strategy',
-        [
-          Cl.uint(100e6)
-        ],
-        manager
-      ),
-      tx.callPublicFn(
-        contracts.manager,
-        'refund-strategy',
-        [
-          Cl.uint(100e6)
-        ],
-        manager
-      ),
-      tx.callPublicFn(
-        contracts.rebase1,
-        'rebase',
-        [],
-        oracle
-      ),
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-burn',
-        [Cl.uint(1)],
-        bot
-      )
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(100e6)], user),
+      tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.uint(100e6)], bot),
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.uint(100e6)], manager),
+      tx.callPublicFn(contracts.manager, 'refund-strategy', [Cl.uint(100e6)], manager),
+      tx.callPublicFn(contracts.rebase1, 'rebase', [], oracle),
+      tx.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot),
     ]);
     expect(responses[0].result).toBeOk(Cl.bool(true));
-    expect(responses[1].result).toBeOk(Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') }));
+    expect(responses[1].result).toBeOk(
+      Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
+    );
     expect(responses[2].result).toBeErr(Cl.uint(1006));
     expect(responses[3].result).toBeErr(Cl.uint(1000));
     expect(responses[4].result).toBeOk(Cl.uint(100e6));
@@ -423,27 +289,15 @@ describe(contracts.endpoint, () => {
 
     expect(requestMint().result).toBeOk(Cl.uint(1));
 
-    const cycle = simnet.callReadOnlyFn(contracts.endpoint, 'get-reward-cycle', [Cl.uint(simnet.blockHeight)], user).result.value.value;
-    const blocksToMine = Number(simnet.callReadOnlyFn(contracts.endpoint, 'get-first-burn-block-in-reward-cycle', [Cl.uint(cycle + 1n)], user).result.value) - simnet.blockHeight;
-    simnet.mineEmptyBlocks(blocksToMine); // go to the next cycle
+    goToNextCycle();
 
-    const finaliseErr = simnet.callPublicFn(
-      contracts.rebase1,
-      'finalize-mint',
-      [Cl.uint(1)],
-      bot
-    );
+    const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
     expect(finaliseErr.result).toBeErr(Cl.uint(1006));
 
-    simnet.mineEmptyBlocks(144); // mint-delay
+    simnet.mineEmptyBlocks(mintDelay);
 
     let responses = simnet.mineBlock([
-      tx.callPublicFn(
-        contracts.rebase1,
-        'finalize-mint',
-        [Cl.uint(1)],
-        bot
-      ),
+      tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
       tx.callPublicFn(
         contracts.amm,
         'create-pool',
@@ -453,10 +307,10 @@ describe(contracts.endpoint, () => {
           Cl.uint(1e8),
           Cl.principal(user),
           Cl.uint(1e8),
-          Cl.uint(1e8)
+          Cl.uint(1e8),
         ],
         user
-      )
+      ),
     ]);
     expect(responses[0].result).toBeOk(Cl.bool(true));
     expect(responses[1].result).toBeOk(Cl.bool(true));
@@ -477,7 +331,7 @@ describe(contracts.endpoint, () => {
         'propose',
         [Cl.contractPrincipal(simnet.deployer, contracts.proposal)],
         simnet.deployer
-      )         
+      ),
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1001));
     expect(responses[1].result).toBeOk(Cl.bool(false));
@@ -494,10 +348,9 @@ describe(contracts.endpoint, () => {
         'signal',
         [Cl.contractPrincipal(simnet.deployer, contracts.proposal), Cl.bool(true)],
         manager
-      ),            
+      ),
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1001));
-    expect(responses[1].result).toBeOk(Cl.bool(true)); 
-
-  });  
+    expect(responses[1].result).toBeOk(Cl.bool(true));
+  });
 });
