@@ -16,9 +16,9 @@
 ;; errors
 (define-constant err-not-authorized (err u1000))
 (define-constant err-mint-failed (err u6002))
-(define-constant ERR-BURN-FAILED (err u6003))
-(define-constant ERR-TRANSFER-FAILED (err u3000))
-(define-constant ERR-NOT-SUPPORTED (err u6004))
+(define-constant err-burn-failed (err u6003))
+(define-constant err-transfer-failed (err u3000))
+(define-constant err-not-supported (err u6004))
 
 (define-read-only (get-contract-owner)
   (ok (var-get contract-owner))
@@ -71,7 +71,7 @@
 ;; @returns (response uint)
 (define-read-only (get-total-supply)
   ;; least authority Issue D
-  ERR-NOT-SUPPORTED
+  err-not-supported
 )
 
 ;; @desc get-name
@@ -150,7 +150,7 @@
 ;; @returns (response uint)
 (define-read-only (get-total-supply-fixed)
   ;; least authority Issue D
-  ERR-NOT-SUPPORTED
+  err-not-supported
 )
 
 ;; @desc get-balance-fixed
@@ -176,7 +176,7 @@
 )
 
 (define-public (burn (amount uint) (sender principal))
-  ERR-BURN-FAILED
+  err-burn-failed
 )
 
 (define-public (mint-fixed (amount uint) (recipient principal))
@@ -204,7 +204,7 @@
 )
 
 (define-private (transfer-from-tuple (recipient { to: principal, amount: uint }))
-  (ok (unwrap! (transfer-fixed (get amount recipient) tx-sender (get to recipient) none) ERR-TRANSFER-FAILED))
+  (ok (unwrap! (transfer-fixed (get amount recipient) tx-sender (get to recipient) none) err-transfer-failed))
 )
 
 (define-public (send-many (recipients (list 200 { to: principal, amount: uint})))
