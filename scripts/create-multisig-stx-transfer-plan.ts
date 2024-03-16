@@ -82,7 +82,7 @@ const addressString = addressToString(address);
 (async () => {
   const fundingTx = await createMultisigStxTransaction(
     394399976n - 52501n,
-    `${addressString}.${lisaDaoContractName}`,
+    `SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH`,
     feeMultiplier,
     nonce++,
     pubKeys.length,
