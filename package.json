@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "multisig-plan": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/create-multisig-deployment-plan.ts",
+    "multisig-stx-transfer": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/create-multisig-stx-transfer-plan.ts",
     "multisig-sign": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/sign-multisig-deployment-plan.ts",
     "multisig-broadcast": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/broadcast-multisig-deployment-plan.ts",
     "multisig-analyse": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/analyse-multisig-deployment-plan.ts",
