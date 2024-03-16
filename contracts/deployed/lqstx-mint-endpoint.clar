@@ -4,7 +4,7 @@
 ;;
 ;; lqstx-mint-endpoint
 ;;
-(use-trait sip-010-trait .sip-010-trait.sip-010-trait)
+(use-trait sip-010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 (use-trait rebase-strategy-trait .rebase-strategy-trait.rebase-strategy-trait)
 
 (define-constant err-unauthorised (err u1000))

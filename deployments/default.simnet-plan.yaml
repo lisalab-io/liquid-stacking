@@ -128,11 +128,6 @@ plan:
             path: contracts/lisa-dao.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: sip-010-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/sip-010-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: lqstx-mint-registry
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/aux/lqstx-mint-registry.clar
@@ -227,14 +222,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 2
-      transactions:
         - emulated-contract-publish:
             contract-name: xverse-member1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 2
+      transactions:
         - emulated-contract-publish:
             contract-name: xverse-member10
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -355,14 +350,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/traits/rebase-strategy-trait.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 3
-      transactions:
         - emulated-contract-publish:
             contract-name: regtest-boot
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/regtest-boot.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 3
+      transactions:
         - emulated-contract-publish:
             contract-name: simnet-boot
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM

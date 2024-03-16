@@ -151,10 +151,6 @@ epoch = 2.4
 path = "contracts/strategies/public-pools/xverse-member.clar"
 epoch = 2.4
 
-[contracts.sip-010-trait]
-path = "contracts/traits/sip-010-trait.clar"
-epoch = 2.4
-
 [contracts.rebase-strategy-trait]
 path = "contracts/deployed/rebase-strategy-trait.clar"
 epoch = 2.4
