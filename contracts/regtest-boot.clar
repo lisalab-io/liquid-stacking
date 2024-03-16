@@ -20,6 +20,7 @@
 			{operator: tx-sender, enabled: true}	
 			{operator: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, enabled: true}
 			{operator: 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND, enabled: true}
+			{operator: 'ST2REHHS5J3CERCRBEPMGH7921Q6PYKAADT7JP2VB, enabled: true}
 		)))
 		(try! (contract-call? .operators set-proposal-threshold 2))
 		
