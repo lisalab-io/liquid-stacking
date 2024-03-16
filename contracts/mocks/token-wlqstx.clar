@@ -14,8 +14,8 @@
 (define-data-var contract-owner principal tx-sender)
 
 ;; errors
-(define-constant ERR-NOT-AUTHORIZED (err u1000))
-(define-constant ERR-MINT-FAILED (err u6002))
+(define-constant err-not-authorized (err u1000))
+(define-constant err-mint-failed (err u6002))
 (define-constant ERR-BURN-FAILED (err u6003))
 (define-constant ERR-TRANSFER-FAILED (err u3000))
 (define-constant ERR-NOT-SUPPORTED (err u6004))
@@ -32,7 +32,7 @@
 )
 
 (define-private (check-is-owner)
-  (ok (asserts! (is-eq tx-sender (var-get contract-owner)) ERR-NOT-AUTHORIZED))
+  (ok (asserts! (is-eq tx-sender (var-get contract-owner)) err-not-authorized))
 )
 
 (define-public (set-name (new-name (string-ascii 32)))
@@ -118,7 +118,7 @@
 ;; @returns (response bool uint)/ error
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
   (begin
-    (asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) ERR-NOT-AUTHORIZED)
+    (asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-not-authorized)
    (contract-call? .token-lqstx transfer (/ (* amount (pow u10 (unwrap-panic (get-base-decimals)))) (pow-decimals)) sender recipient memo)
   )
 )
@@ -172,7 +172,7 @@
 )
 
 (define-public (mint (amount uint) (recipient principal))
-  ERR-MINT-FAILED
+  err-mint-failed
 )
 
 (define-public (burn (amount uint) (sender principal))
