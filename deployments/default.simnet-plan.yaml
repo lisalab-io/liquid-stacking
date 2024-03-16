@@ -52,52 +52,52 @@ plan:
         - emulated-contract-publish:
             contract-name: sip-010-trait-ft-standard
             emulated-sender: SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE
-            path: /Users/chanahn/githome/liquid-stacking/./.cache/requirements/SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.clar
+            path: "./.cache/requirements/SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.clar"
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: trait-sip-010
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/traits/trait-sip-010.clar
+            path: contracts_modules/alex_v1/traits/trait-sip-010.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: trait-flash-loan-user
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/traits/trait-flash-loan-user.clar
+            path: contracts_modules/alex_v1/traits/trait-flash-loan-user.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: trait-semi-fungible
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/traits/trait-semi-fungible.clar
+            path: contracts_modules/alex_v1/traits/trait-semi-fungible.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: alex-vault-v1-1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/alex-vault-v1-1.clar
+            path: contracts_modules/alex_v1/alex-vault-v1-1.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: trait-ownable
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/traits/trait-ownable.clar
+            path: contracts_modules/alex_v1/traits/trait-ownable.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: token-amm-swap-pool-v1-1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/pool-token/token-amm-swap-pool-v1-1.clar
+            path: contracts_modules/alex_v1/pool-token/token-amm-swap-pool-v1-1.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: amm-swap-pool-v1-1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/pool/amm-swap-pool-v1-1.clar
+            path: contracts_modules/alex_v1/pool/amm-swap-pool-v1-1.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: token-wstx
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/wrapped-token/token-wstx.clar
+            path: contracts_modules/alex_v1/wrapped-token/token-wstx.clar
             clarity-version: 1
         - emulated-contract-publish:
             contract-name: trait-vault
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts_modules/alex_v1/traits/trait-vault.clar
+            path: contracts_modules/alex_v1/traits/trait-vault.clar
             clarity-version: 1
       epoch: "2.1"
     - id: 1
@@ -105,127 +105,127 @@ plan:
         - emulated-contract-publish:
             contract-name: pox-pools-1-cycle-v2
             emulated-sender: SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX
-            path: /Users/chanahn/githome/liquid-stacking/./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2.clar
+            path: "./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2.clar"
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: pox-fast-pool-v2
             emulated-sender: SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP
-            path: /Users/chanahn/githome/liquid-stacking/./.cache/requirements/SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2.clar
+            path: "./.cache/requirements/SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2.clar"
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: extension-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/extension-trait.clar
+            path: contracts/traits/extension-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: proposal-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/proposal-trait.clar
+            path: contracts/traits/proposal-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lisa-dao
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/lisa-dao.clar
+            path: contracts/lisa-dao.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: sip-010-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/sip-010-trait.clar
+            path: contracts/traits/sip-010-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-mint-registry
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/aux/lqstx-mint-registry.clar
+            path: contracts/aux/lqstx-mint-registry.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: proxy-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/proxy-trait.clar
+            path: contracts/traits/proxy-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: strategy-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/strategy-trait.clar
+            path: contracts/traits/strategy-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-vault
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/lqstx-vault.clar
+            path: contracts/extensions/lqstx-vault.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: stx-transfer-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/proxies/stx-transfer-proxy.clar
+            path: contracts/proxies/stx-transfer-proxy.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: token-lqstx
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/token-lqstx.clar
+            path: contracts/token-lqstx.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: token-vlqstx
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/token-vlqstx.clar
+            path: contracts/token-vlqstx.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-mint-endpoint-v1-01
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/lqstx-mint-endpoint.clar
+            path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: operators
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/operators.clar
+            path: contracts/extensions/operators.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member10
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member2
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member3
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member4
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member5
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member6
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member7
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member8
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: fastpool-member9
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/fastpool-member.clar
+            path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
       epoch: "2.4"
     - id: 2
@@ -233,127 +233,127 @@ plan:
         - emulated-contract-publish:
             contract-name: xverse-member1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member10
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member2
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member3
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member4
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member5
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member6
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member7
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member8
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: xverse-member9
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/xverse-member.clar
+            path: contracts/strategies/public-pools/xverse-member.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: public-pools-strategy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/strategies/public-pools/public-pools-strategy.clar
+            path: contracts/strategies/public-pools/public-pools-strategy.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: public-pools-strategy-manager
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/public-pools-strategy-manager.clar
+            path: contracts/extensions/public-pools-strategy-manager.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: token-lisa
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/token-lisa.clar
+            path: contracts/token-lisa.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: boot
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/boot.clar
+            path: contracts/boot.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lisa-rebase
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/lisa-rebase.clar
+            path: contracts/extensions/lisa-rebase.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lisa-transfer-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/proxies/lisa-transfer-proxy.clar
+            path: contracts/proxies/lisa-transfer-proxy.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: rebase-strategy-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/deployed/rebase-strategy-trait.clar
+            path: contracts/deployed/rebase-strategy-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-mint-endpoint
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/deployed/lqstx-mint-endpoint.clar
+            path: contracts/deployed/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-transfer-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/proxies/lqstx-transfer-proxy.clar
+            path: contracts/proxies/lqstx-transfer-proxy.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: mock-proposal
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/mocks/mock-proposal.clar
+            path: contracts/mocks/mock-proposal.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: mock-strategy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/mocks/mock-strategy.clar
+            path: contracts/mocks/mock-strategy.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: mock-strategy-manager
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/mocks/mock-strategy-manager.clar
+            path: contracts/mocks/mock-strategy-manager.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: rebase-1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/rules/rebase-1.clar
+            path: contracts/rules/rebase-1.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: rebase-mock
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/mocks/rebase-mock.clar
+            path: contracts/mocks/rebase-mock.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: rebase-strategy-trait-v1-01
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/rebase-strategy-trait.clar
+            path: contracts/traits/rebase-strategy-trait.clar
             clarity-version: 2
       epoch: "2.4"
     - id: 3
@@ -361,41 +361,41 @@ plan:
         - emulated-contract-publish:
             contract-name: regtest-boot
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/regtest-boot.clar
+            path: contracts/regtest-boot.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: simnet-boot
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/simnet-boot.clar
+            path: contracts/simnet-boot.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: sip-010-extensions-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/sip-010-extensions-trait.clar
+            path: contracts/traits/sip-010-extensions-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: sip-010-transferable-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/traits/sip-010-transferable-trait.clar
+            path: contracts/traits/sip-010-transferable-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: stx-transfer-many-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/proxies/stx-transfer-many-proxy.clar
+            path: contracts/proxies/stx-transfer-many-proxy.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: token-vesting
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/token-vesting.clar
+            path: contracts/extensions/token-vesting.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: token-wlqstx
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/mocks/token-wlqstx.clar
+            path: contracts/mocks/token-wlqstx.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: treasury
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/chanahn/githome/liquid-stacking/contracts/extensions/treasury.clar
+            path: contracts/extensions/treasury.clar
             clarity-version: 2
       epoch: "2.4"
