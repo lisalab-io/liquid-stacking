@@ -35,5 +35,10 @@
     "vitest": "^1.3.1",
     "vitest-environment-clarinet": "^2.0.0",
     "yaml": "^2.4.1"
+  },
+  "resolutions": {
+    "@stacks/stacking": "6.11.4-pr.36558cf.0",
+    "@hirosystems/clarinet-sdk@2": "2.4.0-beta2",
+    "@hirosystems/clarinet-sdk": "2.4.0-beta2"
   }
 }
