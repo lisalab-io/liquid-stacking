@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (define-constant err-unauthorised (err u5000))
 
 (define-data-var pool-reward-pox-addr

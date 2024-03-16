@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (impl-trait .trait-sip-010.sip-010-trait)
 
 (define-fungible-token wlqstx)

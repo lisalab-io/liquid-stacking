@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BUSL-1.1
+
 import { AddressHashMode, AddressVersion, addressFromPublicKeys, addressToString, compressPublicKey, pubKeyfromPrivKey } from "@stacks/transactions";
 import { getNetwork, getStacksPubkeys, loadConfig } from "./config.ts";
 import { bytesToHex } from '@stacks/common';

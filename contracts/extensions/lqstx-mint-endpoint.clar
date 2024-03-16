@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 ;;
 ;; lqstx-mint-endpoint-v1-01
 ;;

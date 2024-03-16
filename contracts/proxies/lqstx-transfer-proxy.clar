@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (impl-trait .proxy-trait.proxy-trait)
 
 (define-constant err-invalid-payload (err u4000))
