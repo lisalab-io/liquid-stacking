@@ -12,22 +12,28 @@
     "multisig-analyse": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/analyse-multisig-deployment-plan.ts",
     "get-keys": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/get-secret-pubkeys.ts",
     "generate-secret": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/generate-secret.ts",
+    "replace:mainnet": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/replace-mainnet-address.ts",
+    "replace:testnet": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/replace-testnet-address.ts",
     "setup:clarity": "./scripts/clarinet_manager.sh clean && ./scripts/clarinet_manager.sh install",
-    "test": "vitest run",
-    "test:report": "vitest run -- --coverage --costs",
-    "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test:report\""
+    "test": "npm run replace:mainnet && vitest run && npm run replace:testnet",
+    "test:report": "npm run replace:testnet &&  vitest run -- --coverage --costs && npm run replace:testnet",
+    "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test:report\"",
+    "generate:report": "genhtml --branch-coverage -o coverage lcov.info"
   },
   "author": "",
   "license": "BSL",
+  "prettier": "@stacks/prettier-config",
   "dependencies": {
-    "@hirosystems/clarinet-sdk": "^1.0.0",
+    "@hirosystems/clarinet-sdk": "2.4.0-beta2",
+    "@stacks/stacking": "6.11.4-pr.36558cf.0",
+    "@stacks/prettier-config": "^0.0.10",
     "@stacks/transactions": "^6.9.0",
     "chokidar-cli": "^3.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
-    "vite": "^4.4.9",
-    "vitest": "^0.34.4",
-    "vitest-environment-clarinet": "^1.0.0",
+    "vite": "^5.1.4",
+    "vitest": "^1.3.1",
+    "vitest-environment-clarinet": "^2.0.0",
     "yaml": "^2.4.1"
   }
 }
