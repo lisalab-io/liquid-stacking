@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "multisig-plan": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/create-multisig-deployment-plan.ts",
+    "multisig-stx-transfer": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/create-multisig-stx-transfer-plan.ts",
     "multisig-sign": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/sign-multisig-deployment-plan.ts",
     "multisig-broadcast": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/broadcast-multisig-deployment-plan.ts",
     "multisig-analyse": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/analyse-multisig-deployment-plan.ts",
@@ -22,7 +23,7 @@
   "license": "BSL",
   "prettier": "@stacks/prettier-config",
   "dependencies": {
-    "@hirosystems/clarinet-sdk": "2.4.0-beta2",
+    "@hirosystems/clarinet-sdk": "2.4.0-beta3",
     "@stacks/stacking": "6.11.4-pr.36558cf.0",
     "@stacks/prettier-config": "^0.0.10",
     "@stacks/transactions": "^6.9.0",
