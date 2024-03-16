@@ -235,6 +235,10 @@ epoch = 2.4
 path = "contracts/regtest-boot.clar"
 epoch = 2.4
 
+[contracts.simnet-boot]
+path = "contracts/simnet-boot.clar"
+epoch = 2.4
+
 [contracts.amm-swap-pool-v1-1]
 path = "contracts_modules/alex_v1/pool/amm-swap-pool-v1-1.clar"
 depends_on = ["trait-ownable", "trait-sip-010", "token-amm-swap-pool-v1-1"]

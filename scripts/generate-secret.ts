@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BUSL-1.1
+
 import { makeRandomPrivKey } from "@stacks/transactions";
 import { bytesToHex } from '@stacks/common';
 
