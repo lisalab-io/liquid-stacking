@@ -41,7 +41,7 @@
 		)))
 
 		;; Enable whitelist
-		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-use-whitelist true))
+		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-use-whitelist false))
 		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-whitelisted-many 
 			(list 
 				'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7

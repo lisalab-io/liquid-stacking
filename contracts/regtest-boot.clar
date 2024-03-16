@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (impl-trait .proposal-trait.proposal-trait)
 
 (define-public (execute (sender principal))
@@ -17,12 +20,11 @@
 			{operator: tx-sender, enabled: true}	
 			{operator: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, enabled: true}
 			{operator: 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND, enabled: true}
+			{operator: 'ST2REHHS5J3CERCRBEPMGH7921Q6PYKAADT7JP2VB, enabled: true}
 		)))
 		(try! (contract-call? .operators set-proposal-threshold 2))
 		
 		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-paused false))
-		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-activation-burn-block u0))
-		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-reward-cycle-length u200))
 		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-mint-delay u14))
 		(try! (contract-call? .mock-strategy-manager set-authorised-manager 'ST2QXSK64YQX3CQPC530K79XWQ98XFAM9W3XKEH3N true))
 		(try! (contract-call? .mock-strategy-manager set-authorised-manager 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND true))

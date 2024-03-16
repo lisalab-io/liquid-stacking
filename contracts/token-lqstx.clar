@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 ;; lqstx
 ;;
 
@@ -41,7 +44,9 @@
 (define-public (set-reserve (new-reserve uint))
 	(begin 
 		(try! (is-dao-or-extension))
-		(ok (var-set reserve new-reserve))))
+		(var-set reserve new-reserve)
+		(print {notification: "rebase", payload: {reserve: (var-get reserve), total-shares: (ft-get-supply lqstx)}})
+		(ok true)))
 
 (define-public (add-reserve (increment uint))
 	(set-reserve (+ (var-get reserve) increment)))
@@ -109,10 +114,12 @@
 ;; public calls
 
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
-	(begin
+	(let (
+			(shares (get-tokens-to-shares amount)))
 		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
-		(try! (ft-transfer? lqstx (get-tokens-to-shares amount) sender recipient))
-		(print { type: "transfer", amount: amount, sender: sender, recipient: recipient, memo: memo })
+		(try! (ft-transfer? lqstx shares sender recipient))
+		(match memo to-print (print to-print) 0x)
+		(print { notification: "transfer", payload: { amount: amount, shares: shares, sender: sender, recipient: recipient } })
 		(ok true)))
 
 ;; private functions

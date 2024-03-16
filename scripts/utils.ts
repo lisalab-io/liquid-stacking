@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BUSL-1.1
+
 import { Address, SpendingCondition, StacksPublicKey } from "@stacks/transactions";
 import fs from "fs";
 

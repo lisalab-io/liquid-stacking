@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 (use-trait proposal-trait .proposal-trait.proposal-trait)
 
 (define-constant err-unauthorised (err u1000))

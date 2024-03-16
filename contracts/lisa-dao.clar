@@ -1,3 +1,6 @@
+
+;; SPDX-License-Identifier: BUSL-1.1
+
 ;; lisa dao
 
 (use-trait proposal-trait .proposal-trait.proposal-trait)
