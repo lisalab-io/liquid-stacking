@@ -32,8 +32,8 @@
 		(try! (contract-call? .operators set-proposal-threshold 4))
 
 		;; Set initial strategy managers, sender is the deployer
-		;; TODO add manager
 		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager sender true))
+		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager 'SP2G5X5HCJW31Q3Z71XGPV5S8FNBZMWW7PK45ZWG8 true))
 
 		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list
