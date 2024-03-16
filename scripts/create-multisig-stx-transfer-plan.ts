@@ -15,8 +15,6 @@ import fs from 'fs';
 import { getNetwork, getStacksAddress, getStacksPubkeys } from './config.ts';
 import { assertSigner, planFile, verboseLog } from './utils.ts';
 
-const lisaDaoContractName = 'lisa-dao';
-
 const network = getNetwork();
 const address = getStacksAddress();
 const pubKeys = getStacksPubkeys();
@@ -76,8 +74,6 @@ function addPubkeyFields(tx: StacksTransaction, pubKeys: StacksPublicKey[]) {
   for (const pk of pubKeys) tx.appendPubkey(pk);
   return tx;
 }
-
-const addressString = addressToString(address);
 
 (async () => {
   const fundingTx = await createMultisigStxTransaction(
