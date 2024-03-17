@@ -5,7 +5,10 @@
 ;; lqstx-mint-registry
 ;;
 
+;; __IF_MAINNET__
 (use-trait sip-010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
+;; (use-trait sip-010-trait .sip-010-trait.sip-010-trait)
+;; __ENDIF__
 
 (define-constant err-unauthorised (err u1000))
 (define-constant err-unknown-request-id (err u1008))
@@ -29,7 +32,7 @@
 
 (define-read-only (is-dao-or-extension)
 	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
-	
+
 (define-read-only (get-mint-request-nonce)
 	(var-get mint-request-nonce))
 
@@ -40,7 +43,7 @@
 	(ok (unwrap! (map-get? mint-requests request-id) err-unknown-request-id)))
 
 (define-read-only (get-burn-request-or-fail (request-id uint))
-	(ok (unwrap! (map-get? burn-requests request-id) err-unknown-request-id)))	
+	(ok (unwrap! (map-get? burn-requests request-id) err-unknown-request-id)))
 
 (define-read-only (get-mint-requests-pending-or-default (user principal))
     (default-to (list ) (map-get? mint-requests-pending user)))
@@ -71,29 +74,29 @@
 		)
 		(try! (is-dao-or-extension))
 		(map-set burn-requests id details)
-		(ok id)))	
+		(ok id)))
 
 (define-public (set-mint-requests-pending (requested-by principal) (new-list (list 1000 uint)))
-	(begin 
+	(begin
 		(try! (is-dao-or-extension))
 		(ok (map-set mint-requests-pending requested-by new-list))))
 
 (define-public (set-burn-requests-pending (requested-by principal) (new-list (list 1000 uint)))
-	(begin 
+	(begin
 		(try! (is-dao-or-extension))
 		(ok (map-set burn-requests-pending requested-by new-list))))
 
 (define-public (set-mint-requests-pending-amount (new-amount uint))
-	(begin 
+	(begin
 		(try! (is-dao-or-extension))
 		(ok (var-set mint-requests-pending-amount new-amount))))
 
 (define-public (transfer (amount uint) (recipient principal) (token-trait <sip-010-trait>))
-    (begin 
+    (begin
         (try! (is-dao-or-extension))
         (as-contract (contract-call? token-trait transfer amount tx-sender recipient none))))
 
 (define-public (stx-transfer (amount uint) (recipient principal))
-	(begin 
+	(begin
 		(try! (is-dao-or-extension))
 		(as-contract (stx-transfer? amount tx-sender recipient))))

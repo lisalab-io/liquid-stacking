@@ -4,7 +4,11 @@
 ;;
 ;; lqstx-mint-endpoint
 ;;
+
+;; __IF_MAINNET__
 (use-trait sip-010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
+;; (use-trait sip-010-trait .sip-010-trait.sip-010-trait)
+;; __ENDIF__
 (use-trait rebase-strategy-trait .rebase-strategy-trait.rebase-strategy-trait)
 
 (define-constant err-unauthorised (err u1000))
@@ -82,7 +86,7 @@
     ;; (some (contract-call? 'SP000000000000000000002Q6VF78.pox-3 current-pox-reward-cycle)))
     (if (>= stacks-height (var-get activation-block))
         (some (/ (- stacks-height (var-get activation-block)) (var-get reward-cycle-length)))
-        none))            
+        none))
 
 ;; @dev used for testing only
 (define-read-only (get-first-stacks-block-in-reward-cycle (reward-cycle uint))
@@ -98,12 +102,12 @@
 ;; governance calls
 
 (define-public (set-use-whitelist (new-use bool))
-    (begin 
+    (begin
         (try! (is-dao-or-extension))
         (ok (var-set use-whitelist new-use))))
 
 (define-public (set-whitelisted (user principal) (new-whitelisted bool))
-    (begin 
+    (begin
         (try! (is-dao-or-extension))
         (set-whitelisted-private user new-whitelisted)))
 
@@ -189,7 +193,7 @@
         (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending sender (unwrap-panic (as-max-len? (append (get-burn-requests-pending-or-default sender) request-id) u1000))))
         (match (contract-call? rebase-trait finalize-burn request-id)
             ok-value (ok { request-id: request-id, status: FINALIZED })
-            err-value (begin (print { type: "burn-request", id: request-id, details: request-details, finalize-err: err-value }) (ok { request-id: request-id, status: PENDING })))))           
+            err-value (begin (print { type: "burn-request", id: request-id, details: request-details, finalize-err: err-value }) (ok { request-id: request-id, status: PENDING })))))
 
 (define-public (finalize-burn (request-id uint))
     (let (
@@ -197,7 +201,7 @@
             (transfer-vlqstx (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx)))
             (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
             (validation-data (try! (validate-burn-request request-id))))
-        (try! (is-paused-or-fail))    
+        (try! (is-paused-or-fail))
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
         (try! (contract-call? .token-lqstx dao-burn (get vaulted-amount validation-data) (as-contract tx-sender)))
