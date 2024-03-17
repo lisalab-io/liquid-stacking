@@ -35,6 +35,10 @@ epoch = 2.4
 path = "contracts/extensions/token-vesting.clar"
 epoch = 2.4
 
+[contracts.sip-010-trait]
+path = "contracts/traits/sip-010-trait.clar"
+epoch = 2.4
+
 [contracts.strategy-trait]
 path = "contracts/traits/strategy-trait.clar"
 epoch = 2.4
