@@ -27,7 +27,7 @@
 
 ;; corresponds to `first-burnchain-block-height` and `pox-reward-cycle-length` in pox-3
 ;; __IF_MAINNET__
-(define-constant pox-info (unwrap-panic (contract-call? 'ST000000000000000000002AMW42H.pox-3 get-pox-info)))
+(define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
 (define-constant activation-burn-block (get first-burnchain-block-height pox-info))
 (define-constant reward-cycle-length (get reward-cycle-length pox-info))
 ;; (define-constant activation-burn-block u0)
