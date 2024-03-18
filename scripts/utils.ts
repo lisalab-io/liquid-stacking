@@ -29,7 +29,7 @@ export function equalByteArrays(a: Uint8Array, b: Uint8Array) {
 
 export function assertSigner(spendingCondition: SpendingCondition, signer: Address) {
 	if (spendingCondition.signer !== signer.hash160)
-		throw new Error(`Signer mismatch, expected ${signer}, got ${spendingCondition.signer}`);
+		throw new Error(`Signer mismatch, expected ${signer.hash160}, got ${spendingCondition.signer}`);
 }
 
 export async function readPlan() {
