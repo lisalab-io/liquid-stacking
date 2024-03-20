@@ -2,7 +2,7 @@
 ;; SPDX-License-Identifier: BUSL-1.1
 
 ;;
-;; lqstx-mint-endpoint-v1-01
+;; lqstx-mint-endpoint-v1-02
 ;;
 
 ;; __IF_MAINNET__
@@ -10,11 +10,11 @@
 ;; (use-trait sip-010-trait .sip-010-trait.sip-010-trait)
 ;; __ENDIF__
 
-(define-constant err-unauthorised (err u1000))
-(define-constant err-paused (err u1001))
-(define-constant err-request-pending (err u1006))
-(define-constant err-request-finalized-or-revoked (err u1007))
-(define-constant err-not-whitelisted (err u1008))
+(define-constant err-unauthorised (err u3000))
+(define-constant err-paused (err u7001))
+(define-constant err-request-pending (err u7006))
+(define-constant err-request-finalized-or-revoked (err u7007))
+(define-constant err-not-whitelisted (err u7008))
 
 (define-constant PENDING 0x00)
 (define-constant FINALIZED 0x01)

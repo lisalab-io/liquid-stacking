@@ -117,7 +117,7 @@ describe(contracts.endpoint, () => {
     goToNextCycle();
 
     const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
-    expect(finaliseErr.result).toBeErr(Cl.uint(1006));
+    expect(finaliseErr.result).toBeErr(Cl.uint(7006));
 
     simnet.mineEmptyBlocks(mintDelay);
 
@@ -126,7 +126,7 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
     ]);
     expect(responses[0].result).toBeOk(Cl.bool(true));
-    expect(responses[1].result).toBeErr(Cl.uint(1007));
+    expect(responses[1].result).toBeErr(Cl.uint(7007));
   });
 
   it('can revoke mint', () => {
@@ -138,7 +138,7 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], bot),
       tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
     ]);
-    expect(responses[0].result).toBeErr(Cl.uint(1000));
+    expect(responses[0].result).toBeErr(Cl.uint(3000));
     expect(responses[1].result).toBeOk(Cl.bool(true));
 
     goToNextCycle();
@@ -147,7 +147,7 @@ describe(contracts.endpoint, () => {
     responses = simnet.mineBlock([
       tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
     ]);
-    expect(responses[0].result).toBeErr(Cl.uint(1007));
+    expect(responses[0].result).toBeErr(Cl.uint(7007));
   });
 
   it('can request burn', () => {
@@ -205,7 +205,7 @@ describe(contracts.endpoint, () => {
     expect(responses[0].result).toBeOk(Cl.uint(100e6));
     expect(responses[1].result).toBeOk(Cl.uint(100e6));
     expect(responses[2].result).toBeOk(Cl.bool(true));
-    expect(responses[3].result).toBeErr(Cl.uint(1007));
+    expect(responses[3].result).toBeErr(Cl.uint(7007));
   });
 
   it('can revoke burn', () => {
@@ -237,9 +237,9 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
     ]);
     expect(responses[0].result).toBeOk(Cl.uint(100e6));
-    expect(responses[1].result).toBeErr(Cl.uint(1000));
+    expect(responses[1].result).toBeErr(Cl.uint(3000));
     expect(responses[2].result).toBeOk(Cl.bool(true));
-    expect(responses[3].result).toBeErr(Cl.uint(1007));
+    expect(responses[3].result).toBeErr(Cl.uint(7007));
   });
 
   it('can request burn and finalized immediately', () => {
@@ -274,7 +274,7 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.uint(100e6)], bot),
       tx.callPublicFn(contracts.manager, 'fund-strategy', [Cl.uint(100e6)], manager),
     ]);
-    expect(responses[0].result).toBeErr(Cl.uint(1006));
+    expect(responses[0].result).toBeErr(Cl.uint(7006));
     expect(responses[1].result).toBeErr(Cl.uint(1000));
     expect(responses[2].result).toBeOk(Cl.uint(100e6));
 
@@ -295,7 +295,7 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
     );
-    expect(responses[2].result).toBeErr(Cl.uint(1006));
+    expect(responses[2].result).toBeErr(Cl.uint(7006));
     expect(responses[3].result).toBeErr(Cl.uint(1000));
     expect(responses[4].result).toBeOk(Cl.uint(100e6));
     expect(responses[5].result).toBeErr(Cl.uint(1));
@@ -311,7 +311,7 @@ describe(contracts.endpoint, () => {
     goToNextCycle();
 
     const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
-    expect(finaliseErr.result).toBeErr(Cl.uint(1006));
+    expect(finaliseErr.result).toBeErr(Cl.uint(7006));
 
     simnet.mineEmptyBlocks(mintDelay);
 
