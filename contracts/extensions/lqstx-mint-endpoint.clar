@@ -25,13 +25,14 @@
 (define-data-var paused bool true)
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
 
-;; corresponds to `first-burnchain-block-height` and `pox-reward-cycle-length` in pox-3
 ;; __IF_MAINNET__
 (define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
 (define-constant activation-burn-block (get first-burnchain-block-height pox-info))
 (define-constant reward-cycle-length (get reward-cycle-length pox-info))
+(define-constant prepare-cycle-length (get prepare-cycle-length pox-info))
 ;; (define-constant activation-burn-block u0)
 ;; (define-constant reward-cycle-length u200)
+;; (define-constant prepare-cycle-length u100)
 ;; __ENDIF__
 
 (define-data-var use-whitelist bool false)
@@ -45,7 +46,7 @@
 (define-read-only (is-paused)
     (var-get paused))
 
-(define-read-only (is-paused-or-fail)
+(define-read-only (is-not-paused-or-fail)
     (ok (asserts! (not (is-paused)) err-paused)))
 
 (define-read-only (get-mint-request-or-fail (request-id uint))
@@ -85,9 +86,10 @@
         (asserts! (>= (stx-get-balance .lqstx-vault) vaulted-amount) err-request-pending)
         (ok { vaulted-amount: vaulted-amount, request-id-idx: request-id-idx })))
 
+;; @dev get-reward-cycle measures prepare to prepare, not end to end
 (define-read-only (get-reward-cycle (burn-block uint))
     (if (>= burn-block activation-burn-block)
-        (some (/ (- burn-block activation-burn-block) reward-cycle-length))
+        (some (/ (- (+ burn-block prepare-cycle-length) activation-burn-block) reward-cycle-length))
         none))
 
 (define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
@@ -108,7 +110,7 @@
             (cycle (unwrap-panic (get-reward-cycle burn-block-height)))
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details))))
-        (try! (is-paused-or-fail))
+        (try! (is-not-paused-or-fail))
         (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender .lqstx-vault))
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
@@ -121,7 +123,7 @@
             (request-details (try! (get-mint-request-or-fail request-id)))
             (mint-requests (get-mint-requests-pending-or-default (get requested-by request-details)))
             (request-id-idx (unwrap! (index-of? mint-requests request-id) err-request-finalized-or-revoked)))
-        (try! (is-paused-or-fail))
+        (try! (is-not-paused-or-fail))
         (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
         (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
         (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get amount request-details), recipient: (get requested-by request-details) }))))
@@ -136,7 +138,7 @@
             (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
             (request-id-idx (unwrap! (index-of? burn-requests request-id) err-request-finalized-or-revoked))
             (lqstx-amount (contract-call? .token-vlqstx get-shares-to-tokens (get wrapped-amount request-details))))
-        (try! (is-paused-or-fail))
+        (try! (is-not-paused-or-fail))
         (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
         (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
         (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx))
@@ -180,7 +182,7 @@
             (request-details (try! (get-mint-request-or-fail request-id)))
             (mint-requests (get-mint-requests-pending-or-default (get requested-by request-details)))
             (request-id-idx (try! (validate-mint-request request-id))))
-        (try! (is-paused-or-fail))
+        (try! (is-not-paused-or-fail))
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-lqstx dao-mint (get amount request-details) (get requested-by request-details)))
         (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: FINALIZED })))
@@ -198,7 +200,7 @@
             (vlqstx-amount (contract-call? .token-vlqstx get-tokens-to-shares amount))
             (request-details { requested-by: sender, amount: amount, wrapped-amount: vlqstx-amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details))))
-        (try! (is-paused-or-fail))
+        (try! (is-not-paused-or-fail))
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-vlqstx mint amount tx-sender))
         (try! (contract-call? .token-vlqstx transfer vlqstx-amount tx-sender .lqstx-mint-registry none))
@@ -212,7 +214,7 @@
             (transfer-vlqstx (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx)))
             (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
             (validation-data (try! (validate-burn-request request-id))))
-        (try! (is-paused-or-fail))
+        (try! (is-not-paused-or-fail))
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
         (try! (contract-call? .token-lqstx dao-burn (get vaulted-amount validation-data) (as-contract tx-sender)))
