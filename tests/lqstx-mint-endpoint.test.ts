@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 
 import { tx } from '@hirosystems/clarinet-sdk';
-import { Cl, ResponseOkCV, UIntCV, cvToString } from '@stacks/transactions';
+import { Cl, ResponseOkCV, TupleCV, UIntCV } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 
 const accounts = simnet.getAccounts();
@@ -374,9 +374,11 @@ describe(contracts.endpoint, () => {
   });
 
   it('request cycle respects cutoff', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+
     expect(getRequestCycle()).toBe(0n);
-    // cycle length - prepare cycle length - cutoff - blocks for deployment
-    simnet.mineEmptyBlocks(1050 - 50 - 100 - 4 - 1);
+    // cycle length - prepare cycle length - cutoff - blocks for deployment and prepare
+    simnet.mineEmptyBlocks(1050 - 50 - 100 - 6);
     // we are at the end of request cycle 0
     expect(simnet.blockHeight).toBe(899);
     expect(getRequestCycle()).toBe(0n);
@@ -391,5 +393,14 @@ describe(contracts.endpoint, () => {
     // that is 1050 + 1050 - 50 - 100
     expect(simnet.blockHeight).toBe(1950);
     expect(getRequestCycle()).toBe(2n);
+
+    const response = requestMint();
+    console.log(response.events[1].data);
+    expect(response.result).toBeOk(Cl.uint(1));
+    expect(response.events[0].event).toBe('stx_transfer_event');
+    expect(response.events[1].event).toBe('print_event');
+    expect(
+      ((response.events[1].data.value as TupleCV).data.details as TupleCV).data['requested-at']
+    ).toBeUint(2);
   });
 });
