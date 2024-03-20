@@ -34,6 +34,7 @@ are in the form `(err uint)` and they are unique across all contracts.
 | lisa-dao                      | err-unauthorised                 | (err u1000) |             |
 | lqstx-mint-endpoint           | err-unauthorised                 | (err u1000) |             |
 | lqstx-mint-endpoint-v1-01     | err-unauthorised                 | (err u1000) |             |
+| lqstx-mint-registry           | err-unauthorised                 | (err u1000) |             |
 | lqstx-vault                   | err-unauthorised                 | (err u1000) |             |
 | operators                     | err-unauthorised                 | (err u1000) |             |
 | token-vesting                 | err-unauthorised                 | (err u1000) |             |
@@ -60,7 +61,6 @@ are in the form `(err uint)` and they are unique across all contracts.
 | lisa-rebase                   | err-unauthorised                 | (err u3000) |             |
 | lisa-rebase-v1-02             | err-unauthorised                 | (err u3000) |             |
 | lqstx-mint-endpoint-v1-02     | err-unauthorised                 | (err u3000) |             |
-| lqstx-mint-registry           | err-unauthorised                 | (err u3000) |             |
 | public-pools-strategy-manager | err-unauthorised                 | (err u3000) |             |
 | token-lisa                    | err-unauthorised                 | (err u3000) |             |
 | token-lqstx                   | err-unauthorised                 | (err u3000) |             |
