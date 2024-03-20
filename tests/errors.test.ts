@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BUSL-1.1
+
 import { describe, it } from 'vitest';
 import { createErrorsTable } from '../scripts/lib/error-codes.ts';
 
