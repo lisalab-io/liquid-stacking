@@ -24,13 +24,14 @@
 
 (define-data-var paused bool true)
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
-(define-data-var request-cutoff uint u100) ;; request must be made 100 blocks before prepare stage starts
 
 ;; __IF_MAINNET__
+(define-data-var request-cutoff uint u100) ;; request must be made 100 blocks before prepare stage starts
 (define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
 (define-constant activation-burn-block (get first-burnchain-block-height pox-info))
 (define-constant reward-cycle-length (get reward-cycle-length pox-info))
 (define-constant prepare-cycle-length (get prepare-cycle-length pox-info))
+;; (define-data-var request-cutoff uint u10)
 ;; (define-constant activation-burn-block u0)
 ;; (define-constant reward-cycle-length u200)
 ;; (define-constant prepare-cycle-length u100)
