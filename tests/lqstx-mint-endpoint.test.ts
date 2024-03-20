@@ -1,8 +1,7 @@
-
 // SPDX-License-Identifier: BUSL-1.1
 
 import { tx } from '@hirosystems/clarinet-sdk';
-import { Cl, ResponseOkCV, UIntCV } from '@stacks/transactions';
+import { Cl, ResponseOkCV, UIntCV, cvToString } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 
 const accounts = simnet.getAccounts();
@@ -64,6 +63,23 @@ const getRewardCycle = () => {
   ).value.value;
 };
 
+const getRequestCycle = () => {
+  return (
+    simnet.callReadOnlyFn(
+      contracts.endpoint,
+      'get-request-cycle',
+      [Cl.uint(simnet.blockHeight)],
+      user
+    ).result as ResponseOkCV<UIntCV>
+  ).value.value;
+};
+
+const getRequestCutoff = () => {
+  return (
+    simnet.callReadOnlyFn(contracts.endpoint, 'get-request-cutoff', [], user)
+      .result as ResponseOkCV<UIntCV>
+  ).value;
+};
 const getBlocksToStartOfCycle = (cycle: bigint) => {
   return (
     Number(
@@ -355,5 +371,25 @@ describe(contracts.endpoint, () => {
     ]);
     expect(responses[0].result).toBeErr(Cl.uint(1001));
     expect(responses[1].result).toBeOk(Cl.bool(true));
+  });
+
+  it('request cycle respects cutoff', () => {
+    expect(getRequestCycle()).toBe(0n);
+    // cycle length - prepare cycle length - cutoff - blocks for deployment
+    simnet.mineEmptyBlocks(1050 - 50 - 100 - 4 - 1);
+    // we are at the end of request cycle 0
+    expect(simnet.blockHeight).toBe(899);
+    expect(getRequestCycle()).toBe(0n);
+
+    simnet.mineEmptyBlocks(1050); // cycle length
+    // we are at end of request cycle 1
+    expect(simnet.blockHeight).toBe(1949);
+    expect(getRequestCycle()).toBe(1n);
+
+    simnet.mineEmptyBlocks(1);
+    // we are at beginning of request cycle 2
+    // that is 1050 + 1050 - 50 - 100
+    expect(simnet.blockHeight).toBe(1950);
+    expect(getRequestCycle()).toBe(2n);
   });
 });
