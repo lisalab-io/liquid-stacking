@@ -93,14 +93,17 @@
         (some (/ (- burn-block activation-burn-block) reward-cycle-length))
         none))
 
+(define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
+    (+ activation-burn-block (* reward-cycle-length reward-cycle)))
+
 ;; @dev get-request-cycle measures request-cutoff to request-cutoff
 (define-read-only (get-request-cycle (burn-block uint))
     (if (>= burn-block activation-burn-block)
         (some (/ (- (+ burn-block prepare-cycle-length (var-get request-cutoff)) activation-burn-block) reward-cycle-length))
         none))
 
-(define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
-    (+ activation-burn-block (* reward-cycle-length reward-cycle)))
+(define-read-only (get-first-burn-block-in-request-cycle (reward-cycle uint))
+    (- (+ activation-burn-block (* reward-cycle-length reward-cycle)) prepare-cycle-length (var-get request-cutoff)))
 
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
