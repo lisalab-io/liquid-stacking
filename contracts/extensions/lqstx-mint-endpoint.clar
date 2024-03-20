@@ -34,7 +34,7 @@
 ;; (define-data-var request-cutoff uint u10)
 ;; (define-constant activation-burn-block u0)
 ;; (define-constant reward-cycle-length u200)
-;; (define-constant prepare-cycle-length u100)
+;; (define-constant prepare-cycle-length u10)
 ;; __ENDIF__
 
 (define-data-var use-whitelist bool false)
