@@ -24,6 +24,7 @@
 
 (define-data-var paused bool true)
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
+(define-data-var request-cutoff uint u100) ;; request must be made 100 blocks before prepare stage starts
 
 ;; __IF_MAINNET__
 (define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
@@ -86,10 +87,16 @@
         (asserts! (>= (stx-get-balance .lqstx-vault) vaulted-amount) err-request-pending)
         (ok { vaulted-amount: vaulted-amount, request-id-idx: request-id-idx })))
 
-;; @dev get-reward-cycle measures prepare to prepare, not end to end
+;; @dev get-reward-cycle measures end to end
 (define-read-only (get-reward-cycle (burn-block uint))
     (if (>= burn-block activation-burn-block)
-        (some (/ (- (+ burn-block prepare-cycle-length) activation-burn-block) reward-cycle-length))
+        (some (/ (- burn-block activation-burn-block) reward-cycle-length))
+        none))
+
+;; @dev get-request-cycle measures request-cutoff to request-cutoff
+(define-read-only (get-request-cycle (burn-block uint))
+    (if (>= burn-block activation-burn-block)
+        (some (/ (- (+ burn-block prepare-cycle-length (var-get request-cutoff)) activation-burn-block) reward-cycle-length))
         none))
 
 (define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
@@ -97,6 +104,9 @@
 
 (define-read-only (get-mint-delay)
     (var-get mint-delay))
+
+(define-read-only (get-request-cutoff)
+    (var-get request-cutoff))
 
 (define-read-only (is-whitelisted-or-mint-for-all (user principal))
     (or (not (var-get use-whitelist)) (default-to false (map-get? whitelisted user))))
@@ -107,7 +117,7 @@
 (define-public (request-mint (amount uint))
     (let (
             (sender tx-sender)
-            (cycle (unwrap-panic (get-reward-cycle burn-block-height)))
+            (cycle (unwrap-panic (get-request-cycle burn-block-height)))
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details))))
         (try! (is-not-paused-or-fail))
@@ -175,6 +185,11 @@
         (try! (is-dao-or-extension))
         (ok (var-set mint-delay new-delay))))
 
+(define-public (set-request-cutoff (new-cutoff uint))
+    (begin
+        (try! (is-dao-or-extension))
+        (ok (var-set request-cutoff new-cutoff))))
+
 ;; privileged calls
 
 (define-public (finalize-mint (request-id uint))
@@ -196,7 +211,7 @@
 (define-public (request-burn (sender principal) (amount uint))
     (let (
             ;; @dev requested-at not used for burn
-            (cycle (unwrap-panic (get-reward-cycle burn-block-height)))
+            (cycle (unwrap-panic (get-request-cycle burn-block-height)))
             (vlqstx-amount (contract-call? .token-vlqstx get-tokens-to-shares amount))
             (request-details { requested-by: sender, amount: amount, wrapped-amount: vlqstx-amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details))))

@@ -7,8 +7,8 @@
 	(begin
 		(try! (contract-call? .lisa-dao set-extensions (list
 			{extension: .lqstx-mint-endpoint, enabled: false}
-			{extension: .lqstx-mint-endpoint-v1-01, enabled: true}
-			{extension: .lisa-rebase, enabled: true}
+			{extension: .lqstx-mint-endpoint-v1-02, enabled: true}
+			{extension: .lisa-rebase-v1-02, enabled: true}
 			{extension: .rebase-mock, enabled: true}
 			{extension: .mock-strategy-manager, enabled: true}
 			{extension: .lqstx-vault, enabled: true}
@@ -24,8 +24,8 @@
 		)))
 		(try! (contract-call? .operators set-proposal-threshold 2))
 
-		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-paused false))
-		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-mint-delay u14))
+		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-paused false))
+		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-mint-delay u14))
 		(try! (contract-call? .mock-strategy-manager set-authorised-manager 'ST2QXSK64YQX3CQPC530K79XWQ98XFAM9W3XKEH3N true))
 		(try! (contract-call? .mock-strategy-manager set-authorised-manager 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND true))
 		(ok true)

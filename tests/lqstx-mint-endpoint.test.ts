@@ -12,14 +12,14 @@ const bot = accounts.get('wallet_3')!;
 const manager = accounts.get('wallet_4')!;
 
 const contracts = {
-  endpoint: 'lqstx-mint-endpoint-v1-01',
+  endpoint: 'lqstx-mint-endpoint-v1-02',
   registry: 'lqstx-mint-registry',
   vault: 'lqstx-vault',
   lqstx: 'token-lqstx',
   vlqstx: 'token-vlqstx',
   wstx: 'token-wstx',
   strategy: 'mock-strategy',
-  rebase: 'lisa-rebase',
+  rebase: 'lisa-rebase-v1-02',
   rebase1: 'rebase-mock',
   amm: 'amm-swap-pool-v1-1',
   wlqstx: 'token-wlqstx',
