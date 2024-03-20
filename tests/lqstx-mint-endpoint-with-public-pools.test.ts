@@ -105,7 +105,7 @@ describe(contracts.endpoint, () => {
     goToNextCycle();
 
     const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
-    expect(finaliseErr.result).toBeErr(Cl.uint(1006));
+    expect(finaliseErr.result).toBeErr(Cl.uint(7006));
 
     simnet.mineEmptyBlocks(mintDelay + 1); // mint-delay
 
@@ -114,7 +114,7 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
     ]);
     expect(responses[0].result).toBeOk(Cl.bool(true));
-    expect(responses[1].result).toBeErr(Cl.uint(1007));
+    expect(responses[1].result).toBeErr(Cl.uint(7007));
   });
 
   it('can revoke mint', () => {
@@ -126,7 +126,7 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], bot),
       tx.callPublicFn(contracts.endpoint, 'revoke-mint', [Cl.uint(1)], user),
     ]);
-    expect(responses[0].result).toBeErr(Cl.uint(1000));
+    expect(responses[0].result).toBeErr(Cl.uint(3000));
     expect(responses[1].result).toBeOk(Cl.bool(true));
 
     goToNextCycle();
@@ -134,7 +134,7 @@ describe(contracts.endpoint, () => {
     responses = simnet.mineBlock([
       tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
     ]);
-    expect(responses[0].result).toBeErr(Cl.uint(1007));
+    expect(responses[0].result).toBeErr(Cl.uint(7007));
   });
 
   it('can request burn', () => {
@@ -181,7 +181,7 @@ describe(contracts.endpoint, () => {
     expect(responses[0].result).toBeOk(Cl.uint(1e6));
     expect(responses[1].result).toBeOk(Cl.uint(mintAmount));
     expect(responses[2].result).toBeOk(Cl.bool(true));
-    expect(responses[3].result).toBeErr(Cl.uint(1007));
+    expect(responses[3].result).toBeErr(Cl.uint(7007));
   });
 
   it('can revoke burn', () => {
@@ -207,9 +207,9 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot),
     ]);
     expect(responses[0].result).toBeOk(Cl.uint(1e6));
-    expect(responses[1].result).toBeErr(Cl.uint(1000));
+    expect(responses[1].result).toBeErr(Cl.uint(3000));
     expect(responses[2].result).toBeOk(Cl.bool(true));
-    expect(responses[3].result).toBeErr(Cl.uint(1007));
+    expect(responses[3].result).toBeErr(Cl.uint(7007));
   });
 
   it('can interact with strategies', () => {
@@ -248,7 +248,7 @@ describe(contracts.endpoint, () => {
         manager
       ),
     ]);
-    expect(responses[0].result).toBeErr(Cl.uint(1006)); // request pending
+    expect(responses[0].result).toBeErr(Cl.uint(7006)); // request pending
     expect(responses[1].result).toBeErr(Cl.uint(3000)); // not authorized
     responses[2].events.map((e: any) => console.log(e));
     expect(responses[2].result).toBeOk(Cl.uint(mintAmount)); // mintAmount stx transferred, mintAmount - 1 stx locked
@@ -277,12 +277,12 @@ describe(contracts.endpoint, () => {
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
     );
     expect(responses[2].result).toBeErr(Cl.uint(1)); // not enough funds
-    expect(responses[3].result).toBeErr(Cl.uint(1006)); // request pending
+    expect(responses[3].result).toBeErr(Cl.uint(7006)); // request pending
     expect(responses[4].result).toBeErr(Cl.uint(3000)); // not authorized
     expect(responses[5].result).toBeOk(Cl.uint(1e6)); // refund 1 stx
     expect(responses[6].result).toBeOk(Cl.uint(0)); // refund 0 stx
     expect(responses[7].result).toBeOk(Cl.uint(mintAmount)); // rebase mintAmount stx
-    expect(responses[8].result).toBeErr(Cl.uint(1006)); // request pending
+    expect(responses[8].result).toBeErr(Cl.uint(7006)); // request pending
 
     // refund remaining stx after unlock
     goToNextCycle();
@@ -404,7 +404,7 @@ describe(contracts.endpoint, () => {
     goToNextCycle(); // go to the next cycle
 
     const finaliseErr = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
-    expect(finaliseErr.result).toBeErr(Cl.uint(1006));
+    expect(finaliseErr.result).toBeErr(Cl.uint(7006));
 
     simnet.mineEmptyBlocks(mintDelay + 1); // mint-delay
 
