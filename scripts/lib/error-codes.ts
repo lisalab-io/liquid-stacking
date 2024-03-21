@@ -28,9 +28,8 @@ export function createErrorsTable(simnet: Simnet, extractCheck: boolean) {
 
   const compareReadme = extractCheck && readme;
 
-  for (const [contractId, abi] of simnet.getContractsInterfaces()) {
+  for (const [contractId] of simnet.getContractsInterfaces()) {
     if (isTestContract(contractId)) continue;
-    console.log(abi);
     const source = simnet.getContractSource(contractId);
     if (!source) continue;
     const errorConstants = source.matchAll(constantErrRegex);
