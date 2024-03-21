@@ -254,10 +254,13 @@ describe(contracts.endpoint, () => {
     simnet.mineEmptyBlocks(mintDelay);
     response = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
     expect(response.result).toBeOk(Cl.bool(true));
+    expect(response.events[2].event).toBe('nft_burn_event');
     response = simnet.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(100e6)], user);
     expect(response.result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.buffer(new Uint8Array([1])) })
     );
+    expect(response.events[7].event).toBe('nft_mint_event');
+    expect(response.events[17].event).toBe('nft_burn_event');
   });
 
   it('can interact with strategies', () => {
@@ -395,7 +398,6 @@ describe(contracts.endpoint, () => {
     expect(getRequestCycle()).toBe(2n);
 
     const response = requestMint();
-    console.log(response.events[1].data);
     expect(response.result).toBeOk(Cl.uint(1));
     expect(response.events[0].event).toBe('stx_transfer_event');
     expect(response.events[1].event).toBe('nft_mint_event');
