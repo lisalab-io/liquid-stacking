@@ -24,7 +24,7 @@
 
 (define-data-var paused bool true)
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
-(define-data-var request-cutoff uint u100) ;; request must be made 100 blocks before prepare stage starts
+(define-data-var request-cutoff uint u300) ;; request must be made 100 blocks before prepare stage starts
 
 ;; __IF_MAINNET__
 (define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))

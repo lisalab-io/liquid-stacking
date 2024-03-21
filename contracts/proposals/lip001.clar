@@ -14,6 +14,11 @@
 			{ extension: .rebase-1-v1-02, enabled: true }
 		)))
 
+		(try! (contract-call? .token-lqstx dao-set-name "liSTX"))
+		(try! (contract-call? .token-lqstx dao-set-symbol "liSTX"))
+		(try! (contract-call? .token-vlqstx dao-set-name "vliSTX"))
+		(try! (contract-call? .token-vlqstx dao-set-symbol "vliSTX"))
+
 		;; Enable whitelist
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-use-whitelist true))
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-whitelisted-many 
