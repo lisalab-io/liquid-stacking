@@ -59,8 +59,8 @@ const getRewardCycle = () => {
       'get-reward-cycle',
       [Cl.uint(simnet.blockHeight)],
       user
-    ).result as ResponseOkCV<UIntCV>
-  ).value.value;
+    ).result as UIntCV
+  ).value;
 };
 
 const getRequestCycle = () => {
@@ -70,14 +70,14 @@ const getRequestCycle = () => {
       'get-request-cycle',
       [Cl.uint(simnet.blockHeight)],
       user
-    ).result as ResponseOkCV<UIntCV>
-  ).value.value;
+    ).result as UIntCV
+  ).value;
 };
 
 const getRequestCutoff = () => {
   return (
     simnet.callReadOnlyFn(contracts.endpoint, 'get-request-cutoff', [], user)
-      .result as ResponseOkCV<UIntCV>
+      .result as UIntCV
   ).value;
 };
 const getBlocksToStartOfCycle = (cycle: bigint) => {
@@ -89,7 +89,7 @@ const getBlocksToStartOfCycle = (cycle: bigint) => {
           'get-first-burn-block-in-reward-cycle',
           [Cl.uint(cycle)],
           user
-        ).result as ResponseOkCV<UIntCV>
+        ).result as UIntCV
       ).value
     ) - simnet.blockHeight
   );
@@ -378,20 +378,20 @@ describe(contracts.endpoint, () => {
 
     expect(getRequestCycle()).toBe(0n);
     // cycle length - prepare cycle length - cutoff - blocks for deployment and prepare
-    simnet.mineEmptyBlocks(1050 - 50 - 100 - 6);
+    simnet.mineEmptyBlocks(1050 - 50 - 300 - 6);
     // we are at the end of request cycle 0
-    expect(simnet.blockHeight).toBe(899);
+    expect(simnet.blockHeight).toBe(699);
     expect(getRequestCycle()).toBe(0n);
 
     simnet.mineEmptyBlocks(1050); // cycle length
     // we are at end of request cycle 1
-    expect(simnet.blockHeight).toBe(1949);
+    expect(simnet.blockHeight).toBe(1749);
     expect(getRequestCycle()).toBe(1n);
 
     simnet.mineEmptyBlocks(1);
     // we are at beginning of request cycle 2
     // that is 1050 + 1050 - 50 - 100
-    expect(simnet.blockHeight).toBe(1950);
+    expect(simnet.blockHeight).toBe(1750);
     expect(getRequestCycle()).toBe(2n);
 
     const response = requestMint();

@@ -49,8 +49,8 @@ const getRewardCycle = () => {
       'get-reward-cycle',
       [Cl.uint(simnet.blockHeight)],
       user
-    ).result as ResponseOkCV<UIntCV>
-  ).value.value;
+    ).result as UIntCV
+  ).value;
 };
 
 const getBlocksToStartOfCycle = (cycle: bigint) => {
@@ -62,7 +62,7 @@ const getBlocksToStartOfCycle = (cycle: bigint) => {
           'get-first-burn-block-in-reward-cycle',
           [Cl.uint(cycle)],
           user
-        ).result as ResponseOkCV<UIntCV>
+        ).result as UIntCV
       ).value
     ) - simnet.blockHeight
   );
@@ -223,8 +223,8 @@ describe(contracts.endpoint, () => {
         'get-reward-cycle',
         [Cl.uint(simnet.blockHeight)],
         user
-      ).result as ResponseOkCV<UIntCV>
-    ).value.value;
+      ).result as UIntCV
+    ).value;
     const blocksToMine =
       Number(
         (

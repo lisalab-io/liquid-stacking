@@ -90,18 +90,14 @@
 
 ;; @dev get-reward-cycle measures end to end
 (define-read-only (get-reward-cycle (burn-block uint))
-    (if (>= burn-block activation-burn-block)
-        (some (/ (- burn-block activation-burn-block) reward-cycle-length))
-        none))
+    (/ (- burn-block activation-burn-block) reward-cycle-length))
 
 (define-read-only (get-first-burn-block-in-reward-cycle (reward-cycle uint))
     (+ activation-burn-block (* reward-cycle-length reward-cycle)))
 
 ;; @dev get-request-cycle measures request-cutoff to request-cutoff
 (define-read-only (get-request-cycle (burn-block uint))
-    (if (>= burn-block activation-burn-block)
-        (some (/ (- (+ burn-block prepare-cycle-length (var-get request-cutoff)) activation-burn-block) reward-cycle-length))
-        none))
+    (/ (- (+ burn-block prepare-cycle-length (var-get request-cutoff)) activation-burn-block) reward-cycle-length))
 
 (define-read-only (get-first-burn-block-in-request-cycle (reward-cycle uint))
     (- (+ activation-burn-block (* reward-cycle-length reward-cycle)) prepare-cycle-length (var-get request-cutoff)))
@@ -121,7 +117,7 @@
 (define-public (request-mint (amount uint))
     (let (
             (sender tx-sender)
-            (cycle (unwrap-panic (get-request-cycle burn-block-height)))
+            (cycle (get-request-cycle burn-block-height))
             (request-details { requested-by: sender, amount: amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-mint-request u0 request-details))))
         (try! (is-not-paused-or-fail))
@@ -215,7 +211,7 @@
 (define-public (request-burn (sender principal) (amount uint))
     (let (
             ;; @dev requested-at not used for burn
-            (cycle (unwrap-panic (get-request-cycle burn-block-height)))
+            (cycle (get-request-cycle burn-block-height))
             (vlqstx-amount (contract-call? .token-vlqstx get-tokens-to-shares amount))
             (request-details { requested-by: sender, amount: amount, wrapped-amount: vlqstx-amount, requested-at: cycle, status: PENDING })
             (request-id (try! (contract-call? .lqstx-mint-registry set-burn-request u0 request-details))))
