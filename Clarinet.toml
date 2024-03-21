@@ -15,6 +15,12 @@ contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2"
 [[project.requirements]]
 contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard"
 
+[[project.requirements]]
+contract_id = "SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait"
+
+[[project.requirements]]
+contract_id = "SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait"
+
 [contracts.lisa-dao]
 path = "contracts/lisa-dao.clar"
 epoch = 2.4
@@ -189,6 +195,14 @@ epoch = 2.4
 
 [contracts.lqstx-mint-registry]
 path = "contracts/aux/lqstx-mint-registry.clar"
+epoch = 2.4
+
+[contracts.li-stx-mint-nft]
+path = "contracts/aux/li-stx-mint-nft.clar"
+epoch = 2.4
+
+[contracts.li-stx-burn-nft]
+path = "contracts/aux/li-stx-burn-nft.clar"
 epoch = 2.4
 
 [contracts.token-lqstx]
