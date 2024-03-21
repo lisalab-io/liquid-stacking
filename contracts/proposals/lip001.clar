@@ -14,10 +14,10 @@
 			{ extension: .rebase-1-v1-02, enabled: true }
 		)))
 
-		(try! (contract-call? .token-lqstx dao-set-name "Liberate your STX"))
-		(try! (contract-call? .token-lqstx dao-set-symbol "liSTX"))
-		(try! (contract-call? .token-vlqstx dao-set-name "Vault your liSTX"))
-		(try! (contract-call? .token-vlqstx dao-set-symbol "vliSTX"))
+		(try! (contract-call? .token-lqstx dao-set-name "LiSTX"))
+		(try! (contract-call? .token-lqstx dao-set-symbol "LiSTX"))
+		(try! (contract-call? .token-vlqstx dao-set-name "vLiSTX"))
+		(try! (contract-call? .token-vlqstx dao-set-symbol "vLiSTX"))
 
 		;; Enable whitelist
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-use-whitelist true))
