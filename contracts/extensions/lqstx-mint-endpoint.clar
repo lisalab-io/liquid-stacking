@@ -2,7 +2,7 @@
 ;; SPDX-License-Identifier: BUSL-1.1
 
 ;;
-;; lqstx-mint-endpoint-v1-01
+;; lqstx-mint-endpoint-v1-02
 ;;
 
 ;; __IF_MAINNET__
@@ -10,11 +10,11 @@
 ;; (use-trait sip-010-trait .sip-010-trait.sip-010-trait)
 ;; __ENDIF__
 
-(define-constant err-unauthorised (err u1000))
-(define-constant err-paused (err u1001))
-(define-constant err-request-pending (err u1006))
-(define-constant err-request-finalized-or-revoked (err u1007))
-(define-constant err-not-whitelisted (err u1008))
+(define-constant err-unauthorised (err u3000))
+(define-constant err-paused (err u7001))
+(define-constant err-request-pending (err u7006))
+(define-constant err-request-finalized-or-revoked (err u7007))
+(define-constant err-not-whitelisted (err u7008))
 
 (define-constant PENDING 0x00)
 (define-constant FINALIZED 0x01)
@@ -24,16 +24,17 @@
 
 (define-data-var paused bool true)
 (define-data-var mint-delay uint u432) ;; mint available 3 day after cycle starts
-(define-data-var request-cutoff uint u300) ;; request must be made 100 blocks before prepare stage starts
 
 ;; __IF_MAINNET__
+(define-data-var request-cutoff uint u300) ;; request must be made 300 blocks before prepare stage starts
 (define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
 (define-constant activation-burn-block (get first-burnchain-block-height pox-info))
 (define-constant reward-cycle-length (get reward-cycle-length pox-info))
 (define-constant prepare-cycle-length (get prepare-cycle-length pox-info))
+;; (define-data-var request-cutoff uint u10)
 ;; (define-constant activation-burn-block u0)
 ;; (define-constant reward-cycle-length u200)
-;; (define-constant prepare-cycle-length u100)
+;; (define-constant prepare-cycle-length u10)
 ;; __ENDIF__
 
 (define-data-var use-whitelist bool false)
