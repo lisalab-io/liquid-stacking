@@ -398,9 +398,10 @@ describe(contracts.endpoint, () => {
     console.log(response.events[1].data);
     expect(response.result).toBeOk(Cl.uint(1));
     expect(response.events[0].event).toBe('stx_transfer_event');
-    expect(response.events[1].event).toBe('print_event');
+    expect(response.events[1].event).toBe('nft_mint_event');
+    expect(response.events[2].event).toBe('print_event');
     expect(
-      ((response.events[1].data.value as TupleCV).data.details as TupleCV).data['requested-at']
+      ((response.events[2].data.value as TupleCV).data.details as TupleCV).data['requested-at']
     ).toBeUint(2);
   });
 });

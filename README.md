@@ -22,6 +22,7 @@ are in the form `(err uint)` and they are unique across all contracts.
 | Pool members  | 5XXX        | Errors related to stacking pool members.       |
 | Wrapped token | 6XXX        | Errors coming directly from the wrapped token. |
 | Mint Endpoint | 7XXX        | Errors coming directly from the mint endpoint. |
+| NFTs          | 8XXX        | Errors coming directly from the NFTs.          |
 | Vesting       | 9XXX        | Errors coming directly from vesting.           |
 | Pools         | 4XX/5XX/6XX | Errors coming public stacking pools.           |
 | Assets        | 1/2/3/4     | Errors coming for native Clarity assets.       |
@@ -29,8 +30,9 @@ are in the form `(err uint)` and they are unique across all contracts.
 ### Error table
 
 <!--errors-->
+
 | Contract                      | Constant                         | Value       | Description |
-|-------------------------------|----------------------------------|-------------|-------------|
+| ----------------------------- | -------------------------------- | ----------- | ----------- |
 | lisa-dao                      | err-unauthorised                 | (err u1000) |             |
 | lqstx-mint-endpoint           | err-unauthorised                 | (err u1000) |             |
 | lqstx-mint-endpoint-v1-01     | err-unauthorised                 | (err u1000) |             |
@@ -58,6 +60,8 @@ are in the form `(err uint)` and they are unique across all contracts.
 | lqstx-mint-registry           | err-unknown-request-id           | (err u1008) |             |
 | public-pools-strategy         | err-not-vault-caller             | (err u2000) |             |
 | public-pools-strategy         | err-invalid-payload              | (err u2001) |             |
+| li-stx-burn-nft               | err-unauthorised                 | (err u3000) |             |
+| li-stx-mint-nft               | err-unauthorised                 | (err u3000) |             |
 | lisa-rebase                   | err-unauthorised                 | (err u3000) |             |
 | lisa-rebase-v1-02             | err-unauthorised                 | (err u3000) |             |
 | lqstx-mint-endpoint-v1-02     | err-unauthorised                 | (err u3000) |             |
@@ -113,11 +117,22 @@ are in the form `(err uint)` and they are unique across all contracts.
 | lqstx-mint-endpoint-v1-02     | err-request-pending              | (err u7006) |             |
 | lqstx-mint-endpoint-v1-02     | err-request-finalized-or-revoked | (err u7007) |             |
 | lqstx-mint-endpoint-v1-02     | err-not-whitelisted              | (err u7008) |             |
+| li-stx-mint-nft               | err-not-authorized               | (err u8000) |             |
+| li-stx-mint-nft               | err-listing                      | (err u8001) |             |
+| li-stx-mint-nft               | err-wrong-commission             | (err u8002) |             |
+| li-stx-mint-nft               | err-not-found                    | (err u8003) |             |
+| li-stx-mint-nft               | err-metadata-frozen              | (err u8004) |             |
+| li-stx-burn-nft               | err-not-authorized               | (err u8100) |             |
+| li-stx-burn-nft               | err-listing                      | (err u8101) |             |
+| li-stx-burn-nft               | err-wrong-commission             | (err u8102) |             |
+| li-stx-burn-nft               | err-not-found                    | (err u8103) |             |
+| li-stx-burn-nft               | err-metadata-frozen              | (err u8104) |             |
 | token-vesting                 | err-caller-not-recipient         | (err u9000) |             |
 | token-vesting                 | err-unknown-vesting-id           | (err u9001) |             |
 | token-vesting                 | err-event-not-vested             | (err u9002) |             |
 | token-vesting                 | err-event-already-claimed        | (err u9003) |             |
 | token-vesting                 | err-recipient-exists             | (err u9004) |             |
+
 <!--errors-->
 
 ## References
