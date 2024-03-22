@@ -81,18 +81,18 @@
 (define-read-only (validate-mint-request (request-id uint))
     (let (
             (request-details (try! (contract-call? .lqstx-mint-registry get-mint-request-or-fail request-id)))
-            (request-id-idx (unwrap! (index-of? (get-mint-requests-pending-or-default (get requested-by request-details)) request-id) err-request-finalized-or-revoked)))
+            (recipient (unwrap! (get-owner-mint-nft request-id) err-request-finalized-or-revoked)))
         (asserts! (>= burn-block-height (+ (get-first-burn-block-in-reward-cycle (+ (get requested-at request-details) u1)) (var-get mint-delay))) err-request-pending)
-        (ok request-id-idx)))
+        (ok recipient)))
 
 ;; @dev it favours smaller amounts as we do not allow partial burn
 (define-read-only (validate-burn-request (request-id uint))
     (let (
             (request-details (try! (contract-call? .lqstx-mint-registry get-burn-request-or-fail request-id)))
-            (request-id-idx (unwrap! (index-of? (get-burn-requests-pending-or-default (get requested-by request-details)) request-id) err-request-finalized-or-revoked))
+            (recipient (unwrap! (get-owner-burn-nft request-id) err-request-finalized-or-revoked))
             (vaulted-amount (contract-call? .token-vlqstx get-shares-to-tokens (get wrapped-amount request-details))))
         (asserts! (>= (stx-get-balance .lqstx-vault) vaulted-amount) err-request-pending)
-        (ok { vaulted-amount: vaulted-amount, request-id-idx: request-id-idx })))
+        (ok { vaulted-amount: vaulted-amount, recipient: recipient })))
 
 ;; @dev get-reward-cycle measures end to end
 (define-read-only (get-reward-cycle (burn-block uint))
@@ -130,7 +130,6 @@
         (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender .lqstx-vault))
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
-        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending sender (unwrap-panic (as-max-len? (append (get-mint-requests-pending-or-default sender) request-id) u1000))))
         (try! (contract-call? .li-stx-mint-nft mint request-id amount sender))
         (print { type: "mint-request", id: request-id, details: request-details })
         (ok request-id)))
@@ -138,25 +137,20 @@
 (define-public (revoke-mint (request-id uint))
     (let (
             (request-details (try! (get-mint-request-or-fail request-id)))
-            (mint-requests (get-mint-requests-pending-or-default (get requested-by request-details)))
-            (recipient (unwrap! (unwrap-panic (get-owner-mint-nft request-id)) err-request-finalized-or-revoked))
-            (request-id-idx (unwrap! (index-of? mint-requests request-id) err-request-finalized-or-revoked)))
+            (recipient (unwrap! (unwrap-panic (get-owner-mint-nft request-id)) err-request-finalized-or-revoked)))
         (try! (is-not-paused-or-fail))
         (asserts! (is-eq tx-sender recipient) err-unauthorised)
         (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
         (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get amount request-details), recipient: recipient }))))
         (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: REVOKED })))
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
-        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
         (as-contract (try! (contract-call? .li-stx-mint-nft burn request-id)))
         (ok true)))
 
 (define-public (revoke-burn (request-id uint))
     (let (
             (request-details (try! (get-burn-request-or-fail request-id)))
-            (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
             (recipient (unwrap! (unwrap-panic (get-owner-burn-nft request-id)) err-request-finalized-or-revoked))
-            (request-id-idx (unwrap! (index-of? burn-requests request-id) err-request-finalized-or-revoked))
             (lqstx-amount (contract-call? .token-vlqstx get-shares-to-tokens (get wrapped-amount request-details))))
         (try! (is-not-paused-or-fail))
         (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
@@ -165,7 +159,6 @@
         (try! (contract-call? .token-vlqstx burn (get wrapped-amount request-details) (as-contract tx-sender)))
         (try! (contract-call? .token-lqstx transfer lqstx-amount (as-contract tx-sender) recipient none))
         (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
-        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests request-id-idx)))
         (as-contract (try! (contract-call? .li-stx-burn-nft burn request-id)))
         (ok true)))
 
@@ -206,15 +199,13 @@
 (define-public (finalize-mint (request-id uint))
     (let (
             (request-details (try! (get-mint-request-or-fail request-id)))
-            (mint-requests (get-mint-requests-pending-or-default (get requested-by request-details)))
-            (recipient (unwrap! (unwrap-panic (get-owner-mint-nft request-id)) err-request-finalized-or-revoked))
-            (request-id-idx (try! (validate-mint-request request-id))))
+            (recipient (unwrap! (unwrap-panic (get-owner-mint-nft request-id)) err-request-finalized-or-revoked)))
+        (try! (validate-mint-request request-id))
         (try! (is-not-paused-or-fail))
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-lqstx dao-mint (get amount request-details) recipient))
         (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: FINALIZED })))
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
-        (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
         (try! (contract-call? .li-stx-mint-nft burn request-id))
         (ok true)))
 
@@ -232,7 +223,6 @@
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-vlqstx mint amount tx-sender))
         (try! (contract-call? .token-vlqstx transfer vlqstx-amount tx-sender .lqstx-mint-registry none))
-        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending sender (unwrap-panic (as-max-len? (append (get-burn-requests-pending-or-default sender) request-id) u1000))))
         (try! (contract-call? .li-stx-burn-nft mint request-id amount sender))
         (print { type: "burn-request", id: request-id, details: request-details })
         (ok { request-id: request-id, status: PENDING })))
@@ -241,7 +231,6 @@
     (let (
             (request-details (try! (get-burn-request-or-fail request-id)))
             (transfer-vlqstx (try! (contract-call? .lqstx-mint-registry transfer (get wrapped-amount request-details) (as-contract tx-sender) .token-vlqstx)))
-            (burn-requests (get-burn-requests-pending-or-default (get requested-by request-details)))
             (recipient (unwrap! (unwrap-panic (get-owner-burn-nft request-id)) err-request-finalized-or-revoked))
             (validation-data (try! (validate-burn-request request-id))))
         (try! (is-not-paused-or-fail))
@@ -250,7 +239,6 @@
         (try! (contract-call? .token-lqstx dao-burn (get vaulted-amount validation-data) (as-contract tx-sender)))
         (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get vaulted-amount validation-data), recipient: recipient }))))
         (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: FINALIZED })))
-        (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests (get request-id-idx validation-data))))
         (try! (contract-call? .li-stx-burn-nft burn request-id))
         (ok true)))
 
