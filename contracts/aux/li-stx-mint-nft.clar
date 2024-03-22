@@ -23,12 +23,12 @@
 (define-data-var ipfs-root (string-ascii 80) "")
 (define-data-var metadata-frozen bool false)
 
-(define-public (mint (id uint) (amount uint))
-    (let ((current-balance (get-balance tx-sender)))
+(define-public (mint (id uint) (amount uint) (recipient principal))
+    (let ((current-balance (get-balance recipient)))
         (try! (is-dao-or-extension))
         (var-set last-id id)
-        (map-set token-count tx-sender (+ current-balance u1))
-        (nft-mint? li-stx-mint id tx-sender)))
+        (map-set token-count recipient (+ current-balance u1))
+        (nft-mint? li-stx-mint id recipient)))
 
 (define-public (burn (token-id uint))
   (let ((owner (unwrap! (nft-get-owner? li-stx-mint token-id) err-not-found))

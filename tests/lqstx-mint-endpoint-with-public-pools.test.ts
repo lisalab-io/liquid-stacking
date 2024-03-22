@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 
 import { tx } from '@hirosystems/clarinet-sdk';
-import { Cl, ResponseOkCV, TupleCV, UIntCV, cvToString } from '@stacks/transactions';
+import { Cl, TupleCV, UIntCV } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 
 const mintDelay = 432;
@@ -150,7 +150,6 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeOk(Cl.bool(true));
     expect(responses[2].result).toBeOk(Cl.uint(mintAmount));
     expect(responses[3].result).toBeOk(Cl.uint(mintAmount));
-    console.log(cvToString(responses[4].result));
     expect(responses[4].result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
     );
