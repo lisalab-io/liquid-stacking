@@ -45,6 +45,9 @@ export const createClientMockSetup = () => {
   const requestMint = (amount: IntegerType) =>
     simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(amount)], user);
 
+  const requestBurn = (amount: IntegerType) =>
+    simnet.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(amount)], user);
+
   const createPayload = (amount: IntegerType) =>
     (
       simnet.callReadOnlyFn(contracts.strategy, 'create-payload', [Cl.uint(amount)], manager)
@@ -111,6 +114,7 @@ export const createClientMockSetup = () => {
     contracts,
     prepareTest,
     requestMint,
+    requestBurn,
     createPayload,
     getRewardCycle,
     getRequestCycle,

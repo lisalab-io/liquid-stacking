@@ -30,6 +30,7 @@ const contracts = {
   manager: 'public-pools-strategy-manager',
   operators: 'operators',
   proposal: 'mock-proposal',
+  burnNft: 'li-stx-burn-nft',
 };
 
 const prepareTest = () =>
@@ -424,5 +425,45 @@ describe(contracts.endpoint, () => {
     ]);
     expect(responses[0].result).toBeOk(Cl.bool(true));
     expect(responses[1].result).toBeOk(Cl.bool(true));
+  });
+
+  it('user can transfer burn nft', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
+    let response;
+
+    // request and finalize mint for 1m STX
+    response = requestMint();
+    expect(response.result).toBeOk(Cl.uint(1));
+    goToNextCycle();
+    simnet.mineEmptyBlocks(mintDelay);
+    response = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    expect(response.result).toBeOk(Cl.bool(true));
+
+    // request burn
+    requestBurn();
+
+    // transfer burn of 1 stx
+    response = simnet.callPublicFn(
+      contracts.burnNft,
+      'transfer',
+      [Cl.uint(1), Cl.standardPrincipal(user), Cl.standardPrincipal(bot)],
+      user
+    );
+
+    // bot is now owning the nft
+    expect(simnet.callReadOnlyFn(contracts.burnNft, 'get-owner', [Cl.uint(1)], user).result).toBeOk(
+      Cl.some(Cl.standardPrincipal(bot))
+    );
+
+    simnet.callPublicFn(contracts.manager, 'refund-strategy', [Cl.list([Cl.bool(true)])], manager),
+      (response = simnet.callPublicFn(contracts.rebase1, 'finalize-burn', [Cl.uint(1)], bot));
+    expect(response.result).toBeOk(Cl.bool(true));
+
+    // check that bot received stx
+    expect(simnet.getAssetsMap().get('STX')?.get(bot)).toBe(100000001_000_000n);
+    expect(simnet.getAssetsMap().get('STX')?.get(user)).toBe(99000000_000_000n);
+
+    // check that user has 1m - 1 liquid stx
+    expect(simnet.getAssetsMap().get('.token-lqstx.lqstx')?.get(user)).toBe(999999_000_000n);
   });
 });

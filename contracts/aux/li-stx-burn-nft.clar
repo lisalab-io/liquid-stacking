@@ -23,10 +23,12 @@
 (define-data-var ipfs-root (string-ascii 80) "")
 (define-data-var metadata-frozen bool false)
 
+(define-read-only (max (a uint) (b uint)) (if (> a b) a b))
+
 (define-public (mint (id uint) (amount uint) (recipient principal))
     (let ((current-balance (get-balance recipient)))
         (try! (is-dao-or-extension))
-        (var-set last-id id)
+        (var-set last-id (max id (var-get last-id)))
         (map-set token-count recipient (+ current-balance u1))
         (nft-mint? li-stx-burn id recipient)))
 
@@ -70,7 +72,7 @@
   (ok (nft-get-owner? li-stx-burn token-id)))
 
 (define-read-only (get-last-token-id)
-  (ok (- (var-get last-id) u1)))
+  (ok (var-get last-id)))
 
 (define-read-only (get-token-uri (token-id uint))
   (ok (some (concat (concat (var-get ipfs-root) "{id}") ".json"))))

@@ -214,7 +214,6 @@
 
 (define-public (request-burn (sender principal) (amount uint))
     (let (
-            ;; @dev requested-at not used for burn
             (cycle (get-request-cycle burn-block-height))
             (vlqstx-amount (contract-call? .token-vlqstx get-tokens-to-shares amount))
             (request-details { requested-by: sender, amount: amount, wrapped-amount: vlqstx-amount, requested-at: cycle, status: PENDING })
