@@ -18,6 +18,7 @@
 		(try! (contract-call? .token-lqstx dao-set-symbol "LiSTX"))
 		(try! (contract-call? .token-vlqstx dao-set-name "vLiSTX"))
 		(try! (contract-call? .token-vlqstx dao-set-symbol "vLiSTX"))
+		(print { notification: "what-is-LISA", payload: "LISA is the goddess of liquid stacking. Liberate your STX with LiSTX!"})
 
 		;; Enable whitelist
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-use-whitelist true))
