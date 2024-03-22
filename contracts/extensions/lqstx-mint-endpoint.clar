@@ -141,7 +141,7 @@
         (try! (contract-call? .lqstx-mint-registry set-mint-request request-id (merge request-details { status: REVOKED })))
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending (get requested-by request-details) (pop mint-requests request-id-idx)))
-        (try! (contract-call? .li-stx-mint-nft burn request-id))
+        (as-contract (try! (contract-call? .li-stx-mint-nft burn request-id)))
         (ok true)))
 
 (define-public (revoke-burn (request-id uint))
@@ -158,7 +158,7 @@
         (try! (contract-call? .token-lqstx transfer lqstx-amount (as-contract tx-sender) (get requested-by request-details) none))
         (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
         (try! (contract-call? .lqstx-mint-registry set-burn-requests-pending (get requested-by request-details) (pop burn-requests request-id-idx)))
-        (try! (contract-call? .li-stx-burn-nft burn request-id))
+        (as-contract (try! (contract-call? .li-stx-burn-nft burn request-id)))
         (ok true)))
 
 ;; governance calls
