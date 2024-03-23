@@ -84,7 +84,7 @@ describe('LiSTX NFT', () => {
     expect(response.result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(2), status: Cl.bufferFromHex('01') })
     );
-    // nft was already burnt
+    // nfts were never minted
     expect(simnet.callReadOnlyFn(contracts.burnNft, 'get-owner', [Cl.uint(1)], user).result).toBeOk(
       Cl.none()
     );
@@ -92,7 +92,7 @@ describe('LiSTX NFT', () => {
       Cl.none()
     );
     expect(simnet.callReadOnlyFn(contracts.burnNft, 'get-last-token-id', [], user).result).toBeOk(
-      Cl.uint(2)
+      Cl.uint(0)
     );
 
     // check that bot received stx

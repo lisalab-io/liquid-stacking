@@ -26,9 +26,6 @@
 
 (define-public (request-burn (amount uint))
 	(let (
-		(sender tx-sender)
-		(send-token (try! (contract-call? .token-lqstx transfer amount sender (as-contract tx-sender) none)))
-		(request-data (as-contract (try! (contract-call? .lqstx-mint-endpoint-v1-02 request-burn sender amount)))))
-		(match (finalize-burn (get request-id request-data))
-			ok-value (ok { request-id: (get request-id request-data), status: FINALIZED })
-			err-value (ok request-data))))
+			(sender tx-sender))
+		(try! (contract-call? .token-lqstx transfer amount sender (as-contract tx-sender) none))
+		(as-contract (contract-call? .lqstx-mint-endpoint-v1-02 request-burn sender amount))))

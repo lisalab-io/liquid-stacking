@@ -222,9 +222,19 @@
         (try! (is-dao-or-extension))
         (try! (contract-call? .token-vlqstx mint amount tx-sender))
         (try! (contract-call? .token-vlqstx transfer vlqstx-amount tx-sender .lqstx-mint-registry none))
-        (try! (contract-call? .li-stx-burn-nft mint request-id amount sender))
         (print { type: "burn-request", id: request-id, details: request-details })
-        (ok { request-id: request-id, status: PENDING })))
+        (if (>= (stx-get-balance .lqstx-vault) amount)
+            (begin
+                (try! (contract-call? .lqstx-mint-registry transfer vlqstx-amount (as-contract tx-sender) .token-vlqstx))
+                (try! (contract-call? .token-vlqstx burn vlqstx-amount (as-contract tx-sender)))
+                (try! (contract-call? .token-lqstx dao-burn amount (as-contract tx-sender)))
+                (try! (contract-call? .lqstx-vault proxy-call .stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: vlqstx-amount, recipient: sender }))))
+                (try! (contract-call? .lqstx-mint-registry set-burn-request request-id (merge request-details { status: FINALIZED })))
+                (ok {request-id: request-id, status: FINALIZED })
+            )
+            (begin
+                (try! (contract-call? .li-stx-burn-nft mint request-id amount sender))
+                (ok { request-id: request-id, status: PENDING })))))
 
 (define-public (finalize-burn (request-id uint))
     (let (

@@ -174,8 +174,10 @@ describe(contracts.endpoint, () => {
     expect(response.result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.buffer(new Uint8Array([1])) })
     );
-    expect(response.events[7].event).toBe('nft_mint_event');
-    expect(response.events[17].event).toBe('nft_burn_event');
+    // no nft minted
+    expect(simnet.callReadOnlyFn(contracts.burnNft, 'get-last-token-id', [], user).result).toBeOk(
+      Cl.uint(0)
+    );
   });
 
   it('can interact with strategies', () => {
