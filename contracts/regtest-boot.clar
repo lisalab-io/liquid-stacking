@@ -9,6 +9,10 @@
 			{extension: .lqstx-mint-endpoint, enabled: false}
 			{extension: .lqstx-mint-endpoint-v1-02, enabled: true}
 			{extension: .lisa-rebase-v1-02, enabled: true}
+			;; __IF_MAINNET__
+			{extension: .rebase-mock, enabled: true}
+			;; {extension: .rebase-1-v1-02, enabled: true}
+            ;; __ENDIF__
 			{extension: .rebase-mock, enabled: true}
 			{extension: .mock-strategy-manager, enabled: true}
 			{extension: .lqstx-vault, enabled: true}
