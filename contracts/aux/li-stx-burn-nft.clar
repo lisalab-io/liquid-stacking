@@ -1,7 +1,10 @@
 ;; li-stx-burn
 ;; contractType: public
 
+;; __IF_MAINNET__
 (impl-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
+;; (impl-trait .nft-trait.nft-trait)
+;; __ENDIF__
 
 (define-non-fungible-token li-stx-burn uint)
 
@@ -34,7 +37,7 @@
 
 (define-public (burn (token-id uint))
   (let ((owner (unwrap! (nft-get-owner? li-stx-burn token-id) err-not-found))
-      (current-balance (get-balance owner))) 
+      (current-balance (get-balance owner)))
     (try! (is-dao-or-extension))
     (asserts! (is-none (map-get? market token-id)) err-listing)
     (try! (nft-burn? li-stx-burn token-id owner))
@@ -78,7 +81,10 @@
   (ok (some (concat (concat (var-get ipfs-root) "{id}") ".json"))))
 
 ;; Non-custodial marketplace extras
+;; __IF_MAINNET__
 (use-trait commission-trait 'SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait.commission)
+;; (use-trait commission-trait .commission-trait.commission)
+;; __ENDIF__
 
 (define-map token-count principal uint)
 (define-map market uint {price: uint, commission: principal, royalty: uint})
@@ -135,4 +141,4 @@
     (map-delete market id)
     (print {a: "buy-in-ustx", id: id})
     (ok true)))
-  
+

@@ -45,6 +45,14 @@ epoch = 2.4
 path = "contracts/traits/sip-010-trait.clar"
 epoch = 2.4
 
+[contracts.nft-trait]
+path = "contracts/traits/nft-trait.clar"
+epoch = 2.4
+
+[contracts.commission-trait]
+path = "contracts/traits/commission-trait.clar"
+epoch = 2.4
+
 [contracts.strategy-trait]
 path = "contracts/traits/strategy-trait.clar"
 epoch = 2.4
