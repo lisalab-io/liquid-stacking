@@ -10,8 +10,7 @@
 			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }			
 			{ extension: .lqstx-vault, enabled: true }
 			{ extension: .treasury, enabled: true }
-			{ extension: .token-vesting, enabled: true }			
-			{ extension: .public-pools-strategy-manager, enabled: true }						
+			{ extension: .token-vesting, enabled: true }								
 			{ extension: .operators, enabled: true }
 			{ extension: .mock-strategy-manager, enabled: true }
 		)))
