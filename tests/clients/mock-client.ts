@@ -1,6 +1,6 @@
 import { tx } from '@hirosystems/clarinet-sdk';
 import { IntegerType } from '@stacks/common';
-import { BufferCV, Cl, ResponseOkCV, UIntCV } from '@stacks/transactions';
+import { Cl, ResponseOkCV, UIntCV } from '@stacks/transactions';
 
 export const createClientMockSetup = () => {
   const accounts = simnet.getAccounts();

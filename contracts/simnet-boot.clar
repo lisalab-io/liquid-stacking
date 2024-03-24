@@ -24,14 +24,16 @@
 		)))
 		(try! (contract-call? .operators set-proposal-threshold 2))
 
-		;; Set initial strategy managers, sender is the deployer
-		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager sender true))
-
 		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list
 			{ recipient: .treasury, amount: u1000000000000000 }
 		)))
-		
+
+		;; Set initial strategy managers, sender is the deployer
+		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager sender true))
+		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager 'ST2QXSK64YQX3CQPC530K79XWQ98XFAM9W3XKEH3N true))
+		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND true))		
+
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-paused false))
 		(ok true)
 	)

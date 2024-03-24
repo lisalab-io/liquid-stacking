@@ -11,6 +11,7 @@ const { contracts, user, user2, oracle, bot, manager,
 
 // 1m STX
 const mintAmount = 1_000_000e6;
+
 const mintDelay = 432;
 
 describe(contracts.endpoint, () => {
@@ -87,7 +88,7 @@ describe(contracts.endpoint, () => {
     simnet.mineEmptyBlocks(mintDelay + 1);
     expect(finalizeMint(1).result).toBeOk(Cl.bool(true));    
     
-    expect(requestBurn(mintAmount).result).toBeOk(
+    expect(requestBurn(1e6).result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('00') })
     );
 
