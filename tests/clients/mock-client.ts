@@ -1,6 +1,6 @@
 import { tx } from '@hirosystems/clarinet-sdk';
 import { IntegerType } from '@stacks/common';
-import { BufferCV, Cl, ResponseOkCV, UIntCV } from '@stacks/transactions';
+import { Cl, ResponseOkCV, UIntCV } from '@stacks/transactions';
 
 export const createClientMockSetup = () => {
   const accounts = simnet.getAccounts();
@@ -9,6 +9,7 @@ export const createClientMockSetup = () => {
   const bot = accounts.get('wallet_3')!;
   const manager = accounts.get('wallet_4')!;
   const operator3 = accounts.get('wallet_5')!;
+  const user2 = accounts.get('wallet_6')!;
 
   const contracts = {
     endpoint: 'lqstx-mint-endpoint-v1-02',
@@ -17,14 +18,12 @@ export const createClientMockSetup = () => {
     lqstx: 'token-lqstx',
     vlqstx: 'token-vlqstx',
     wstx: 'token-wstx',
-    strategy: 'mock-strategy',
-    rebase: 'lisa-rebase-v1-02',
-    rebase1: 'rebase-mock',
+    strategy: 'public-pools-strategy',
     amm: 'amm-swap-pool-v1-1',
     wlqstx: 'token-wlqstx',
     dao: 'lisa-dao',
-    boot: 'regtest-boot',
-    manager: 'mock-strategy-manager',
+    boot: 'simnet-boot',
+    manager: 'public-pools-strategy-manager',
     operators: 'operators',
     proposal: 'mock-proposal',
     proposal2: 'mock-proposal',
@@ -46,13 +45,13 @@ export const createClientMockSetup = () => {
     simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(amount)], user);
 
   const requestBurn = (amount: IntegerType) =>
-    simnet.callPublicFn(contracts.rebase1, 'request-burn', [Cl.uint(amount)], user);
-
-  const createPayload = (amount: IntegerType) =>
-    (
-      simnet.callReadOnlyFn(contracts.strategy, 'create-payload', [Cl.uint(amount)], manager)
-        .result as BufferCV
-    ).buffer;
+    simnet.callPublicFn(contracts.endpoint, 'request-burn', [Cl.uint(amount)], user);
+  
+  const fundStrategy = (amount: IntegerType) =>
+    simnet.callPublicFn(contracts.manager, 'fund-strategy', [Cl.list([Cl.uint(amount)])], manager);
+  
+  const finalizeMint = (requestId: IntegerType) =>
+    simnet.callPublicFn(contracts.endpoint, 'finalize-mint', [Cl.uint(requestId)], bot);
 
   const getRewardCycle = () => {
     return (
@@ -97,6 +96,13 @@ export const createClientMockSetup = () => {
     );
   };
 
+  const goToNextRequestCycle = () => {
+    const cycle = getRequestCycle();
+    const blocksToMine = getBlocksToStartOfCycle(cycle + 1n);
+
+    simnet.mineEmptyBlocks(blocksToMine);
+  };  
+
   const goToNextCycle = () => {
     const cycle = getRewardCycle();
     const blocksToMine = getBlocksToStartOfCycle(cycle + 1n);
@@ -115,14 +121,17 @@ export const createClientMockSetup = () => {
     prepareTest,
     requestMint,
     requestBurn,
-    createPayload,
+    fundStrategy,
+    finalizeMint,
     getRewardCycle,
     getRequestCycle,
     getBlocksToStartOfCycle,
     goToNextCycle,
+    goToNextRequestCycle,
     getRequestCutoff,
     liSTXBalance,
     user,
+    user2,
     oracle,
     bot,
     manager,

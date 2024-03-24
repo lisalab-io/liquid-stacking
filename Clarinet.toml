@@ -229,24 +229,12 @@ epoch = 2.4
 path = "contracts/deployed/lisa-rebase.clar"
 epoch = 2.4
 
-[contracts.lisa-rebase-v1-02]
-path = "contracts/extensions/lisa-rebase.clar"
-epoch = 2.4
-
 [contracts.rebase-1]
 path = "contracts/deployed/rebase-1.clar"
 epoch = 2.4
 
-[contracts.rebase-1-v1-02]
-path = "contracts/rules/rebase-1.clar"
-epoch = 2.4
-
 [contracts.operators]
 path = "contracts/extensions/operators.clar"
-epoch = 2.4
-
-[contracts.rebase-mock]
-path = "contracts/mocks/rebase-mock.clar"
 epoch = 2.4
 
 [contracts.mock-strategy]
