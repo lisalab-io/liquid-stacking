@@ -1,7 +1,11 @@
 
 ;; SPDX-License-Identifier: BUSL-1.1
 
+;; __IF_MAINNET__
 (impl-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
+;; (impl-trait .sip-010-trait.sip-010-trait)
+;; __ENDIF__
+
 
 (define-constant err-unauthorised (err u3000))
 (define-constant err-not-token-owner (err u4))
