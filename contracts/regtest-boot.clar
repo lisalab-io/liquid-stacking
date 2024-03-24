@@ -6,17 +6,14 @@
 (define-public (execute (sender principal))
 	(begin
 		(try! (contract-call? .lisa-dao set-extensions (list
-			{extension: .lqstx-mint-endpoint, enabled: false}
-			{extension: .lqstx-mint-endpoint-v1-02, enabled: true}
-			{extension: .lisa-rebase-v1-02, enabled: true}
-			;; __IF_MAINNET__
-			{extension: .rebase-mock, enabled: true}
-			;; {extension: .rebase-1-v1-02, enabled: true}
-            ;; __ENDIF__
-			{extension: .rebase-mock, enabled: true}
-			{extension: .mock-strategy-manager, enabled: true}
-			{extension: .lqstx-vault, enabled: true}
-			{extension: .operators, enabled: true}
+			{ extension: .lqstx-mint-endpoint, enabled: false }
+			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }			
+			{ extension: .lqstx-vault, enabled: true }
+			{ extension: .treasury, enabled: true }
+			{ extension: .token-vesting, enabled: true }			
+			{ extension: .public-pools-strategy-manager, enabled: true }						
+			{ extension: .operators, enabled: true }
+			{ extension: .mock-strategy-manager, enabled: true }
 		)))
 
 		;; Set initial operators

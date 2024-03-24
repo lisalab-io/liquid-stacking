@@ -62,7 +62,6 @@ are in the form `(err uint)` and they are unique across all contracts.
 | li-stx-burn-nft               | err-unauthorised                 | (err u3000) |             |
 | li-stx-mint-nft               | err-unauthorised                 | (err u3000) |             |
 | lisa-rebase                   | err-unauthorised                 | (err u3000) |             |
-| lisa-rebase-v1-02             | err-unauthorised                 | (err u3000) |             |
 | lqstx-mint-endpoint-v1-02     | err-unauthorised                 | (err u3000) |             |
 | public-pools-strategy-manager | err-unauthorised                 | (err u3000) |             |
 | token-lisa                    | err-unauthorised                 | (err u3000) |             |

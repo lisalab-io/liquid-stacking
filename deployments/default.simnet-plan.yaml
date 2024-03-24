@@ -306,6 +306,11 @@ plan:
             path: contracts/boot.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: commission-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/commission-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: li-stx-burn-nft
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/aux/li-stx-burn-nft.clar
@@ -321,16 +326,6 @@ plan:
             path: contracts/deployed/lisa-rebase.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint-v1-02
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/lqstx-mint-endpoint.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lisa-rebase-v1-02
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/lisa-rebase.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: lisa-transfer-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/lisa-transfer-proxy.clar
@@ -344,6 +339,11 @@ plan:
             contract-name: lqstx-mint-endpoint
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/deployed/lqstx-mint-endpoint.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint-v1-02
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-transfer-proxy
@@ -369,19 +369,14 @@ plan:
     - id: 3
       transactions:
         - emulated-contract-publish:
+            contract-name: nft-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/nft-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: rebase-1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/deployed/rebase-1.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: rebase-1-v1-02
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/rules/rebase-1.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: rebase-mock
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/rebase-mock.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: rebase-strategy-trait-v1-01

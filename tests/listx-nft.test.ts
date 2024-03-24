@@ -4,7 +4,7 @@ import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 import { createClientMockSetup } from './clients/mock-client';
 
-const { contracts, prepareTest, requestMint, requestBurn, goToNextCycle, liSTXBalance, user, bot } =
+const { contracts, prepareTest, requestMint, requestBurn, goToNextCycle, liSTXBalance, goToNextRequestCycle, fundStrategy, user, bot } =
   createClientMockSetup();
 
 const mintDelay = 14;
@@ -37,9 +37,11 @@ describe('LiSTX NFT', () => {
     response = transferMintNFT(1, bot);
     expect(response.result).toBeOk(Cl.bool(true));
     // finalize mint
+    goToNextRequestCycle();    
+    expect(fundStrategy(100e6).result).toBeOk(Cl.uint(100e6));    
     goToNextCycle();
-    simnet.mineEmptyBlocks(mintDelay);
-    simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    simnet.mineEmptyBlocks(mintDelay + 1);
+    simnet.callPublicFn(contracts.endpoint, 'finalize-mint', [Cl.uint(1)], bot);
 
     // check that bot received liquid stx
     expect(liSTXBalance(user)).toBeUint(0);
@@ -70,9 +72,11 @@ describe('LiSTX NFT', () => {
     // request and finalize mint
     response = requestMint(100e6);
     expect(response.result).toBeOk(Cl.uint(1));
+    goToNextRequestCycle();    
+    expect(fundStrategy(1e6).result).toBeOk(Cl.uint(1e6));    
     goToNextCycle();
-    simnet.mineEmptyBlocks(mintDelay);
-    response = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    simnet.mineEmptyBlocks(mintDelay + 1);
+    response = simnet.callPublicFn(contracts.endpoint, 'finalize-mint', [Cl.uint(1)], bot);
     expect(response.result).toBeOk(Cl.bool(true));
 
     // request burn
@@ -80,7 +84,7 @@ describe('LiSTX NFT', () => {
     expect(response.result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(1), status: Cl.bufferFromHex('01') })
     );
-    response = requestBurn(40e6);
+    response = requestBurn(39e6);
     expect(response.result).toBeOk(
       Cl.tuple({ 'request-id': Cl.uint(2), status: Cl.bufferFromHex('01') })
     );
@@ -97,6 +101,6 @@ describe('LiSTX NFT', () => {
 
     // check that bot received stx
     expect(simnet.getAssetsMap().get('STX')?.get(bot)).toBe(100000000000000n);
-    expect(simnet.getAssetsMap().get('STX')?.get(user)).toBe(100000000000000n);
+    expect(simnet.getAssetsMap().get('STX')?.get(user)).toBe(99999999000000n);
   });
 });
