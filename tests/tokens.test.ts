@@ -11,7 +11,7 @@ describe('lisa token', () => {
     requestMint(100e6);
     goToNextCycle();
     simnet.mineEmptyBlocks(mintDelay);
-    simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    simnet.callPublicFn(contracts.endpoint, 'finalize-mint', [Cl.uint(1)], bot);
   });
 
   sip10Tests(contracts.lqstx);

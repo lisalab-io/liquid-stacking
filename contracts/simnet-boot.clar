@@ -12,24 +12,17 @@
 			{ extension: .treasury, enabled: true }
 			{ extension: .token-vesting, enabled: true }
 			{ extension: .public-pools-strategy-manager, enabled: true }
-			{ extension: .lisa-rebase-v1-02, enabled: true }
-			{ extension: .rebase-1-v1-02, enabled: true }
 			{ extension: .operators, enabled: true }
 		)))
 		
 		;; Set initial operators
 		(try! (contract-call? .operators set-operators (list
-			;; three from ALEX
-			{ operator: 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7, enabled: true }
-			{ operator: 'SPHFAXDZVFHMY8YR3P9J7ZCV6N89SBET203ZAY25, enabled: true }
-			{ operator: 'SPSZ26REB731JN8H00TD010S600F4AB4Z8F0JRB7, enabled: true }
-			;; three from Ryder/FAST Pool
-			{ operator: 'SP12BFYTH3NJ6N63KE0S50GHSYV0M91NGQND2B704, enabled: true }
-			{ operator: 'SP1ZPTDQ3801C1AYEZ37NJWNDZ3HM60HC2TCFP228, enabled: true }
-			{ operator: 'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B, enabled: true }
+			{operator: tx-sender, enabled: true}
+			{operator: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, enabled: true}
+			{operator: 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND, enabled: true}
+			{operator: 'ST2REHHS5J3CERCRBEPMGH7921Q6PYKAADT7JP2VB, enabled: true}
 		)))
-		;; Set operator signal threshold, i.e. 4-of-6
-		(try! (contract-call? .operators set-proposal-threshold 4))
+		(try! (contract-call? .operators set-proposal-threshold 2))
 
 		;; Set initial strategy managers, sender is the deployer
 		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager sender true))
@@ -38,24 +31,7 @@
 		(try! (contract-call? .token-lisa dao-mint-many (list
 			{ recipient: .treasury, amount: u1000000000000000 }
 		)))
-
-		;; Enable whitelist
-		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-use-whitelist false))
-		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-whitelisted-many 
-			(list 
-				'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7
-				'SP2VZBR9GCVM33BN0WXA05VJP6QV7CJ3Z3SQKJ5HH
-				'SP12BFYTH3NJ6N63KE0S50GHSYV0M91NGQND2B704
-				'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B
-				'SPFJVM9Y1A4KJ31T8ZBDESZH36YGPDAZ9WXEFC53
-			)
-			(list 
-				true
-				true
-				true
-				true
-				true
-			)))
+		
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-paused false))
 		(ok true)
 	)

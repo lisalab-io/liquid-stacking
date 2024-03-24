@@ -31,6 +31,7 @@ describe('LiSTX NFT', () => {
   it('user can transfer nft before finalize mint', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
     let response = requestMint(100e6);
+    console.log(response.events);
     expect(response.result).toBeOk(Cl.uint(1));
 
     // transfer nft to bot
@@ -39,7 +40,7 @@ describe('LiSTX NFT', () => {
     // finalize mint
     goToNextCycle();
     simnet.mineEmptyBlocks(mintDelay);
-    simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    simnet.callPublicFn(contracts.endpoint, 'finalize-mint', [Cl.uint(1)], bot);
 
     // check that bot received liquid stx
     expect(liSTXBalance(user)).toBeUint(0);
@@ -72,7 +73,7 @@ describe('LiSTX NFT', () => {
     expect(response.result).toBeOk(Cl.uint(1));
     goToNextCycle();
     simnet.mineEmptyBlocks(mintDelay);
-    response = simnet.callPublicFn(contracts.rebase1, 'finalize-mint', [Cl.uint(1)], bot);
+    response = simnet.callPublicFn(contracts.endpoint, 'finalize-mint', [Cl.uint(1)], bot);
     expect(response.result).toBeOk(Cl.bool(true));
 
     // request burn
