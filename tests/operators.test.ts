@@ -1,46 +1,12 @@
-
 // SPDX-License-Identifier: BUSL-1.1
 
 import { ParsedTransactionResult, tx } from '@hirosystems/clarinet-sdk';
 import { BooleanCV, Cl, IntCV, SomeCV, TupleCV, UIntCV } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
+import { createClientMockSetup } from './clients/mock-client';
 
-const accounts = simnet.getAccounts();
-const user = accounts.get('wallet_1')!;
-const oracle = accounts.get('wallet_2')!;
-const bot = accounts.get('wallet_3')!;
-const manager = accounts.get('wallet_4')!;
-const operator3 = accounts.get('wallet_5')!;
+const { contracts, prepareTest, bot, manager, operator3 } = createClientMockSetup();
 
-const contracts = {
-  endpoint: 'lqstx-mint-endpoint-v1-01',
-  registry: 'lqstx-mint-registry',
-  vault: 'lqstx-vault',
-  lqstx: 'token-lqstx',
-  vlqstx: 'token-vlqstx',
-  wstx: 'token-wstx',
-  strategy: 'mock-strategy',
-  rebase: 'lisa-rebase',
-  rebase1: 'rebase-mock',
-  amm: 'amm-swap-pool-v1-1',
-  wlqstx: 'token-wlqstx',
-  dao: 'lisa-dao',
-  boot: 'regtest-boot',
-  manager: 'mock-strategy-manager',
-  operators: 'operators',
-  proposal: 'mock-proposal',
-  proposal2: 'mock-proposal',
-};
-
-const prepareTest = () =>
-  simnet.mineBlock([
-    tx.callPublicFn(
-      contracts.dao,
-      'construct',
-      [Cl.contractPrincipal(simnet.deployer, contracts.boot)],
-      simnet.deployer
-    ),
-  ]);
 const expectProposalDataToBe = (proposedAt: number, signals: number, executed: boolean) => {
   const proposalData = simnet.getMapEntry(
     contracts.operators,
