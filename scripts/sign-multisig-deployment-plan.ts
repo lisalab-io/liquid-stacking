@@ -17,9 +17,7 @@ import {
 import { bytesToHex } from '@stacks/common';
 import fs from "fs";
 import { getStacksAddress, getStacksPrivateKeys, getStacksPubkeys } from "./config.ts";
-import { assertSigner, equalByteArrays, readPlan, verboseLog } from "./utils.ts";
-
-const planFile = "plan.json";
+import { planFile, assertSigner, equalByteArrays, readPlan, verboseLog } from "./utils.ts";
 
 const privateKeys = getStacksPrivateKeys();
 const address = getStacksAddress();
