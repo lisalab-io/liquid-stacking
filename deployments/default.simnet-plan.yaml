@@ -206,10 +206,43 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault.clar"
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: rebase-strategy-trait
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.rebase-strategy-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stx-transfer-proxy
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-lqstx
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-vlqstx
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint-v1-01
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: pox-pools-1-cycle-v2
             emulated-sender: SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX
             path: "./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2.clar"
             clarity-version: 2
+      epoch: "2.4"
+    - id: 3
+      transactions:
         - emulated-contract-publish:
             contract-name: xverse-member1
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
@@ -240,9 +273,6 @@ plan:
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member5.clar"
             clarity-version: 2
-      epoch: "2.4"
-    - id: 3
-      transactions:
         - emulated-contract-publish:
             contract-name: xverse-member6
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
@@ -267,31 +297,6 @@ plan:
             contract-name: public-pools-strategy
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: stx-transfer-proxy
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-lqstx
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-vlqstx
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint-v1-01
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/lqstx-mint-endpoint-v1-01.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: proposal-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/proposal-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: operators
@@ -363,14 +368,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 4
+      transactions:
         - emulated-contract-publish:
             contract-name: fastpool-member4
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 4
-      transactions:
         - emulated-contract-publish:
             contract-name: fastpool-member5
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -395,16 +400,6 @@ plan:
             contract-name: fastpool-member9
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: rebase-strategy-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/rebase-strategy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lip001
@@ -455,6 +450,11 @@ plan:
             contract-name: rebase-1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/deployed/rebase-1.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: rebase-strategy-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/deployed/rebase-strategy-trait.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: rebase-strategy-trait-v1-01
