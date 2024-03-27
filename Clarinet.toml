@@ -21,17 +21,41 @@ contract_id = "SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait"
 [[project.requirements]]
 contract_id = "SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait"
 
-[contracts.lisa-dao]
-path = "contracts/lisa-dao.clar"
-epoch = 2.4
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy"
+
+# [contracts.lisa-dao]
+# path = "contracts/lisa-dao.clar"
+# epoch = 2.4
 
 [contracts.boot]
 path = "contracts/boot.clar"
 epoch = 2.4
 
-[contracts.lqstx-vault]
-path = "contracts/extensions/lqstx-vault.clar"
-epoch = 2.4
+# [contracts.lqstx-vault]
+# path = "contracts/extensions/lqstx-vault.clar"
+# epoch = 2.4
 
 [contracts.treasury]
 path = "contracts/extensions/treasury.clar"
@@ -53,9 +77,9 @@ epoch = 2.4
 path = "contracts/traits/commission-trait.clar"
 epoch = 2.4
 
-[contracts.strategy-trait]
-path = "contracts/traits/strategy-trait.clar"
-epoch = 2.4
+# [contracts.strategy-trait]
+# path = "contracts/traits/strategy-trait.clar"
+# epoch = 2.4
 
 [contracts.extension-trait]
 path = "contracts/traits/extension-trait.clar"
@@ -69,9 +93,9 @@ epoch = 2.4
 path = "contracts/traits/proxy-trait.clar"
 epoch = 2.4
 
-[contracts.stx-transfer-proxy]
-path = "contracts/proxies/stx-transfer-proxy.clar"
-epoch = 2.4
+# [contracts.stx-transfer-proxy]
+# path = "contracts/proxies/stx-transfer-proxy.clar"
+# epoch = 2.4
 
 [contracts.stx-transfer-many-proxy]
 path = "contracts/proxies/stx-transfer-many-proxy.clar"
@@ -85,9 +109,9 @@ epoch = 2.4
 path = "contracts/proxies/lisa-transfer-proxy.clar"
 epoch = 2.4
 
-[contracts.public-pools-strategy]
-path = "contracts/strategies/public-pools/public-pools-strategy.clar"
-epoch = 2.4
+# [contracts.public-pools-strategy]
+# path = "contracts/strategies/public-pools/public-pools-strategy.clar"
+# epoch = 2.4
 
 [contracts.fastpool-member1]
 path = "contracts/strategies/public-pools/fastpool-member.clar"
@@ -201,9 +225,9 @@ epoch = 2.4
 path = "contracts/deployed/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
-[contracts.lqstx-mint-registry]
-path = "contracts/aux/lqstx-mint-registry.clar"
-epoch = 2.4
+# [contracts.lqstx-mint-registry]
+# path = "contracts/aux/lqstx-mint-registry.clar"
+# epoch = 2.4
 
 [contracts.li-stx-mint-nft]
 path = "contracts/aux/li-stx-mint-nft.clar"
@@ -213,13 +237,13 @@ epoch = 2.4
 path = "contracts/aux/li-stx-burn-nft.clar"
 epoch = 2.4
 
-[contracts.token-lqstx]
-path = "contracts/token-lqstx.clar"
-epoch = 2.4
+# [contracts.token-lqstx]
+# path = "contracts/token-lqstx.clar"
+# epoch = 2.4
 
-[contracts.token-vlqstx]
-path = "contracts/token-vlqstx.clar"
-epoch = 2.4
+# [contracts.token-vlqstx]
+# path = "contracts/token-vlqstx.clar"
+# epoch = 2.4
 
 [contracts.token-lisa]
 path = "contracts/token-lisa.clar"
