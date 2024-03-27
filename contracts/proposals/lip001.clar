@@ -39,8 +39,8 @@
 				true
 				true
 			)))
-		(try! (contract-call? .lqstx-mint-endpoint set-paused true))
-		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-paused true))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint set-paused true))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01 set-paused true))
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-paused false))		
 
 		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7 true))		
