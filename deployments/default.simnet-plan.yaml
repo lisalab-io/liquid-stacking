@@ -329,6 +329,21 @@ plan:
             path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: endpoint-whitelist-helper-v1-02
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/aux/endpoint-whitelist-helper.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: rebase-strategy-trait
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/deployed/rebase-strategy-trait.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/deployed/lqstx-mint-endpoint.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: lip001
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/lip001.clar
@@ -344,16 +359,6 @@ plan:
             path: contracts/proxies/lisa-transfer-proxy.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: rebase-strategy-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/rebase-strategy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/lqstx-mint-endpoint.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: lqstx-transfer-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/lqstx-transfer-proxy.clar
@@ -363,14 +368,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/mocks/mock-proposal.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 4
+      transactions:
         - emulated-contract-publish:
             contract-name: mock-strategy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/mocks/mock-strategy.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 4
-      transactions:
         - emulated-contract-publish:
             contract-name: mock-strategy-manager
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM

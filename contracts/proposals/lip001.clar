@@ -6,12 +6,12 @@
 (define-public (execute (sender principal))
 	(begin		
 		(try! (contract-call? .lisa-dao set-extensions (list
+			{ extension: .lqstx-mint-endpoint, enabled: false }
 			{ extension: .lqstx-mint-endpoint-v1-01, enabled: false }
 			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }
 			{ extension: .lisa-rebase, enabled: false }
 			{ extension: .rebase-1, enabled: false }
-			{ extension: .lisa-rebase-v1-02, enabled: true }
-			{ extension: .rebase-1-v1-02, enabled: true }
+			{ extension: .endpoint-whitelist-helper-v1-02, enabled: true }
 		)))
 
 		(try! (contract-call? .token-lqstx dao-set-name "LiSTX"))
@@ -39,7 +39,17 @@
 				true
 				true
 			)))
+		(try! (contract-call? .lqstx-mint-endpoint set-paused true))
+		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-paused true))
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-paused false))		
+
+		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7 true))		
+		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SP2VZBR9GCVM33BN0WXA05VJP6QV7CJ3Z3SQKJ5HH true))
+		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SP12BFYTH3NJ6N63KE0S50GHSYV0M91NGQND2B704 true))
+		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B true))
+		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SPFJVM9Y1A4KJ31T8ZBDESZH36YGPDAZ9WXEFC53 true))
+		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SPHFAXDZVFHMY8YR3P9J7ZCV6N89SBET203ZAY25 true))
+
 		(ok true)
 	)
 )
