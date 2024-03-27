@@ -305,6 +305,10 @@ path = "contracts_modules/alex_v1/traits/trait-sip-010.clar"
 path = "contracts/proposals/lip001.clar"
 epoch = 2.4
 
+[contracts.endpoint-whitelist-helper-v1-02]
+path = "contracts/aux/endpoint-whitelist-helper.clar"
+epoch = 2.4
+
 # [repl.analysis]
 # passes = ["check_checker"]
 # check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
