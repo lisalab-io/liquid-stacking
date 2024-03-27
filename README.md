@@ -1,5 +1,9 @@
 # Liquid Stacking (LISA)
 
+## Notice
+
+Currently, `clarinet check` and the CI fails due to a bug in clarinet. See https://github.com/hirosystems/clarinet/pull/1394 . To check the contracts, you need to build clarinet locally.
+
 ## Deployment
 
 1. npm run
@@ -30,8 +34,9 @@ are in the form `(err uint)` and they are unique across all contracts.
 ### Error table
 
 <!--errors-->
+
 | Contract                        | Constant                         | Value       | Description |
-|---------------------------------|----------------------------------|-------------|-------------|
+| ------------------------------- | -------------------------------- | ----------- | ----------- |
 | lisa-dao                        | err-unauthorised                 | (err u1000) |             |
 | lqstx-mint-endpoint             | err-unauthorised                 | (err u1000) |             |
 | lqstx-mint-endpoint-v1-01       | err-unauthorised                 | (err u1000) |             |
@@ -131,6 +136,7 @@ are in the form `(err uint)` and they are unique across all contracts.
 | token-vesting                   | err-event-not-vested             | (err u9002) |             |
 | token-vesting                   | err-event-already-claimed        | (err u9003) |             |
 | token-vesting                   | err-recipient-exists             | (err u9004) |             |
+
 <!--errors-->
 
 ## References

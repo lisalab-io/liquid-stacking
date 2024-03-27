@@ -7,7 +7,7 @@
 (define-constant REVOKED 0x02)
 
 (define-public (rebase)
-	(contract-call? .lisa-rebase rebase (list .public-pools-strategy))
+	(contract-call? .lisa-rebase rebase (list 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy))
 )
 
 (define-public (finalize-mint (request-id uint))
@@ -27,7 +27,7 @@
 (define-public (request-burn (amount uint))
 	(let (
 		(sender tx-sender)
-		(send-token (try! (contract-call? .token-lqstx transfer amount sender (as-contract tx-sender) none)))
+		(send-token (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx transfer amount sender (as-contract tx-sender) none)))
 		(request-data (as-contract (try! (contract-call? .lqstx-mint-endpoint-v1-01 request-burn sender amount)))))
 		(match (finalize-burn (get request-id request-data))
 			ok-value (ok { request-id: (get request-id request-data), status: FINALIZED })

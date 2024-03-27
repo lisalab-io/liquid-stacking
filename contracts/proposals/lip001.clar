@@ -5,19 +5,19 @@
 
 (define-public (execute (sender principal))
 	(begin		
-		(try! (contract-call? .lisa-dao set-extensions (list
-			{ extension: .lqstx-mint-endpoint, enabled: false }
-			{ extension: .lqstx-mint-endpoint-v1-01, enabled: false }
-			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }
-			{ extension: .lisa-rebase, enabled: false }
-			{ extension: .rebase-1, enabled: false }
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list
+			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint, enabled: false }
+			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01, enabled: false }
+			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-rebase, enabled: false }
+			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.rebase-1, enabled: false }
+			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }			
 			{ extension: .endpoint-whitelist-helper-v1-02, enabled: true }
 		)))
 
-		(try! (contract-call? .token-lqstx dao-set-name "LiSTX"))
-		(try! (contract-call? .token-lqstx dao-set-symbol "LiSTX"))
-		(try! (contract-call? .token-vlqstx set-name "vLiSTX"))
-		(try! (contract-call? .token-vlqstx set-symbol "vLiSTX"))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-set-name "LiSTX"))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-set-symbol "LiSTX"))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx set-name "vLiSTX"))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx set-symbol "vLiSTX"))
 		(print { notification: "what-is-LISA", payload: "LISA is the goddess of liquid stacking. Liberate your STX with LiSTX!"})
 
 		;; Enable whitelist

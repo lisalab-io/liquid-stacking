@@ -5,10 +5,10 @@
 
 (define-public (execute (sender principal))
 	(begin
-		(try! (contract-call? .lisa-dao set-extensions (list
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list
 			{ extension: .lqstx-mint-endpoint, enabled: false }
 			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }
-			{ extension: .lqstx-vault, enabled: true }
+			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault, enabled: true }
 			{ extension: .treasury, enabled: true }
 			{ extension: .token-vesting, enabled: true }
 			{ extension: .public-pools-strategy-manager, enabled: true }

@@ -93,14 +93,14 @@
 )
 
 (define-private (get-base-decimals)
- (contract-call? .token-lqstx get-decimals))
+ (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-decimals))
 
 
 ;; @desc get-balance
 ;; @params account
 ;; @returns (response uint)
 (define-read-only (get-balance (account principal))
- (ok (/ (* (unwrap-panic (contract-call? .token-lqstx get-balance account)) (pow-decimals)) (pow u10 (unwrap-panic (get-base-decimals)))))
+ (ok (/ (* (unwrap-panic (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-balance account)) (pow-decimals)) (pow u10 (unwrap-panic (get-base-decimals)))))
 )
 
 ;; @desc get-token-uri
@@ -119,7 +119,7 @@
 (define-public (transfer (amount uint) (sender principal) (recipient principal) (memo (optional (buff 2048))))
   (begin
     (asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-not-authorized)
-   (contract-call? .token-lqstx transfer (/ (* amount (pow u10 (unwrap-panic (get-base-decimals)))) (pow-decimals)) sender recipient memo)
+   (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx transfer (/ (* amount (pow u10 (unwrap-panic (get-base-decimals)))) (pow-decimals)) sender recipient memo)
   )
 )
 
@@ -212,7 +212,7 @@
 )
 
 (define-read-only (get-reserve-fixed)
-	(ok (* (unwrap-panic (contract-call? .token-lqstx get-reserve)) u100)))
+	(ok (* (unwrap-panic (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-reserve)) u100)))
 
 ;; contract initialisation
 ;; (set-contract-owner .executor-dao)

@@ -1,7 +1,7 @@
 
 ;; SPDX-License-Identifier: BUSL-1.1
 
-(impl-trait .strategy-trait.strategy-trait)
+(impl-trait 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait.strategy-trait)
 
 (define-constant err-not-vault-caller (err u2000))
 (define-constant err-invalid-payload (err u2001))
@@ -22,7 +22,7 @@
 )
 
 (define-read-only (is-vault-caller)
-	(ok (asserts! (is-eq tx-sender .lqstx-vault) err-not-vault-caller))
+	(ok (asserts! (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault) err-not-vault-caller))
 )
 
 (define-private (process-strategy (amount uint) (member <pool-member>))
