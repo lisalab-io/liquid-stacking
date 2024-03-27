@@ -8,6 +8,7 @@
 		(try! (contract-call? .lisa-dao set-extensions (list
 			{ extension: .lqstx-mint-endpoint, enabled: false }
 			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }
+			{ extension: .endpoint-whitelist-helper-v1-02, enabled: true }
 			{ extension: .lqstx-vault, enabled: true }
 			{ extension: .treasury, enabled: true }
 			{ extension: .token-vesting, enabled: true }
@@ -28,6 +29,7 @@
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-mint-delay u14))
 		(try! (contract-call? .mock-strategy-manager set-authorised-manager 'ST2QXSK64YQX3CQPC530K79XWQ98XFAM9W3XKEH3N true))
 		(try! (contract-call? .mock-strategy-manager set-authorised-manager 'ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND true))
+		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'ST1HTBVD3JG9C05J7HBJTHGR0GGW7KXW28M5JS8QE true))
 		(ok true)
 	)
 )
