@@ -25,7 +25,7 @@
 		(try! (contract-call? .operators set-proposal-threshold 2))
 
 		;; Mint max LISA token supply (1bn)
-		(try! (contract-call? .token-lisa dao-mint-many (list
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lisa dao-mint-many (list
 			{ recipient: .treasury, amount: u1000000000000000 }
 		)))
 
