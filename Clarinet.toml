@@ -42,6 +42,9 @@ contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault"
 [[project.requirements]]
 contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy"
 
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy"
+
 # [contracts.lisa-dao]
 # path = "contracts/lisa-dao.clar"
 # epoch = 2.4
@@ -106,9 +109,9 @@ epoch = 2.4
 path = "contracts/proxies/lisa-transfer-proxy.clar"
 epoch = 2.4
 
-[contracts.public-pools-strategy]
-path = "contracts/strategies/public-pools/public-pools-strategy.clar"
-epoch = 2.4
+# [contracts.public-pools-strategy]
+# path = "contracts/strategies/public-pools/public-pools-strategy.clar"
+# epoch = 2.4
 
 [contracts.fastpool-member1]
 path = "contracts/strategies/public-pools/fastpool-member.clar"
