@@ -120,8 +120,6 @@ const fundingTransactions = {
   SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B: 10 * 1000000
 };
 
-//createMultisigStxTransaction
-
 const multisigSpendConditionByteLength = 66; // don't change
 
 let tempTotalFee = 0n;
