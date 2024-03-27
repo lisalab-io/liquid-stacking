@@ -301,6 +301,10 @@ path = "contracts_modules/alex_v1/wrapped-token/token-wstx.clar"
 [contracts.trait-sip-010]
 path = "contracts_modules/alex_v1/traits/trait-sip-010.clar"
 
+[contracts.lip001]
+path = "contracts/proposals/lip001.clar"
+epoch = 2.4
+
 # [repl.analysis]
 # passes = ["check_checker"]
 # check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
