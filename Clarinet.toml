@@ -342,6 +342,10 @@ epoch = 2.4
 path = "contracts/aux/endpoint-whitelist-helper.clar"
 epoch = 2.4
 
+[contracts.lip002]
+path = "contracts/proposals/lip002.clar"
+epoch = 2.4
+
 # [repl.analysis]
 # passes = ["check_checker"]
 # check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }

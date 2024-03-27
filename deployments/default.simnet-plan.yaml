@@ -407,6 +407,11 @@ plan:
             path: contracts/proposals/lip001.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: lip002
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/proposals/lip002.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: lisa-rebase
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/deployed/lisa-rebase.clar
@@ -491,14 +496,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/stx-transfer-many-proxy.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 5
+      transactions:
         - emulated-contract-publish:
             contract-name: token-vesting
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/token-vesting.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 5
-      transactions:
         - emulated-contract-publish:
             contract-name: token-wlqstx
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
