@@ -11,7 +11,7 @@
 (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-3 allow-contract-caller 'SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2 none))
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
+	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised))
 )
 
 (define-public (set-pool-reward-pox-addr (new-address { hashbytes: (buff 32), version: (buff 1) }))
@@ -22,7 +22,7 @@
 )
 
 (define-read-only (is-strategy-caller)
-	(ok (asserts! (is-eq contract-caller .public-pools-strategy) err-unauthorised))
+	(ok (asserts! (is-eq contract-caller 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy) err-unauthorised))
 )
 
 (define-public (delegate-stx (amount uint))

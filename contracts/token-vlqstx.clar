@@ -50,18 +50,18 @@
 	(begin 
 		(asserts! (or (is-eq tx-sender recipient) (is-eq contract-caller recipient)) err-unauthorised)				
 		(try! (ft-mint? vlqstx (get-tokens-to-shares amount) recipient))
-		(contract-call? .token-lqstx transfer amount recipient (as-contract tx-sender) none)))
+		(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx transfer amount recipient (as-contract tx-sender) none)))
 
 (define-public (burn (amount uint) (sender principal))
 	(begin
 		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
-		(as-contract (try! (contract-call? .token-lqstx transfer (get-shares-to-tokens amount) tx-sender sender none)))
+		(as-contract (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx transfer (get-shares-to-tokens amount) tx-sender sender none)))
 		(ft-burn? vlqstx amount sender)))
 
 ;; read-only functions
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
+	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised)))
 	
 (define-read-only (get-name)
 	(ok (var-get token-name)))
@@ -85,7 +85,7 @@
 	(ok (get-shares-to-tokens (unwrap-panic (get-balance who)))))
 
 (define-read-only (get-total-shares)
-	(contract-call? .token-lqstx get-balance (as-contract tx-sender)))
+	(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-balance (as-contract tx-sender)))
 
 (define-read-only (get-tokens-to-shares (amount uint))
 	(if (is-eq (get-total-supply) (ok u0))

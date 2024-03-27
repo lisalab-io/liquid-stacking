@@ -20,7 +20,7 @@
 (define-map proposal-signals { proposal: principal, operator: principal } uint)
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
+	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised))
 )
 
 (define-read-only (is-operator)
@@ -59,7 +59,7 @@
 		(map-set proposal-signals { proposal: proposal-principal, operator: tx-sender } burn-block-height)
 		(map-set proposals proposal-principal (merge proposal-data {signals: signals, executed: threshold-met}))
 		(if threshold-met
-			(contract-call? .lisa-dao execute proposal tx-sender)
+			(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao execute proposal tx-sender)
 			(ok false)
 		)
 	)

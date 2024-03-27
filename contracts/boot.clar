@@ -5,13 +5,13 @@
 
 (define-public (execute (sender principal))
 	(begin
-		(try! (contract-call? .lisa-dao set-extensions (list
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list
 			{ extension: .lqstx-mint-endpoint, enabled: false }
 			{ extension: .lqstx-mint-endpoint-v1-01, enabled: true }
-			{ extension: .lqstx-vault, enabled: true }
+			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault, enabled: true }
 			{ extension: .treasury, enabled: true }
 			{ extension: .token-vesting, enabled: true }
-			{ extension: .public-pools-strategy-manager, enabled: true }
+			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy-manager, enabled: true }
 			{ extension: .lisa-rebase, enabled: true }
 			{ extension: .rebase-1, enabled: true }
 			{ extension: .operators, enabled: true }
@@ -32,8 +32,8 @@
 		(try! (contract-call? .operators set-proposal-threshold 4))
 
 		;; Set initial strategy managers, sender is the deployer
-		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager sender true))
-		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager 'SP2G5X5HCJW31Q3Z71XGPV5S8FNBZMWW7PK45ZWG8 true))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy-manager set-authorised-manager sender true))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy-manager set-authorised-manager 'SP2G5X5HCJW31Q3Z71XGPV5S8FNBZMWW7PK45ZWG8 true))
 
 		;; Mint max LISA token supply (1bn)
 		(try! (contract-call? .token-lisa dao-mint-many (list
