@@ -16,6 +16,7 @@ import {
   ClarityValue,
   contractPrincipalCV,
   makeUnsignedSTXTokenTransfer,
+  getNonce,
 } from '@stacks/transactions';
 import type { StacksNetworkName } from '@stacks/network';
 import { initSimnet } from '@hirosystems/clarinet-sdk';
@@ -29,16 +30,70 @@ const manifestFile = './Clarinet.toml';
 const simnetDeployFile = 'deployments/default.simnet-plan.yaml';
 const lisaDaoContractName = 'lisa-dao';
 
-const contractsToSkip = ['regtest-boot', 'token-vesting', 'simnet-boot'];
+const contractsToSkip = [
+  "regtest-boot",
+  "token-vesting",
+  "simnet-boot",
+  "extension-trait",
+  "proposal-trait",
+  "lisa-dao",
+  "lqstx-mint-registry",
+  "proxy-trait",
+  "strategy-trait",
+  "lqstx-vault",
+  "stx-transfer-proxy",
+  "token-lqstx",
+  "token-vlqstx",
+  "lqstx-mint-endpoint-v1-01",
+  "operators",
+  "fastpool-member1",
+  "fastpool-member10",
+  "fastpool-member2",
+  "fastpool-member3",
+  "fastpool-member4",
+  "fastpool-member5",
+  "fastpool-member6",
+  "fastpool-member7",
+  "fastpool-member8",
+  "fastpool-member9",
+  "xverse-member1",
+  "xverse-member10",
+  "xverse-member2",
+  "xverse-member3",
+  "xverse-member4",
+  "xverse-member5",
+  "xverse-member6",
+  "xverse-member7",
+  "xverse-member8",
+  "xverse-member9",
+  "public-pools-strategy",
+  "public-pools-strategy-manager",
+  "token-lisa",
+  "boot",
+  "commission-trait",
+  "lisa-rebase",
+  "lisa-transfer-proxy",
+  "rebase-strategy-trait",
+  "lqstx-mint-endpoint",
+  "lqstx-transfer-proxy",
+  "nft-trait",
+  "rebase-1",
+  "rebase-strategy-trait-v1-01",
+  "sip-010-extensions-trait",
+  "sip-010-trait",
+  "sip-010-transferable-trait",
+  "stx-transfer-many-proxy",
+  "treasury",
+];
 
 const network = getNetwork();
 const mainnetDeploy = isMainnet();
 const address = getStacksAddress();
 const pubKeys = getStacksPubkeys();
-let nonce = 0;
-const feeMultiplier = 10000; // transaction bytes * feeMultiplier
-const feeAddition = 1; // add a flat amount on top
-const feeCap = 0; //15 * 1000000; // 15 STX
+let nonce = -1; // set to -1 to fetch from network
+const feeMultiplier = 1000; // transaction bytes * feeMultiplier
+const feeAddition = 0; // add a flat amount on top
+const feeCap = 7 * 1000000; // 7 STX
 
 const testnetAddressReplacements = {
   // zero address
@@ -59,9 +114,18 @@ const testnetAddressReplacements = {
   SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B: 'ST2REHHS5J3CERCRBEPMGH7921Q6PYKAADT7JP2VB',
 };
 
+const fundingTransactions = {
+  SP12BFYTH3NJ6N63KE0S50GHSYV0M91NGQND2B704: 10 * 1000000,
+  SP1ZPTDQ3801C1AYEZ37NJWNDZ3HM60HC2TCFP228: 10 * 1000000,
+  SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B: 10 * 1000000
+};
+
+//createMultisigStxTransaction
+
 const multisigSpendConditionByteLength = 66; // don't change
 
 let tempTotalFee = 0n;
+let includesBootContract = false;
 
 type PlanItem = {
   contractName: string;
@@ -157,7 +221,7 @@ async function createMultisigDeployTransaction(
   assertSigner(tx.auth.spendingCondition, checkSigner);
   let calculatedFee =
     (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) *
-      feeMultiplier +
+    feeMultiplier +
     feeAddition;
   if (feeCap > 0 && calculatedFee > feeCap) calculatedFee = feeCap;
   tx.setFee(calculatedFee);
@@ -200,10 +264,11 @@ async function createMultisigStxTransaction(
   assertSigner(tx.auth.spendingCondition, signer);
   let calculatedFee =
     (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) *
-      feeMultiplier +
+    feeMultiplier +
     feeAddition;
   if (feeCap > 0 && calculatedFee > feeCap) calculatedFee = feeCap;
   tx.setFee(calculatedFee);
+  verboseLog(`Created STX transfer to ${recipient} to the amount of ${amount}, calculated fee is ${calculatedFee}`);
   tempTotalFee += BigInt(calculatedFee);
   return tx;
 }
@@ -252,12 +317,12 @@ async function createMultisigBootTransaction(
   assertSigner(tx.auth.spendingCondition, signer);
   let calculatedFee =
     (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) *
-      feeMultiplier +
+    feeMultiplier +
     feeAddition;
   if (feeCap > 0 && calculatedFee > feeCap) calculatedFee = feeCap;
   tx.setFee(calculatedFee);
   tempTotalFee += BigInt(calculatedFee);
-  verboseLog(`Created boot transaction`);
+  verboseLog(`Created boot transaction, calculated fee is ${calculatedFee}`);
   return tx;
 }
 
@@ -287,7 +352,24 @@ function findStxBootstrapAmountAtom(items: any[]): bigint | null {
   return null;
 }
 
-deployPlan()
+async function fetchNonce() {
+  if (nonce !== -1)
+    return;
+  const addressString = addressToString(address);
+  let currentNonce = 0n;
+  try {
+    currentNonce = await getNonce(addressString, network);
+  }
+  catch (error) {
+    console.log('Failed to fetch current nonce - might happen on devnet');
+    throw error;
+  }
+  verboseLog(`${addressString} account nonce is ${currentNonce}`);
+  nonce = Number(currentNonce);
+}
+
+fetchNonce()
+  .then(deployPlan)
   .then(plan =>
     plan.filter(item => {
       if (contractsToSkip.indexOf(item.contractName) !== -1) {
@@ -296,6 +378,8 @@ deployPlan()
         );
         return false;
       }
+      if (item.contractName === "boot")
+        includesBootContract = true;
       return true;
     })
   )
@@ -339,22 +423,40 @@ deployPlan()
       plan.push(bytesToHex(addPubkeyFields(fundingTx, pubKeys).serialize()));
     }
 
-    const bootTx = await createMultisigBootTransaction(
-      addressString,
-      lisaDaoContractName,
-      'construct',
-      [contractPrincipalCV(addressString, 'boot')],
-      feeMultiplier,
-      nonce++,
-      pubKeys.length,
-      pubKeys,
-      network,
-      address,
-      bootstrapStxAmount ?? 0n,
-      `${addressString}.${lisaDaoContractName}`
-    );
+    for (const [recipient, amount] of Object.entries(fundingTransactions)) {
+      const fundingTx = await createMultisigStxTransaction(
+        BigInt(amount),
+        recipient,
+        feeMultiplier,
+        nonce++,
+        pubKeys.length,
+        pubKeys,
+        address
+      );
+      plan.push(bytesToHex(addPubkeyFields(fundingTx, pubKeys).serialize()));
+    }
 
-    plan.push(bytesToHex(addPubkeyFields(bootTx, pubKeys).serialize()));
+    if (includesBootContract) {
+      const bootTx = await createMultisigBootTransaction(
+        addressString,
+        lisaDaoContractName,
+        'construct',
+        [contractPrincipalCV(addressString, 'boot')],
+        feeMultiplier,
+        nonce++,
+        pubKeys.length,
+        pubKeys,
+        network,
+        address,
+        bootstrapStxAmount ?? 0n,
+        `${addressString}.${lisaDaoContractName}`
+      );
+
+      plan.push(bytesToHex(addPubkeyFields(bootTx, pubKeys).serialize()));
+    }
+    else {
+      verboseLog('Skipping boot transaction because plan does not include boot contract');
+    }
     return plan;
   })
   .then(plan => {

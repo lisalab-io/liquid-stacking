@@ -14,3 +14,4 @@ node_modules
 contracts_modules
 plan.json
 config.json*
+.DS_Store

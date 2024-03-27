@@ -64,9 +64,6 @@ plan:
             emulated-sender: SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335
             path: "./.cache/requirements/SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait.clar"
             clarity-version: 1
-      epoch: "2.0"
-    - id: 1
-      transactions:
         - emulated-contract-publish:
             contract-name: trait-sip-010
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -112,8 +109,8 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts_modules/alex_v1/traits/trait-vault.clar
             clarity-version: 1
-      epoch: "2.05"
-    - id: 2
+      epoch: "2.1"
+    - id: 1
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
@@ -241,7 +238,7 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member5.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 3
+    - id: 2
       transactions:
         - emulated-contract-publish:
             contract-name: xverse-member6
@@ -369,7 +366,7 @@ plan:
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
       epoch: "2.4"
-    - id: 4
+    - id: 3
       transactions:
         - emulated-contract-publish:
             contract-name: fastpool-member5
@@ -497,7 +494,7 @@ plan:
             path: contracts/extensions/token-vesting.clar
             clarity-version: 2
       epoch: "2.4"
-    - id: 5
+    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: token-wlqstx
