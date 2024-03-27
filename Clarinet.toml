@@ -45,6 +45,15 @@ contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy"
 [[project.requirements]]
 contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy"
 
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01"
+
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait"
+
 # [contracts.lisa-dao]
 # path = "contracts/lisa-dao.clar"
 # epoch = 2.4
@@ -85,9 +94,9 @@ epoch = 2.4
 path = "contracts/traits/extension-trait.clar"
 epoch = 2.4
 
-[contracts.proposal-trait]
-path = "contracts/traits/proposal-trait.clar"
-epoch = 2.4
+# [contracts.proposal-trait]
+# path = "contracts/traits/proposal-trait.clar"
+# epoch = 2.4
 
 [contracts.proxy-trait]
 path = "contracts/traits/proxy-trait.clar"
@@ -217,13 +226,13 @@ epoch = 2.4
 path = "contracts/extensions/lqstx-mint-endpoint.clar"
 epoch = 2.4
 
-[contracts.lqstx-mint-endpoint-v1-01]
-path = "contracts/deployed/lqstx-mint-endpoint-v1-01.clar"
-epoch = 2.4
+# [contracts.lqstx-mint-endpoint-v1-01]
+# path = "contracts/deployed/lqstx-mint-endpoint-v1-01.clar"
+# epoch = 2.4
 
-[contracts.lqstx-mint-endpoint]
-path = "contracts/deployed/lqstx-mint-endpoint.clar"
-epoch = 2.4
+# [contracts.lqstx-mint-endpoint]
+# path = "contracts/deployed/lqstx-mint-endpoint.clar"
+# epoch = 2.4
 
 # [contracts.lqstx-mint-registry]
 # path = "contracts/aux/lqstx-mint-registry.clar"

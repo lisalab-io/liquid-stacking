@@ -13,14 +13,14 @@
 (define-public (finalize-mint (request-id uint))
 	(begin 
 		(try! (rebase))
-		(as-contract (try! (contract-call? .lqstx-mint-endpoint-v1-01 finalize-mint request-id)))
+		(as-contract (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01 finalize-mint request-id)))
 		(try! (rebase))
 		(ok true)))
 
 (define-public (finalize-burn (request-id uint))
 	(begin 
 		(try! (rebase))
-		(as-contract (try! (contract-call? .lqstx-mint-endpoint-v1-01 finalize-burn request-id)))
+		(as-contract (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01 finalize-burn request-id)))
 		(try! (rebase))
 		(ok true)))
 
@@ -28,7 +28,7 @@
 	(let (
 		(sender tx-sender)
 		(send-token (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx transfer amount sender (as-contract tx-sender) none)))
-		(request-data (as-contract (try! (contract-call? .lqstx-mint-endpoint-v1-01 request-burn sender amount)))))
+		(request-data (as-contract (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01 request-burn sender amount)))))
 		(match (finalize-burn (get request-id request-data))
 			ok-value (ok { request-id: (get request-id request-data), status: FINALIZED })
 			err-value (ok request-data))))
