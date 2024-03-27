@@ -16,8 +16,8 @@
 
 		(try! (contract-call? .token-lqstx dao-set-name "LiSTX"))
 		(try! (contract-call? .token-lqstx dao-set-symbol "LiSTX"))
-		(try! (contract-call? .token-vlqstx dao-set-name "vLiSTX"))
-		(try! (contract-call? .token-vlqstx dao-set-symbol "vLiSTX"))
+		(try! (contract-call? .token-vlqstx set-name "vLiSTX"))
+		(try! (contract-call? .token-vlqstx set-symbol "vLiSTX"))
 		(print { notification: "what-is-LISA", payload: "LISA is the goddess of liquid stacking. Liberate your STX with LiSTX!"})
 
 		;; Enable whitelist
