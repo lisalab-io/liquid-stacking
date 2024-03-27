@@ -51,6 +51,9 @@ contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint"
 [[project.requirements]]
 contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01"
 
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait"
+
 # [contracts.lisa-dao]
 # path = "contracts/lisa-dao.clar"
 # epoch = 2.4
@@ -91,9 +94,9 @@ epoch = 2.4
 path = "contracts/traits/extension-trait.clar"
 epoch = 2.4
 
-[contracts.proposal-trait]
-path = "contracts/traits/proposal-trait.clar"
-epoch = 2.4
+# [contracts.proposal-trait]
+# path = "contracts/traits/proposal-trait.clar"
+# epoch = 2.4
 
 [contracts.proxy-trait]
 path = "contracts/traits/proxy-trait.clar"
