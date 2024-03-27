@@ -29,7 +29,7 @@
 
 ;; __IF_MAINNET__
 (define-data-var request-cutoff uint u300) ;; request must be made 300 blocks before prepare stage starts
-(define-constant pox-info (unwrap-panic (contract-call? 'ST000000000000000000002AMW42H.pox-3 get-pox-info)))
+(define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
 (define-constant activation-burn-block (get first-burnchain-block-height pox-info))
 (define-constant reward-cycle-length (get reward-cycle-length pox-info))
 (define-constant prepare-cycle-length (get prepare-cycle-length pox-info))
