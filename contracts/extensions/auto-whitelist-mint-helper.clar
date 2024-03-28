@@ -1,13 +1,12 @@
 
 ;; SPDX-License-Identifier: BUSL-1.1
 
-;; TODO: select snapshot heights
-(define-constant stacks-snapshot-height1 block-height)
-(define-constant stacks-snapshot-height2 block-height)
+;; snapshot block height for cycle #80 and #81
+(define-constant stacks-snapshot-height1 u144186) ;; btc height 836387
+(define-constant stacks-snapshot-height2 u142306) ;; btc height 834056
 
-;; TODO: set pox addresses
-(define-constant fastpool-pox-address { version: 0x00, hashbytes: 0x00 })
-(define-constant xverse-pox-address { version: 0x00, hashbytes: 0x00 })
+(define-constant fastpool-pox-address {version: 0x04, hashbytes: 0x83ed66860315e334010bbfb76eb3eef887efee0a}) ;; bc1qs0kkdpsrzh3ngqgth7mkavlwlzr7lms2zv3wxe
+(define-constant xverse-pox-address {version: 0x04, hashbytes: 0xdb14133a9dbb1d0e16b60513453e48b6ff2847a9}) ;; bc1qmv2pxw5ahvwsu94kq5f520jgkmljs3af8ly6tr
 
 (define-read-only (is-eligible-pox-address (pox-address { version: (buff 1), hashbytes: (buff 32) }))
 	(or (is-eq pox-address fastpool-pox-address) (is-eq pox-address xverse-pox-address))
