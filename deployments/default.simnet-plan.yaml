@@ -299,6 +299,26 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy.clar"
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: li-stx-burn-nft
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/aux/li-stx-burn-nft.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: li-stx-mint-nft
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/aux/li-stx-mint-nft.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint-v1-02
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/lqstx-mint-endpoint.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: auto-whitelist-mint-helper
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/auto-whitelist-mint-helper.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: operators
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/operators.clar
@@ -322,21 +342,6 @@ plan:
             contract-name: commission-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/traits/commission-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: li-stx-burn-nft
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/li-stx-burn-nft.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: li-stx-mint-nft
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/li-stx-mint-nft.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint-v1-02
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: endpoint-whitelist-helper-v1-02
@@ -363,14 +368,14 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 4
+      transactions:
         - emulated-contract-publish:
             contract-name: fastpool-member3
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 4
-      transactions:
         - emulated-contract-publish:
             contract-name: fastpool-member4
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -410,6 +415,11 @@ plan:
             contract-name: lip002
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/lip002.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lip003
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/proposals/lip003.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lisa-rebase
@@ -486,6 +496,9 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/traits/sip-010-trait.clar
             clarity-version: 2
+      epoch: "2.4"
+    - id: 5
+      transactions:
         - emulated-contract-publish:
             contract-name: sip-010-transferable-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -496,9 +509,6 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/stx-transfer-many-proxy.clar
             clarity-version: 2
-      epoch: "2.4"
-    - id: 5
-      transactions:
         - emulated-contract-publish:
             contract-name: token-vesting
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
