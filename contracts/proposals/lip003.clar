@@ -5,9 +5,7 @@
 
 (define-public (execute (sender principal))
 	(begin		
-		(try! (contract-call? .operators set-operators (list
-			{operator: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, enabled: false}
-		)))
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extension .auto-whitelist-mint-helper true))
 		(ok true)
 	)
 )
