@@ -28,10 +28,11 @@
   "prettier": "@stacks/prettier-config",
   "dependencies": {
     "@hirosystems/clarinet-sdk": "2.4.0-beta3",
-    "@stacks/stacking": "6.11.4-pr.36558cf.0",
     "@stacks/prettier-config": "^0.0.10",
+    "@stacks/stacking": "6.11.4-pr.36558cf.0",
     "@stacks/transactions": "^6.9.0",
     "chokidar-cli": "^3.0.0",
+    "print-diff": "^2.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.1.4",
