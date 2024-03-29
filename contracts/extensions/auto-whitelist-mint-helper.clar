@@ -21,12 +21,9 @@
 )
 
 (define-read-only (was-stacking-in-eligible-pool-height (who principal) (height uint))
-;; __IF_MAINNET__
 	(at-block (unwrap! (get-block-info? id-header-hash height) false)
 		(is-eligible-pox-address (get pox-addr (unwrap! (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-stacker-info who) false)))
 	)
-	;; false
-;; __ENDIF__
 )
 
 (define-read-only (was-stacking-in-eligible-pool (who principal))
