@@ -2,7 +2,7 @@
 ;; SPDX-License-Identifier: BUSL-1.1
 
 (use-trait proxy-trait .proxy-trait.proxy-trait)
-(use-trait sip-010-transferable-trait .sip-010-transferable-trait.sip-010-transferable-trait)
+(use-trait sip-010-transferable-trait .sip-010-transferable-trait-v1-01.sip-010-transferable-trait)
 
 (define-constant err-unauthorised (err u1000))
 
