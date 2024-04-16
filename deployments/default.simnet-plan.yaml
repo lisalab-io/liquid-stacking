@@ -500,11 +500,6 @@ plan:
     - id: 5
       transactions:
         - emulated-contract-publish:
-            contract-name: sip-010-transferable-trait-v1-01
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/sip-010-transferable-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: stx-transfer-many-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proxies/stx-transfer-many-proxy.clar

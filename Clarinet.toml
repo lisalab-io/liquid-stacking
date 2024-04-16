@@ -210,10 +210,6 @@ epoch = 2.4
 path = "contracts/traits/rebase-strategy-trait.clar"
 epoch = 2.4
 
-[contracts.sip-010-transferable-trait-v1-01]
-path = "contracts/traits/sip-010-transferable-trait.clar"
-epoch = 2.4
-
 [contracts.sip-010-extensions-trait]
 path = "contracts/traits/sip-010-extensions-trait.clar"
 epoch = 2.4
