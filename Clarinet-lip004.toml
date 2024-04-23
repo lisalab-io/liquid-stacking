@@ -14,12 +14,23 @@ requirements = [
   { contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.treasury" },
   { contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait" },
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip001" },
-  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v1-02" },
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip002" },
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003" },
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft" },
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft" },
 ]
 
 
 [contracts.lip004]
 path = "contracts/proposals/lip004.clar"
+epoch = 2.5
+
+[contracts.lqstx-mint-endpoint-v2-01]
+path = "contracts/extensions/lqstx-mint-endpoint.clar"
+epoch = 2.5
+
+[contracts.public-pools-strategy-manager-v2]
+path = "contracts/extensions/public-pools-strategy-manager.clar"
 epoch = 2.5
 
 [contracts.public-pools-strategy-v2]

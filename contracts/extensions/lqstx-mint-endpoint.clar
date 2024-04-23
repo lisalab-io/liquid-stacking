@@ -75,10 +75,10 @@
     (ok (map get-burn-request-or-fail request-ids)))
 
 (define-read-only (get-owner-mint-nft (id uint))
-    (contract-call? .li-stx-mint-nft get-owner id))
+    (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft get-owner id))
 
 (define-read-only (get-owner-burn-nft (id uint))
-    (contract-call? .li-stx-burn-nft get-owner id))
+    (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft get-owner id))
 
 (define-read-only (validate-mint-request (request-id uint))
     (let (
@@ -125,7 +125,7 @@
 	(let (
             (available-stx (stx-get-balance 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault))
             ;; __IF_MAINNET__
-            (deployed-stx (unwrap-panic (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy get-amount-in-strategy)))
+            (deployed-stx (unwrap-panic (contract-call? .public-pools-strategy-v2 get-amount-in-strategy)))
             ;; (deployed-stx (unwrap-panic (contract-call? .mock-strategy get-amount-in-strategy)))
             ;; __ENDIF__
             (pending-stx (get-mint-requests-pending-amount))
@@ -145,7 +145,7 @@
         (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
-        (try! (contract-call? .li-stx-mint-nft mint request-id amount sender))
+        (unwrap! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft mint request-id amount sender) (err u9999))
         (try! (rebase))
         (print { type: "mint-request", id: request-id, details: request-details })
         (ok request-id)))
@@ -161,7 +161,7 @@
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault proxy-call 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get amount request-details), recipient: recipient }))))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-mint-request request-id (merge request-details { status: REVOKED })))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
-        (try! (contract-call? .li-stx-mint-nft burn request-id))
+        (try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft burn request-id))
         (try! (rebase))
         (ok true)))
 
@@ -186,7 +186,7 @@
             (begin
                 (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx mint amount sender))
                 (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx transfer vlqstx-amount sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry none))            
-                (try! (contract-call? .li-stx-burn-nft mint request-id amount sender))
+                (try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft mint request-id amount sender))
                 (try! (rebase))
                 (ok { request-id: request-id, status: PENDING })))))
 
@@ -202,7 +202,7 @@
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry transfer (get wrapped-amount request-details) recipient 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx burn (get wrapped-amount request-details) recipient))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
-        (try! (contract-call? .li-stx-burn-nft burn request-id))
+        (try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft burn request-id))
         (try! (rebase))
         (ok true)))
 
@@ -216,7 +216,7 @@
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-mint (get amount request-details) recipient))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-mint-request request-id (merge request-details { status: FINALIZED })))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-mint-requests-pending-amount (- (get-mint-requests-pending-amount) (get amount request-details))))
-        (try! (contract-call? .li-stx-mint-nft burn request-id))
+        (try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft burn request-id))
         (try! (rebase))
         (ok true)))
 
@@ -235,7 +235,7 @@
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-burn (get vaulted-amount validation-data) (as-contract tx-sender)))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault proxy-call 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy (unwrap-panic (to-consensus-buff? { ustx: (get vaulted-amount validation-data), recipient: recipient }))))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-burn-request request-id (merge request-details { status: FINALIZED })))
-        (try! (contract-call? .li-stx-burn-nft burn request-id))
+        (try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft burn request-id))
         (try! (rebase))
         (ok true)))
 

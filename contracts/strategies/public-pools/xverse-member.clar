@@ -22,13 +22,12 @@
 )
 
 (define-read-only (is-strategy-caller)
-	(ok (asserts! (is-eq contract-caller 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy) err-unauthorised))
+	(ok (asserts! (is-eq contract-caller .public-pools-strategy-v2) err-unauthorised))
 )
 
 (define-public (delegate-stx (amount uint))
 	(begin
 		(try! (is-strategy-caller))
-		;; TODO
 		(try! (as-contract (contract-call? 'SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox4-pools delegate-stx
 			amount 'SPXVRSEH2BKSXAEJ00F1BY562P45D5ERPSKR4Q33 none none (var-get pool-reward-pox-addr) none)))
 		(ok true)
