@@ -1,0 +1,108 @@
+
+[project]
+name = "lisa"
+description = ""
+authors = []
+telemetry = false
+cache_dir = "./.cache"
+
+requirements = [
+  { contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3" },
+  { contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox4-pools" },
+  { contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao" },
+  { contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.boot" },
+  { contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.treasury" },
+  { contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait" },
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip001" },
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v1-02" },
+]
+
+
+[contracts.lip004]
+path = "contracts/proposals/lip004.clar"
+epoch = 2.5
+
+[contracts.public-pools-strategy-v2]
+path = "contracts/strategies/public-pools/public-pools-strategy.clar"
+epoch = 2.5
+
+
+[contracts.fastpool-v2-member1]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member2]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member3]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member4]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member5]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member6]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member7]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member8]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member9]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.fastpool-v2-member10]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member1]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member2]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member3]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member4]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member5]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member6]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member7]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member8]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member9]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4
+
+[contracts.xverse-v2-member10]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.4

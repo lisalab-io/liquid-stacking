@@ -17,14 +17,14 @@
 (define-public (fund-strategy (amounts (list 20 uint)))
 	(begin
 		(asserts! (is-authorised-manager tx-sender) err-unauthorised)
-		(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault fund-strategy 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy (unwrap-panic (to-consensus-buff? amounts)))
+		(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault fund-strategy .public-pools-strategy-v2 (unwrap-panic (to-consensus-buff? amounts)))
 	)
 )
 
 (define-public (refund-strategy (selection (list 20 bool)))
 	(begin
 		(asserts! (is-authorised-manager tx-sender) err-unauthorised)
-		(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault refund-strategy 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy (unwrap-panic (to-consensus-buff? selection)))
+		(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault refund-strategy .public-pools-strategy-v2 (unwrap-panic (to-consensus-buff? selection)))
 	)
 )
 
