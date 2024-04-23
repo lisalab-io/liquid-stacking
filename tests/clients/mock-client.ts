@@ -24,6 +24,9 @@ export const createClientMockSetup = () => {
     treasury: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.treasury',
     burnNft: 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft',
     mintNft: 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft',
+    wstx: '',
+    wlqstx: '',
+    amm: '',
   };
   const executeLip = (lipContractId: string) => {
     simnet.mineBlock([

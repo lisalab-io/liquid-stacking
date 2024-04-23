@@ -72,10 +72,11 @@ describe(contracts.endpoint, () => {
     expect(responses[0].result).toBeErr(Cl.uint(7007));
   });
 
-  it('can request burn', () => {
+  it.only('can request burn', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     expect(requestMint(mintAmount).result).toBeOk(Cl.uint(1));
+    expect(requestMint(mintAmount).result).toBeOk(Cl.uint(2));
 
     goToNextRequestCycle();
     let response = fundStrategy(mintAmount);
@@ -228,7 +229,7 @@ describe(contracts.endpoint, () => {
 
   // user1 mints 100 STX, user2 100m STX
   // FIXME: fails with an error that the mint-nft with id 2 already exists.
-  it.skip('can rebase', () => {
+  it.only('can rebase', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     let response;

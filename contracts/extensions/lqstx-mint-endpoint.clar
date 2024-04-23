@@ -145,7 +145,7 @@
         (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault))
         (try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
-        (unwrap! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft mint request-id amount sender) (err u9999))
+        (unwrap! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft mint request-id amount sender) (err (+ u999900 request-id)))
         (try! (rebase))
         (print { type: "mint-request", id: request-id, details: request-details })
         (ok request-id)))
