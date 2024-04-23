@@ -7,6 +7,7 @@
 	(begin
 		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list
 			{ extension: 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v1-02, enabled: false }
+			{ extension: 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.auto-whitelist-mint-helper, enabled: false }
 			{ extension: .lqstx-mint-endpoint-v2-01, enabled: true }
 			{ extension: .public-pools-strategy-manager-v2, enabled: true})))
 
