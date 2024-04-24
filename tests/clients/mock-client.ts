@@ -61,7 +61,14 @@ export const createClientMockSetup = () => {
     expect(result[1].result).toBeOk(Cl.bool(false));
     expect(result[2].result).toBeOk(Cl.bool(true)); // executed
   };
+
   const prepareTest = () => {
+    simnet.mineBlock([tx.transferSTX(100_000_000_000_000, user, faucet)]);
+    simnet.mineBlock([tx.transferSTX(1_000_000_000, manager, faucet)]);
+    simnet.mineBlock([
+      tx.transferSTX(1_000_000_000, 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP', faucet),
+    ]);
+
     const result1 = simnet.mineBlock([
       tx.callPublicFn(
         contracts.dao,
@@ -71,14 +78,12 @@ export const createClientMockSetup = () => {
       ),
     ]);
     executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip001');
-    executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip002');
+
+    // Do not mint NFTs because no mint requests were sent so far
+    //executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip002');
     executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003');
     executeLip(`${simnet.deployer}.lip004`);
-    simnet.mineBlock([tx.transferSTX(100_000_000_000_000, user, faucet)]);
-    simnet.mineBlock([tx.transferSTX(1_000_000_000, manager, faucet)]);
-    simnet.mineBlock([
-      tx.transferSTX(1_000_000_000, 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP', faucet),
-    ]);
+
     simnet.callPublicFn(
       'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3',
       'set-pool-pox-address-active',
