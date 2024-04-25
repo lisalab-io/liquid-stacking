@@ -221,7 +221,7 @@
         (ok true)))
 
 (define-public (finalize-mint-many (request-ids (list 1000 uint)))
-    (fold check-err (map finalize-mint request-ids) (ok true)))
+    (ok (map finalize-mint request-ids)))
 
 (define-public (finalize-burn (request-id uint))
     (let (            
@@ -240,7 +240,7 @@
         (ok true)))
 
 (define-public (finalize-burn-many (request-ids (list 1000 uint)))
-    (fold check-err (map finalize-burn request-ids) (ok true)))
+    (ok (map finalize-burn request-ids)))
 
 ;; governance calls
 
