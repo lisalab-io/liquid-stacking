@@ -119,17 +119,20 @@
 (define-read-only (is-whitelisted-or-mint-for-all (user principal))
     (or (not (var-get use-whitelist)) (default-to false (map-get? whitelisted user))))
 
-;; public calls
-
-(define-public (rebase)
-	(let (
+(define-read-only (get-total-stx)
+    (let (
             (available-stx (stx-get-balance 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault))
             ;; __IF_MAINNET__
             (deployed-stx (unwrap-panic (contract-call? .public-pools-strategy-v2 get-amount-in-strategy)))
             ;; (deployed-stx (unwrap-panic (contract-call? .mock-strategy get-amount-in-strategy)))
             ;; __ENDIF__
-            (pending-stx (get-mint-requests-pending-amount))
-            (total-stx (- (+ available-stx deployed-stx) pending-stx)))
+            (pending-stx (get-mint-requests-pending-amount)))
+    (- (+ available-stx deployed-stx) pending-stx)))
+
+;; public calls
+
+(define-public (rebase)
+	(let ((total-stx (get-total-stx)))
 		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx set-reserve total-stx))
 		(ok total-stx)))    
 
