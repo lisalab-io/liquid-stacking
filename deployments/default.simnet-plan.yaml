@@ -64,6 +64,9 @@ plan:
             emulated-sender: SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335
             path: "./.cache/requirements/SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait.clar"
             clarity-version: 1
+      epoch: "2.0"
+    - id: 1
+      transactions:
         - emulated-contract-publish:
             contract-name: trait-sip-010
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -109,8 +112,8 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts_modules/alex_v1/traits/trait-vault.clar
             clarity-version: 1
-      epoch: "2.1"
-    - id: 1
+      epoch: "2.05"
+    - id: 2
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
@@ -238,7 +241,7 @@ plan:
             path: "./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 2
+    - id: 3
       transactions:
         - emulated-contract-publish:
             contract-name: xverse-member1
@@ -366,7 +369,7 @@ plan:
             path: contracts/strategies/public-pools/fastpool-member.clar
             clarity-version: 2
       epoch: "2.4"
-    - id: 3
+    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: fastpool-member3
@@ -494,13 +497,8 @@ plan:
             path: contracts/traits/sip-010-trait.clar
             clarity-version: 2
       epoch: "2.4"
-    - id: 4
+    - id: 5
       transactions:
-        - emulated-contract-publish:
-            contract-name: sip-010-transferable-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/sip-010-transferable-trait.clar
-            clarity-version: 2
         - emulated-contract-publish:
             contract-name: stx-transfer-many-proxy
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -517,7 +515,7 @@ plan:
             path: contracts/mocks/token-wlqstx.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: treasury
+            contract-name: treasury-v1-01
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/treasury.clar
             clarity-version: 2
