@@ -13,7 +13,7 @@
 (define-public (delegate-stx (amount uint))
 	(begin
 		(try! (is-strategy-caller))
-		(try! (as-contract (contract-call? 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3 delegate-stx amount)))
+		(try! (print (as-contract (contract-call? 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3 delegate-stx amount))))
 		(ok true)
 	)
 )

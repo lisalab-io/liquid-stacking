@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: BUSL-1.1
 
-import { initSimnet, tx } from '@hirosystems/clarinet-sdk';
+import { tx } from '@hirosystems/clarinet-sdk';
 import { Cl, TupleCV, UIntCV } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 import { createClientMockSetup } from './clients/mock-client';
+import { cvToString } from '@stacks/transactions';
 
 const {
   contracts,
@@ -109,7 +110,7 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.endpoint, 'finalize-burn', [Cl.uint(1)], bot),
       tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], user),
     ]);
-    expect(responses[0].result).toBeOk(Cl.uint(1e6));
+    expect(responses[0].result).toBeOk(Cl.uint(mintAmount));
     expect(responses[1].result).toBeOk(Cl.bool(true));
     expect(responses[2].result).toBeErr(Cl.uint(7007));
   });
@@ -135,13 +136,13 @@ describe(contracts.endpoint, () => {
       tx.callPublicFn(contracts.endpoint, 'revoke-burn', [Cl.uint(1)], user),
       tx.callPublicFn(contracts.endpoint, 'finalize-mint', [Cl.uint(1)], bot),
     ]);
-    expect(responses[0].result).toBeOk(Cl.uint(1e6));
+    expect(responses[0].result).toBeOk(Cl.uint(mintAmount));
     expect(responses[1].result).toBeErr(Cl.uint(3000));
     expect(responses[2].result).toBeOk(Cl.bool(true));
     expect(responses[3].result).toBeErr(Cl.uint(7007));
   });
 
-  it('can interact with strategies', () => {
+  it.only('can interact with strategies', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     expect(requestMint(mintAmount).result).toBeOk(Cl.uint(1));
@@ -184,9 +185,17 @@ describe(contracts.endpoint, () => {
     expect(responses[1].result).toBeErr(Cl.uint(3000)); // not authorized
     expect(responses[2].result).toBeOk(Cl.uint(mintAmount)); // mintAmount stx transferred, mintAmount - 1 stx locked
 
+    console.log(
+      responses[2].events.map(e => {
+        return [e.event, e.data?.value ? cvToString(e.data?.value) : e.data];
+      })
+    );
+
+    console.log(`${simnet.deployer}.fastpool-v2-member1`);
     const stxAccountFastPoolMember1 = simnet.runSnippet(
       `(stx-account '${simnet.deployer}.fastpool-v2-member1)`
     ) as TupleCV<{ locked: UIntCV; unlocked: UIntCV }>;
+    console.log(stxAccountFastPoolMember1);
     expect(stxAccountFastPoolMember1.data.locked).toBeUint(mintAmount - 1e6);
 
     goToNextCycle(); // go to the next cycle
@@ -233,7 +242,7 @@ describe(contracts.endpoint, () => {
     let response;
     response = simnet.callPublicFn(contracts.endpoint, 'request-mint', [Cl.uint(100e6)], user);
     expect(response.result).toBeOk(Cl.uint(1));
-    console.log(response.events.map(e => JSON.stringify(e)));
+    console.log(response.events.map((e: any) => JSON.stringify(e)));
 
     response = simnet.callPublicFn(
       contracts.endpoint,

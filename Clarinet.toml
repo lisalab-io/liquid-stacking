@@ -37,10 +37,6 @@ epoch = 2.5
 path = "contracts/strategies/public-pools/public-pools-strategy.clar"
 epoch = 2.5
 
-# [contracts.proposal-trait]
-# path = "contracts/traits/proposal-trait.clar"
-# epoch = 2.4
-
 [contracts.fastpool-v2-member1]
 path = "contracts/strategies/public-pools/fastpool-member.clar"
 epoch = 2.4

@@ -1,7 +1,7 @@
 import { tx } from '@hirosystems/clarinet-sdk';
 import { IntegerType } from '@stacks/common';
 import { poxAddressToTuple } from '@stacks/stacking';
-import { Cl, ResponseOkCV, UIntCV, cvToString, principalCV } from '@stacks/transactions';
+import { Cl, ResponseOkCV, UIntCV, principalCV } from '@stacks/transactions';
 import { expect } from 'vitest';
 
 export const createClientMockSetup = () => {
