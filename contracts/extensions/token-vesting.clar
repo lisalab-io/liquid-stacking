@@ -1,7 +1,7 @@
 
 ;; SPDX-License-Identifier: BUSL-1.1
 
-(use-trait proxy-trait .proxy-trait.proxy-trait)
+(use-trait proxy-trait 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proxy-trait.proxy-trait)
 
 (define-constant err-unauthorised (err u1000))
 (define-constant err-caller-not-recipient (err u9000))
@@ -72,7 +72,7 @@
 )
 
 (define-private (transfer-out (amount uint) (recipient principal))
-	(as-contract (contract-call? .token-lisa transfer amount tx-sender recipient none))
+	(as-contract (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lisa transfer amount tx-sender recipient none))
 )
 
 (define-private (get-or-create-recipient-id (recipient principal))
