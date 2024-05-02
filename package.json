@@ -27,10 +27,10 @@
   "license": "BSL",
   "prettier": "@stacks/prettier-config",
   "dependencies": {
-    "@hirosystems/clarinet-sdk": "2.4.0-beta3",
+    "@hirosystems/clarinet-sdk": "2.6.0",
     "@stacks/prettier-config": "^0.0.10",
-    "@stacks/stacking": "6.11.4-pr.36558cf.0",
-    "@stacks/transactions": "^6.9.0",
+    "@stacks/stacking": "6.14.0",
+    "@stacks/transactions": "^6.13.1",
     "chokidar-cli": "^3.0.0",
     "print-diff": "^2.0.0",
     "ts-node": "^10.9.2",
@@ -40,9 +40,5 @@
     "vitest-environment-clarinet": "^2.0.0",
     "yaml": "^2.4.1"
   },
-  "resolutions": {
-    "@stacks/stacking": "6.11.4-pr.36558cf.0",
-    "@hirosystems/clarinet-sdk": "2.4.0-beta3",
-    "@hirosystems/clarinet-sdk-wasm": "2.4.0-beta3"
-  }
+  "resolutions": {}
 }
