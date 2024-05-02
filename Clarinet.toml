@@ -54,6 +54,10 @@ contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-
 [[project.requirements]]
 contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait"
 
+[[project.requirements]]
+contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lisa"
+
+
 # [contracts.lisa-dao]
 # path = "contracts/lisa-dao.clar"
 # epoch = 2.4
@@ -254,9 +258,9 @@ epoch = 2.4
 # path = "contracts/token-vlqstx.clar"
 # epoch = 2.4
 
-[contracts.token-lisa]
-path = "contracts/token-lisa.clar"
-epoch = 2.4
+# [contracts.token-lisa]
+# path = "contracts/token-lisa.clar"
+# epoch = 2.4
 
 [contracts.lisa-rebase]
 path = "contracts/deployed/lisa-rebase.clar"

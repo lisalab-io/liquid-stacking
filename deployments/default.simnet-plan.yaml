@@ -296,6 +296,11 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy.clar"
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: token-lisa
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lisa.clar"
+            clarity-version: 2            
+        - emulated-contract-publish:            
             contract-name: li-stx-burn-nft
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/aux/li-stx-burn-nft.clar
@@ -324,11 +329,6 @@ plan:
             contract-name: public-pools-strategy-manager
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/public-pools-strategy-manager.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-lisa
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/token-lisa.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: boot
