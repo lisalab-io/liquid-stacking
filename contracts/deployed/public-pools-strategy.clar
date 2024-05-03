@@ -7,16 +7,16 @@
 (define-constant err-invalid-payload (err u2001))
 
 (define-constant member-list (list
-	(to-trait .fastpool-v2-member1) (to-trait .fastpool-v2-member2) (to-trait .fastpool-v2-member3) (to-trait .fastpool-v2-member4) (to-trait .fastpool-v2-member5)
-	(to-trait .fastpool-v2-member6) (to-trait .fastpool-v2-member7) (to-trait .fastpool-v2-member8) (to-trait .fastpool-v2-member9) (to-trait .fastpool-v2-member10)
-	(to-trait .xverse-v2-member1) (to-trait .xverse-v2-member2) (to-trait .xverse-v2-member3) (to-trait .xverse-v2-member4) (to-trait .xverse-v2-member5)
-	(to-trait .xverse-v2-member6) (to-trait .xverse-v2-member7) (to-trait .xverse-v2-member8) (to-trait .xverse-v2-member9) (to-trait .xverse-v2-member10)
+	(to-trait .fastpool-member1) (to-trait .fastpool-member2) (to-trait .fastpool-member3) (to-trait .fastpool-member4) (to-trait .fastpool-member5)
+	(to-trait .fastpool-member6) (to-trait .fastpool-member7) (to-trait .fastpool-member8) (to-trait .fastpool-member9) (to-trait .fastpool-member10)
+	(to-trait .xverse-member1) (to-trait .xverse-member2) (to-trait .xverse-member3) (to-trait .xverse-member4) (to-trait .xverse-member5)
+	(to-trait .xverse-member6) (to-trait .xverse-member7) (to-trait .xverse-member8) (to-trait .xverse-member9) (to-trait .xverse-member10)
 ))
 
 (define-trait pool-member
 	(
 		(delegate-stx (uint) (response bool uint))
-		(revoke-delegate-stx () (response (optional {amount-ustx: uint, delegated-to: principal, until-burn-ht: (optional uint), pox-addr: (optional { version: (buff 1), hashbytes: (buff 32) })}) uint))
+		(revoke-delegate-stx () (response bool uint))
 		(refund-stx (principal) (response uint uint))
 	)
 )

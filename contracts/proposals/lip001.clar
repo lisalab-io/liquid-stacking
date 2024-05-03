@@ -1,23 +1,23 @@
 
 ;; SPDX-License-Identifier: BUSL-1.1
 
-(impl-trait 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait.proposal-trait)
+(impl-trait .proposal-trait.proposal-trait)
 
 (define-public (execute (sender principal))
 	(begin		
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list
-			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint, enabled: false }
-			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01, enabled: false }
-			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-rebase, enabled: false }
-			{ extension: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.rebase-1, enabled: false }
+		(try! (contract-call? .lisa-dao set-extensions (list
+			{ extension: .lqstx-mint-endpoint, enabled: false }
+			{ extension: .lqstx-mint-endpoint-v1-01, enabled: false }
+			{ extension: .lisa-rebase, enabled: false }
+			{ extension: .rebase-1, enabled: false }
 			{ extension: .lqstx-mint-endpoint-v1-02, enabled: true }			
 			{ extension: .endpoint-whitelist-helper-v1-02, enabled: true }
 		)))
 
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-set-name "LiSTX"))
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-set-symbol "LiSTX"))
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx set-name "vLiSTX"))
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx set-symbol "vLiSTX"))
+		(try! (contract-call? .token-lqstx dao-set-name "LiSTX"))
+		(try! (contract-call? .token-lqstx dao-set-symbol "LiSTX"))
+		(try! (contract-call? .token-vlqstx set-name "vLiSTX"))
+		(try! (contract-call? .token-vlqstx set-symbol "vLiSTX"))
 		(print { notification: "what-is-LISA", payload: "LISA is the goddess of liquid stacking. Liberate your STX with LiSTX!"})
 
 		;; Enable whitelist
@@ -39,8 +39,8 @@
 				true
 				true
 			)))
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint set-paused true))
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01 set-paused true))
+		(try! (contract-call? .lqstx-mint-endpoint set-paused true))
+		(try! (contract-call? .lqstx-mint-endpoint-v1-01 set-paused true))
 		(try! (contract-call? .lqstx-mint-endpoint-v1-02 set-paused false))		
 
 		(try! (contract-call? .endpoint-whitelist-helper-v1-02 set-authorised-operator 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7 true))		

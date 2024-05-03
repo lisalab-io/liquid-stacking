@@ -22,71 +22,77 @@ import type { StacksNetworkName } from '@stacks/network';
 import { initSimnet } from '@hirosystems/clarinet-sdk';
 import fs from 'fs';
 import { bytesToHex } from '@stacks/common';
-import { fundingTransactions, getNetwork, getStacksAddress, getStacksPubkeys, testnetAddressReplacements } from './config.ts';
+import {
+  fundingTransactions,
+  getNetwork,
+  getStacksAddress,
+  getStacksPubkeys,
+  testnetAddressReplacements,
+} from './config.ts';
 import { assertSigner, planFile, verboseLog, manifestFile, deployPlan } from './utils.ts';
 
 const lisaDaoContractName = 'lisa-dao';
 
 const contractsToSkip = [
-  "regtest-boot",
-  "token-vesting",
-  "simnet-boot",
-  "extension-trait",
-  "proposal-trait",
-  "lisa-dao",
-  "lqstx-mint-registry",
-  "proxy-trait",
-  "strategy-trait",
-  "lqstx-vault",
-  "stx-transfer-proxy",
-  "token-lqstx",
-  "token-vlqstx",
-  "lqstx-mint-endpoint-v1-01",
-  "operators",
-  "fastpool-member1",
-  "fastpool-member10",
-  "fastpool-member2",
-  "fastpool-member3",
-  "fastpool-member4",
-  "fastpool-member5",
-  "fastpool-member6",
-  "fastpool-member7",
-  "fastpool-member8",
-  "fastpool-member9",
-  "xverse-member1",
-  "xverse-member10",
-  "xverse-member2",
-  "xverse-member3",
-  "xverse-member4",
-  "xverse-member5",
-  "xverse-member6",
-  "xverse-member7",
-  "xverse-member8",
-  "xverse-member9",
-  "public-pools-strategy",
-  "public-pools-strategy-manager",
-  "token-lisa",
-  "boot",
-  "commission-trait",
-  "lisa-rebase",
-  "lisa-transfer-proxy",
-  "rebase-strategy-trait",
-  "lqstx-mint-endpoint",
-  "lqstx-transfer-proxy",
-  "nft-trait",
-  "rebase-1",
-  "rebase-strategy-trait-v1-01",
-  "sip-010-extensions-trait",
-  "sip-010-trait",
-  "sip-010-transferable-trait",
-  "stx-transfer-many-proxy",
-  "treasury",
-  "li-stx-burn-nft",
-  "li-stx-mint-nft",
-  "lqstx-mint-endpoint-v1-02",
-  "endpoint-whitelist-helper-v1-02",
-  "lip001",
-  "lip002"
+  'regtest-boot',
+  'token-vesting',
+  'simnet-boot',
+  'extension-trait',
+  'proposal-trait',
+  'lisa-dao',
+  'lqstx-mint-registry',
+  'proxy-trait',
+  'strategy-trait',
+  'lqstx-vault',
+  'stx-transfer-proxy',
+  'token-lqstx',
+  'token-vlqstx',
+  'lqstx-mint-endpoint-v1-01',
+  'operators',
+  'fastpool-member1',
+  'fastpool-member10',
+  'fastpool-member2',
+  'fastpool-member3',
+  'fastpool-member4',
+  'fastpool-member5',
+  'fastpool-member6',
+  'fastpool-member7',
+  'fastpool-member8',
+  'fastpool-member9',
+  'xverse-member1',
+  'xverse-member10',
+  'xverse-member2',
+  'xverse-member3',
+  'xverse-member4',
+  'xverse-member5',
+  'xverse-member6',
+  'xverse-member7',
+  'xverse-member8',
+  'xverse-member9',
+  'public-pools-strategy',
+  'public-pools-strategy-manager',
+  'token-lisa',
+  'boot',
+  'commission-trait',
+  'lisa-rebase',
+  'lisa-transfer-proxy',
+  'rebase-strategy-trait',
+  'lqstx-mint-endpoint',
+  'lqstx-transfer-proxy',
+  'nft-trait',
+  'rebase-1',
+  'rebase-strategy-trait-v1-01',
+  'sip-010-extensions-trait',
+  'sip-010-trait',
+  'sip-010-transferable-trait',
+  'stx-transfer-many-proxy',
+  'treasury',
+  'li-stx-burn-nft',
+  'li-stx-mint-nft',
+  'lqstx-mint-endpoint-v1-02',
+  'endpoint-whitelist-helper-v1-02',
+  'lip001',
+  'lip002',
 ];
 
 const network = getNetwork();
@@ -143,7 +149,7 @@ async function createMultisigDeployTransaction(
   assertSigner(tx.auth.spendingCondition, checkSigner);
   let calculatedFee =
     (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) *
-    feeMultiplier +
+      feeMultiplier +
     feeAddition;
   if (feeCap > 0 && calculatedFee > feeCap) calculatedFee = feeCap;
   tx.setFee(calculatedFee);
@@ -186,11 +192,13 @@ async function createMultisigStxTransaction(
   assertSigner(tx.auth.spendingCondition, signer);
   let calculatedFee =
     (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) *
-    feeMultiplier +
+      feeMultiplier +
     feeAddition;
   if (feeCap > 0 && calculatedFee > feeCap) calculatedFee = feeCap;
   tx.setFee(calculatedFee);
-  verboseLog(`Created STX transfer to ${recipient} to the amount of ${amount}, calculated fee is ${calculatedFee}`);
+  verboseLog(
+    `Created STX transfer to ${recipient} to the amount of ${amount}, calculated fee is ${calculatedFee}`
+  );
   tempTotalFee += BigInt(calculatedFee);
   return tx;
 }
@@ -239,7 +247,7 @@ async function createMultisigBootTransaction(
   assertSigner(tx.auth.spendingCondition, signer);
   let calculatedFee =
     (tx.serialize().byteLength + multisigSpendConditionByteLength * pubKeys.length) *
-    feeMultiplier +
+      feeMultiplier +
     feeAddition;
   if (feeCap > 0 && calculatedFee > feeCap) calculatedFee = feeCap;
   tx.setFee(calculatedFee);
@@ -254,7 +262,8 @@ async function findStxBootstrapAmount() {
   try {
     boot = simnet.getContractAST('boot');
   } catch (error) {
-    throw new Error(`Failed to read boot contract`);
+    //throw new Error(`Failed to read boot contract`);
+    return null;
   }
   return findStxBootstrapAmountAtom(boot.expressions);
 }
@@ -275,14 +284,12 @@ function findStxBootstrapAmountAtom(items: any[]): bigint | null {
 }
 
 async function fetchNonce() {
-  if (nonce !== -1)
-    return;
+  if (nonce !== -1) return;
   const addressString = addressToString(address);
   let currentNonce = 0n;
   try {
     currentNonce = await getNonce(addressString, network);
-  }
-  catch (error) {
+  } catch (error) {
     console.log('Failed to fetch current nonce - might happen on devnet');
     throw error;
   }
@@ -300,8 +307,7 @@ fetchNonce()
         );
         return false;
       }
-      if (item.contractName === "boot")
-        includesBootContract = true;
+      if (item.contractName === 'boot') includesBootContract = true;
       return true;
     })
   )
@@ -375,8 +381,7 @@ fetchNonce()
       );
 
       plan.push(bytesToHex(addPubkeyFields(bootTx, pubKeys).serialize()));
-    }
-    else {
+    } else {
       verboseLog('Skipping boot transaction because plan does not include boot contract');
     }
     return plan;

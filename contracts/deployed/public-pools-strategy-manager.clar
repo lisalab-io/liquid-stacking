@@ -17,14 +17,14 @@
 (define-public (fund-strategy (amounts (list 20 uint)))
 	(begin
 		(asserts! (is-authorised-manager tx-sender) err-unauthorised)
-		(contract-call? .lqstx-vault fund-strategy .public-pools-strategy-v2 (unwrap-panic (to-consensus-buff? amounts)))
+		(contract-call? .lqstx-vault fund-strategy .public-pools-strategy (unwrap-panic (to-consensus-buff? amounts)))
 	)
 )
 
 (define-public (refund-strategy (selection (list 20 bool)))
 	(begin
 		(asserts! (is-authorised-manager tx-sender) err-unauthorised)
-		(contract-call? .lqstx-vault refund-strategy .public-pools-strategy-v2 (unwrap-panic (to-consensus-buff? selection)))
+		(contract-call? .lqstx-vault refund-strategy .public-pools-strategy (unwrap-panic (to-consensus-buff? selection)))
 	)
 )
 

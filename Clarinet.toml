@@ -6,72 +6,38 @@ authors = []
 telemetry = false
 cache_dir = "./.cache"
 
-[[project.requirements]]
-contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2"
+requirements = [
+  { contract_id = "SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait" },
+  { contract_id = "SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait" },
+  { contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard" },
+  { contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2" },
+  { contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox-fast-pool-v2" },
+  { contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3" },
+  { contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox4-pools" },
+]
 
-[[project.requirements]]
-contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2"
-
-[[project.requirements]]
-contract_id = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard"
-
-[[project.requirements]]
-contract_id = "SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait"
-
-[[project.requirements]]
-contract_id = "SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01"
-
-[[project.requirements]]
-contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait"
-
-# [contracts.lisa-dao]
-# path = "contracts/lisa-dao.clar"
-# epoch = 2.4
+[contracts.lisa-dao]
+path = "contracts/lisa-dao.clar"
+epoch = 2.4
 
 [contracts.boot]
 path = "contracts/boot.clar"
 epoch = 2.4
 
-# [contracts.lqstx-vault]
-# path = "contracts/extensions/lqstx-vault.clar"
-# epoch = 2.4
+[contracts.lqstx-vault]
+path = "contracts/extensions/lqstx-vault.clar"
+epoch = 2.4
 
-[contracts.treasury-v1-01]
+[contracts.treasury]
 path = "contracts/extensions/treasury.clar"
 epoch = 2.4
 
 [contracts.token-vesting]
 path = "contracts/extensions/token-vesting.clar"
+epoch = 2.4
+
+[contracts.lisa-rebase]
+path = "contracts/extensions/lisa-rebase.clar"
 epoch = 2.4
 
 [contracts.sip-010-trait]
@@ -86,25 +52,25 @@ epoch = 2.4
 path = "contracts/traits/commission-trait.clar"
 epoch = 2.4
 
-# [contracts.strategy-trait]
-# path = "contracts/traits/strategy-trait.clar"
-# epoch = 2.4
+[contracts.strategy-trait]
+path = "contracts/traits/strategy-trait.clar"
+epoch = 2.4
 
 [contracts.extension-trait]
 path = "contracts/traits/extension-trait.clar"
 epoch = 2.4
 
-# [contracts.proposal-trait]
-# path = "contracts/traits/proposal-trait.clar"
-# epoch = 2.4
+[contracts.proposal-trait]
+path = "contracts/traits/proposal-trait.clar"
+epoch = 2.4
 
 [contracts.proxy-trait]
 path = "contracts/traits/proxy-trait.clar"
 epoch = 2.4
 
-# [contracts.stx-transfer-proxy]
-# path = "contracts/proxies/stx-transfer-proxy.clar"
-# epoch = 2.4
+[contracts.stx-transfer-proxy]
+path = "contracts/proxies/stx-transfer-proxy.clar"
+epoch = 2.4
 
 [contracts.stx-transfer-many-proxy]
 path = "contracts/proxies/stx-transfer-many-proxy.clar"
@@ -118,96 +84,100 @@ epoch = 2.4
 path = "contracts/proxies/lisa-transfer-proxy.clar"
 epoch = 2.4
 
-# [contracts.public-pools-strategy]
-# path = "contracts/strategies/public-pools/public-pools-strategy.clar"
-# epoch = 2.4
+[contracts.public-pools-strategy]
+path = "contracts/deployed/public-pools-strategy.clar"
+epoch = 2.4
 
 [contracts.fastpool-member1]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member2]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member3]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member4]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member5]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member6]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member7]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member8]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member9]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.fastpool-member10]
-path = "contracts/strategies/public-pools/fastpool-member.clar"
+path = "contracts/deployed/fastpool-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member1]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member2]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member3]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member4]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member5]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member6]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member7]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member8]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member9]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.xverse-member10]
-path = "contracts/strategies/public-pools/xverse-member.clar"
+path = "contracts/deployed/xverse-member.clar"
 epoch = 2.4
 
 [contracts.rebase-strategy-trait]
-path = "contracts/deployed/rebase-strategy-trait.clar"
+path = "contracts/traits/rebase-strategy-trait.clar"
 epoch = 2.4
 
 [contracts.rebase-strategy-trait-v1-01]
 path = "contracts/traits/rebase-strategy-trait.clar"
+epoch = 2.4
+
+[contracts.sip-010-transferable-trait]
+path = ".cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.sip-010-transferable-trait.clar"
 epoch = 2.4
 
 [contracts.sip-010-extensions-trait]
@@ -215,24 +185,24 @@ path = "contracts/traits/sip-010-extensions-trait.clar"
 epoch = 2.4
 
 [contracts.public-pools-strategy-manager]
-path = "contracts/extensions/public-pools-strategy-manager.clar"
+path = "contracts/deployed/public-pools-strategy-manager.clar"
 epoch = 2.4
 
 [contracts.lqstx-mint-endpoint-v1-02]
-path = "contracts/extensions/lqstx-mint-endpoint.clar"
+path = "contracts/deployed/lqstx-mint-endpoint-v1-02.clar"
 epoch = 2.4
 
-# [contracts.lqstx-mint-endpoint-v1-01]
-# path = "contracts/deployed/lqstx-mint-endpoint-v1-01.clar"
-# epoch = 2.4
+[contracts.lqstx-mint-endpoint-v1-01]
+path = "contracts/deployed/lqstx-mint-endpoint-v1-01.clar"
+epoch = 2.4
 
-# [contracts.lqstx-mint-endpoint]
-# path = "contracts/deployed/lqstx-mint-endpoint.clar"
-# epoch = 2.4
+[contracts.lqstx-mint-endpoint]
+path = "contracts/deployed/lqstx-mint-endpoint.clar"
+epoch = 2.4
 
-# [contracts.lqstx-mint-registry]
-# path = "contracts/aux/lqstx-mint-registry.clar"
-# epoch = 2.4
+[contracts.lqstx-mint-registry]
+path = "contracts/aux/lqstx-mint-registry.clar"
+epoch = 2.4
 
 [contracts.li-stx-mint-nft]
 path = "contracts/aux/li-stx-mint-nft.clar"
@@ -242,20 +212,16 @@ epoch = 2.4
 path = "contracts/aux/li-stx-burn-nft.clar"
 epoch = 2.4
 
-# [contracts.token-lqstx]
-# path = "contracts/token-lqstx.clar"
-# epoch = 2.4
+[contracts.token-lqstx]
+path = "contracts/token-lqstx.clar"
+epoch = 2.4
 
-# [contracts.token-vlqstx]
-# path = "contracts/token-vlqstx.clar"
-# epoch = 2.4
+[contracts.token-vlqstx]
+path = "contracts/token-vlqstx.clar"
+epoch = 2.4
 
 [contracts.token-lisa]
 path = "contracts/token-lisa.clar"
-epoch = 2.4
-
-[contracts.lisa-rebase]
-path = "contracts/deployed/lisa-rebase.clar"
 epoch = 2.4
 
 [contracts.rebase-1]
@@ -349,6 +315,103 @@ epoch = 2.4
 [contracts.lip003]
 path = "contracts/proposals/lip003.clar"
 epoch = 2.4
+
+
+[contracts.lip004]
+path = "contracts/proposals/lip004.clar"
+epoch = 2.5
+
+[contracts.lqstx-mint-endpoint-v2-01]
+path = "contracts/extensions/lqstx-mint-endpoint.clar"
+epoch = 2.5
+
+[contracts.public-pools-strategy-manager-v2]
+path = "contracts/extensions/public-pools-strategy-manager.clar"
+epoch = 2.5
+
+[contracts.public-pools-strategy-v2]
+path = "contracts/strategies/public-pools/public-pools-strategy.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member1]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member2]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member3]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member4]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member5]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member6]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member7]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member8]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member9]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.fastpool-v2-member10]
+path = "contracts/strategies/public-pools/fastpool-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member1]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member2]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member3]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member4]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member5]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member6]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member7]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member8]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member9]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
+
+[contracts.xverse-v2-member10]
+path = "contracts/strategies/public-pools/xverse-member.clar"
+epoch = 2.5
 
 # [repl.analysis]
 # passes = ["check_checker"]

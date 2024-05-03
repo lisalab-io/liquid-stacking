@@ -29,7 +29,7 @@
 
 ;; __IF_MAINNET__
 (define-data-var request-cutoff uint u300) ;; request must be made 300 blocks before prepare stage starts
-(define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-4 get-pox-info)))
+(define-constant pox-info (unwrap-panic (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-pox-info)))
 (define-constant activation-burn-block (get first-burnchain-block-height pox-info))
 (define-constant reward-cycle-length (get reward-cycle-length pox-info))
 (define-constant prepare-cycle-length (get prepare-cycle-length pox-info))
@@ -119,20 +119,17 @@
 (define-read-only (is-whitelisted-or-mint-for-all (user principal))
     (or (not (var-get use-whitelist)) (default-to false (map-get? whitelisted user))))
 
-(define-read-only (get-total-stx)
-    (let (
-            (available-stx (stx-get-balance .lqstx-vault))
-            ;; __IF_MAINNET__
-            (deployed-stx (unwrap-panic (contract-call? .public-pools-strategy-v2 get-amount-in-strategy)))
-            ;; (deployed-stx (unwrap-panic (contract-call? .mock-strategy get-amount-in-strategy)))
-            ;; __ENDIF__
-            (pending-stx (get-mint-requests-pending-amount)))
-    (- (+ available-stx deployed-stx) pending-stx)))
-
 ;; public calls
 
 (define-public (rebase)
-	(let ((total-stx (get-total-stx)))
+	(let (
+            (available-stx (stx-get-balance .lqstx-vault))
+            ;; __IF_MAINNET__
+            (deployed-stx (unwrap-panic (contract-call? .public-pools-strategy get-amount-in-strategy)))
+            ;; (deployed-stx (unwrap-panic (contract-call? .mock-strategy get-amount-in-strategy)))
+            ;; __ENDIF__
+            (pending-stx (get-mint-requests-pending-amount))
+            (total-stx (- (+ available-stx deployed-stx) pending-stx)))
 		(try! (contract-call? .token-lqstx set-reserve total-stx))
 		(ok total-stx)))    
 
@@ -148,7 +145,7 @@
         (asserts! (is-whitelisted-or-mint-for-all sender) err-not-whitelisted)
         (try! (stx-transfer? amount sender .lqstx-vault))
         (try! (contract-call? .lqstx-mint-registry set-mint-requests-pending-amount (+ (get-mint-requests-pending-amount) amount)))
-        (unwrap! (contract-call? .li-stx-mint-nft mint request-id amount sender) (err (+ u999900 request-id)))
+        (try! (contract-call? .li-stx-mint-nft mint request-id amount sender))
         (try! (rebase))
         (print { type: "mint-request", id: request-id, details: request-details })
         (ok request-id)))
@@ -224,7 +221,7 @@
         (ok true)))
 
 (define-public (finalize-mint-many (request-ids (list 1000 uint)))
-    (ok (map finalize-mint request-ids)))
+    (fold check-err (map finalize-mint request-ids) (ok true)))
 
 (define-public (finalize-burn (request-id uint))
     (let (            
@@ -243,7 +240,7 @@
         (ok true)))
 
 (define-public (finalize-burn-many (request-ids (list 1000 uint)))
-    (ok (map finalize-burn request-ids)))
+    (fold check-err (map finalize-burn request-ids) (ok true)))
 
 ;; governance calls
 

@@ -18,7 +18,7 @@
 (define-data-var token-decimals uint u6)
 
 (define-public (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised))
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised))
 )
 
 (define-public (dao-transfer (amount uint) (sender principal) (recipient principal))

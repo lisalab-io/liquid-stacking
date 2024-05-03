@@ -3,13 +3,13 @@
 
 ;; This contract holds the STX of the members
 
-(use-trait strategy-trait 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait.strategy-trait)
+(use-trait strategy-trait .strategy-trait.strategy-trait)
 (use-trait proxy-trait .proxy-trait.proxy-trait)
 
 (define-constant err-unauthorised (err u1000))
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised)))
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 ;; privileged calls
 

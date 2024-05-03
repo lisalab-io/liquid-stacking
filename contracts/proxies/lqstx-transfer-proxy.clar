@@ -7,6 +7,6 @@
 
 (define-public (proxy-call (payload (buff 2048)))
 	(let ((decoded (unwrap! (from-consensus-buff? { amount: uint, recipient: principal, memo: (optional (buff 2048)) } payload) err-invalid-payload)))
-		(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx transfer (get amount decoded) tx-sender (get recipient decoded) (get memo decoded))
+		(contract-call? .token-lqstx transfer (get amount decoded) tx-sender (get recipient decoded) (get memo decoded))
 	)
 )
