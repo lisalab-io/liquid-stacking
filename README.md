@@ -42,6 +42,8 @@ are in the form `(err uint)` and they are unique across all contracts.
 | lqstx-mint-registry              | err-unauthorised                 | (err u1000) |             |
 | lqstx-vault                      | err-unauthorised                 | (err u1000) |             |
 | operators                        | err-unauthorised                 | (err u1000) |             |
+| token-vesting                    | err-unauthorised                 | (err u1000) |             |
+| token-wlqstx                     | err-not-authorized               | (err u1000) |             |
 | treasury                         | err-unauthorised                 | (err u1000) |             |
 | lisa-dao                         | err-already-executed             | (err u1001) |             |
 | lqstx-mint-endpoint              | err-paused                       | (err u1001) |             |
@@ -66,6 +68,7 @@ are in the form `(err uint)` and they are unique across all contracts.
 | endpoint-whitelist-helper-v1-02  | err-unauthorised                 | (err u3000) |             |
 | li-stx-burn-nft                  | err-unauthorised                 | (err u3000) |             |
 | li-stx-mint-nft                  | err-unauthorised                 | (err u3000) |             |
+| lisa-rebase                      | err-unauthorised                 | (err u3000) |             |
 | lqstx-mint-endpoint-v1-02        | err-unauthorised                 | (err u3000) |             |
 | lqstx-mint-endpoint-v2-01        | err-unauthorised                 | (err u3000) |             |
 | public-pools-strategy-manager    | err-unauthorised                 | (err u3000) |             |
@@ -73,8 +76,12 @@ are in the form `(err uint)` and they are unique across all contracts.
 | token-lisa                       | err-unauthorised                 | (err u3000) |             |
 | token-lqstx                      | err-unauthorised                 | (err u3000) |             |
 | token-vlqstx                     | err-unauthorised                 | (err u3000) |             |
+| token-wlqstx                     | err-transfer-failed              | (err u3000) |             |
 | token-lqstx                      | err-invalid-amount               | (err u3001) |             |
 | token-lisa                       | err-not-token-owner              | (err u4)    |             |
+| lisa-transfer-proxy              | err-invalid-payload              | (err u4000) |             |
+| lqstx-transfer-proxy             | err-invalid-payload              | (err u4000) |             |
+| stx-transfer-many-proxy          | err-invalid-payload              | (err u4000) |             |
 | stx-transfer-proxy               | err-invalid-payload              | (err u4000) |             |
 | pox-fast-pool-v2                 | err-unauthorized                 | (err u401)  |             |
 | pox4-fast-pool-v3                | err-unauthorized                 | (err u401)  |             |
@@ -136,6 +143,9 @@ are in the form `(err uint)` and they are unique across all contracts.
 | pox4-pools                       | err-decrease-forbidden           | (err u503)  |             |
 | pox-fast-pool-v2                 | err-pox-address-deactivated      | (err u504)  |             |
 | pox4-fast-pool-v3                | err-pox-address-deactivated      | (err u504)  |             |
+| token-wlqstx                     | err-mint-failed                  | (err u6002) |             |
+| token-wlqstx                     | err-burn-failed                  | (err u6003) |             |
+| token-wlqstx                     | err-not-supported                | (err u6004) |             |
 | pox-fast-pool-v2                 | err-already-stacking             | (err u603)  |             |
 | pox-pools-1-cycle-v2             | err-already-stacking             | (err u603)  |             |
 | pox4-fast-pool-v3                | err-already-stacking             | (err u603)  |             |
@@ -162,6 +172,11 @@ are in the form `(err uint)` and they are unique across all contracts.
 | li-stx-burn-nft                  | err-wrong-commission             | (err u8102) |             |
 | li-stx-burn-nft                  | err-not-found                    | (err u8103) |             |
 | li-stx-burn-nft                  | err-metadata-frozen              | (err u8104) |             |
+| token-vesting                    | err-caller-not-recipient         | (err u9000) |             |
+| token-vesting                    | err-unknown-vesting-id           | (err u9001) |             |
+| token-vesting                    | err-event-not-vested             | (err u9002) |             |
+| token-vesting                    | err-event-already-claimed        | (err u9003) |             |
+| token-vesting                    | err-recipient-exists             | (err u9004) |             |
 <!--errors-->
 
 ## References

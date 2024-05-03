@@ -1,7 +1,7 @@
 import { tx } from '@hirosystems/clarinet-sdk';
 import { IntegerType } from '@stacks/common';
 import { poxAddressToTuple } from '@stacks/stacking';
-import { Cl, ResponseOkCV, UIntCV, principalCV } from '@stacks/transactions';
+import { Cl, ResponseOkCV, UIntCV, contractPrincipalCV, principalCV } from '@stacks/transactions';
 import { expect } from 'vitest';
 
 export const createClientMockSetup = () => {
@@ -16,14 +16,14 @@ export const createClientMockSetup = () => {
 
   const contracts = {
     endpoint: 'lqstx-mint-endpoint-v2-01',
-    dao: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao',
-    boot: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.boot',
-    operators: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.operators',
+    dao: 'lisa-dao',
+    boot: 'boot',
+    operators: 'operators',
     manager: 'public-pools-strategy-manager-v2',
-    lqstx: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx',
-    treasury: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.treasury',
-    burnNft: 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft',
-    mintNft: 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft',
+    lqstx: 'token-lqstx',
+    treasury: 'treasury',
+    burnNft: 'li-stx-burn-nft',
+    mintNft: 'li-stx-mint-nft',
     wstx: '',
     wlqstx: '',
     amm: '',
@@ -73,15 +73,15 @@ export const createClientMockSetup = () => {
       tx.callPublicFn(
         contracts.dao,
         'construct',
-        [principalCV(contracts.boot)],
-        'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH'
+        [contractPrincipalCV(simnet.deployer, contracts.boot)],
+        simnet.deployer
       ),
     ]);
-    executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip001');
+    executeLip(`${simnet.deployer}.lip001`);
 
     // Do not mint NFTs because no mint requests were sent so far
-    //executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip002');
-    executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003');
+    //executeLip('lip002');
+    executeLip(`${simnet.deployer}.lip003`);
     executeLip(`${simnet.deployer}.lip004`);
 
     simnet.callPublicFn(
