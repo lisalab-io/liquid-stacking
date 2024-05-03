@@ -142,7 +142,7 @@ describe(contracts.endpoint, () => {
     expect(responses[3].result).toBeErr(Cl.uint(7007));
   });
 
-  it.only('can interact with strategies', () => {
+  it('can interact with strategies', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
     expect(requestMint(mintAmount).result).toBeOk(Cl.uint(1));
