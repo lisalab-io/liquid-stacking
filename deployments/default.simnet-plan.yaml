@@ -48,6 +48,9 @@ genesis:
 plan:
   batches:
     - id: 0
+      transactions: []
+      epoch: "2.0"
+    - id: 1
       transactions:
         - emulated-contract-publish:
             contract-name: sip-010-trait-ft-standard
@@ -64,61 +67,203 @@ plan:
             emulated-sender: SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335
             path: "./.cache/requirements/SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait.clar"
             clarity-version: 1
-      epoch: "2.0"
-    - id: 1
-      transactions:
-        - emulated-contract-publish:
-            contract-name: trait-sip-010
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/traits/trait-sip-010.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: trait-flash-loan-user
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/traits/trait-flash-loan-user.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: trait-semi-fungible
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/traits/trait-semi-fungible.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: alex-vault-v1-1
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/alex-vault-v1-1.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: trait-ownable
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/traits/trait-ownable.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: token-amm-swap-pool-v1-1
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/pool-token/token-amm-swap-pool-v1-1.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: amm-swap-pool-v1-1
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/pool/amm-swap-pool-v1-1.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: token-wstx
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/wrapped-token/token-wstx.clar
-            clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: trait-vault
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts_modules/alex_v1/traits/trait-vault.clar
-            clarity-version: 1
-      epoch: "2.05"
+      epoch: "2.1"
     - id: 2
+      transactions: []
+      epoch: "2.1"
+    - id: 3
+      transactions: []
+      epoch: "2.1"
+    - id: 4
+      transactions: []
+      epoch: "2.1"
+    - id: 5
+      transactions: []
+      epoch: "2.1"
+    - id: 6
+      transactions: []
+      epoch: "2.1"
+    - id: 7
+      transactions: []
+      epoch: "2.1"
+    - id: 8
+      transactions: []
+      epoch: "2.1"
+    - id: 9
+      transactions: []
+      epoch: "2.1"
+    - id: 10
+      transactions: []
+      epoch: "2.1"
+    - id: 11
+      transactions: []
+      epoch: "2.1"
+    - id: 12
+      transactions: []
+      epoch: "2.1"
+    - id: 13
+      transactions: []
+      epoch: "2.1"
+    - id: 14
+      transactions: []
+      epoch: "2.1"
+    - id: 15
+      transactions: []
+      epoch: "2.1"
+    - id: 16
+      transactions: []
+      epoch: "2.1"
+    - id: 17
+      transactions: []
+      epoch: "2.1"
+    - id: 18
+      transactions: []
+      epoch: "2.1"
+    - id: 19
+      transactions: []
+      epoch: "2.1"
+    - id: 20
+      transactions: []
+      epoch: "2.1"
+    - id: 21
+      transactions: []
+      epoch: "2.1"
+    - id: 22
+      transactions: []
+      epoch: "2.1"
+    - id: 23
+      transactions: []
+      epoch: "2.1"
+    - id: 24
+      transactions: []
+      epoch: "2.1"
+    - id: 25
+      transactions: []
+      epoch: "2.1"
+    - id: 26
+      transactions: []
+      epoch: "2.1"
+    - id: 27
+      transactions: []
+      epoch: "2.1"
+    - id: 28
+      transactions: []
+      epoch: "2.1"
+    - id: 29
+      transactions: []
+      epoch: "2.1"
+    - id: 30
+      transactions: []
+      epoch: "2.1"
+    - id: 31
+      transactions: []
+      epoch: "2.1"
+    - id: 32
+      transactions: []
+      epoch: "2.1"
+    - id: 33
+      transactions: []
+      epoch: "2.1"
+    - id: 34
+      transactions: []
+      epoch: "2.1"
+    - id: 35
+      transactions: []
+      epoch: "2.1"
+    - id: 36
+      transactions: []
+      epoch: "2.1"
+    - id: 37
+      transactions: []
+      epoch: "2.1"
+    - id: 38
+      transactions: []
+      epoch: "2.1"
+    - id: 39
+      transactions: []
+      epoch: "2.1"
+    - id: 40
+      transactions: []
+      epoch: "2.1"
+    - id: 41
+      transactions: []
+      epoch: "2.1"
+    - id: 42
+      transactions: []
+      epoch: "2.1"
+    - id: 43
+      transactions: []
+      epoch: "2.1"
+    - id: 44
+      transactions: []
+      epoch: "2.1"
+    - id: 45
+      transactions: []
+      epoch: "2.1"
+    - id: 46
+      transactions: []
+      epoch: "2.1"
+    - id: 47
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.extension-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: proposal-trait
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lisa-dao
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-registry
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: proxy-trait
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proxy-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: strategy-trait
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-vault
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stx-transfer-proxy
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-lqstx
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-vlqstx
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint-v1-01
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: operators
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.operators.clar"
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: pox-fast-pool-v2
@@ -176,78 +321,18 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.fastpool-member9.clar"
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: proposal-trait
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lisa-dao
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-mint-registry
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-registry.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: proxy-trait
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proxy-trait.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: strategy-trait
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.strategy-trait.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-vault
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: rebase-strategy-trait
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.rebase-strategy-trait.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: stx-transfer-proxy
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.stx-transfer-proxy.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-lqstx
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-vlqstx
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-vlqstx.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-mint-endpoint-v1-01
-            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
-            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint-v1-01.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: pox-pools-1-cycle-v2
             emulated-sender: SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX
             path: "./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox-pools-1-cycle-v2.clar"
             clarity-version: 2
-      epoch: "2.4"
-    - id: 3
-      transactions:
         - emulated-contract-publish:
             contract-name: xverse-member1
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member1.clar"
             clarity-version: 2
+      epoch: "2.4"
+    - id: 48
+      transactions:
         - emulated-contract-publish:
             contract-name: xverse-member10
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
@@ -299,274 +384,740 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy.clar"
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: public-pools-strategy-manager
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.public-pools-strategy-manager.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-lisa
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lisa.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: boot
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.boot.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: rebase-strategy-trait
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.rebase-strategy-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-mint-endpoint.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: sip-010-transferable-trait
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.sip-010-transferable-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: treasury
+            emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
+            path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.treasury.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: li-stx-burn-nft
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/li-stx-burn-nft.clar
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft.clar"
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: li-stx-mint-nft
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/li-stx-mint-nft.clar
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft.clar"
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: lqstx-mint-endpoint-v1-02
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v1-02.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: endpoint-whitelist-helper-v1-02
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.endpoint-whitelist-helper-v1-02.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lip001
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip001.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lip002
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip002.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lip003
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: pox4-pools
+            emulated-sender: SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX
+            path: "./.cache/requirements/SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox4-pools.clar"
+            clarity-version: 2
+      epoch: "2.4"
+    - id: 49
+      transactions:
+        - emulated-contract-publish:
+            contract-name: pox4-fast-pool-v3
+            emulated-sender: SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP
+            path: "./.cache/requirements/SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member1
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member10
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member2
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member3
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member4
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member5
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member8
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: fastpool-v2-member9
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/fastpool-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member1
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member10
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member2
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member3
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member4
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member5
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member8
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: xverse-v2-member9
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/xverse-member.clar
+            clarity-version: 2
+      epoch: "2.4"
+    - id: 50
+      transactions: []
+      epoch: "2.4"
+    - id: 51
+      transactions: []
+      epoch: "2.4"
+    - id: 52
+      transactions: []
+      epoch: "2.4"
+    - id: 53
+      transactions: []
+      epoch: "2.4"
+    - id: 54
+      transactions: []
+      epoch: "2.4"
+    - id: 55
+      transactions: []
+      epoch: "2.4"
+    - id: 56
+      transactions: []
+      epoch: "2.4"
+    - id: 57
+      transactions: []
+      epoch: "2.4"
+    - id: 58
+      transactions: []
+      epoch: "2.4"
+    - id: 59
+      transactions: []
+      epoch: "2.4"
+    - id: 60
+      transactions: []
+      epoch: "2.4"
+    - id: 61
+      transactions: []
+      epoch: "2.4"
+    - id: 62
+      transactions: []
+      epoch: "2.4"
+    - id: 63
+      transactions: []
+      epoch: "2.4"
+    - id: 64
+      transactions: []
+      epoch: "2.4"
+    - id: 65
+      transactions: []
+      epoch: "2.4"
+    - id: 66
+      transactions: []
+      epoch: "2.4"
+    - id: 67
+      transactions: []
+      epoch: "2.4"
+    - id: 68
+      transactions: []
+      epoch: "2.4"
+    - id: 69
+      transactions: []
+      epoch: "2.4"
+    - id: 70
+      transactions: []
+      epoch: "2.4"
+    - id: 71
+      transactions: []
+      epoch: "2.4"
+    - id: 72
+      transactions: []
+      epoch: "2.4"
+    - id: 73
+      transactions: []
+      epoch: "2.4"
+    - id: 74
+      transactions: []
+      epoch: "2.4"
+    - id: 75
+      transactions: []
+      epoch: "2.4"
+    - id: 76
+      transactions: []
+      epoch: "2.4"
+    - id: 77
+      transactions: []
+      epoch: "2.4"
+    - id: 78
+      transactions: []
+      epoch: "2.4"
+    - id: 79
+      transactions: []
+      epoch: "2.4"
+    - id: 80
+      transactions: []
+      epoch: "2.4"
+    - id: 81
+      transactions: []
+      epoch: "2.4"
+    - id: 82
+      transactions: []
+      epoch: "2.4"
+    - id: 83
+      transactions: []
+      epoch: "2.4"
+    - id: 84
+      transactions: []
+      epoch: "2.4"
+    - id: 85
+      transactions: []
+      epoch: "2.4"
+    - id: 86
+      transactions: []
+      epoch: "2.4"
+    - id: 87
+      transactions: []
+      epoch: "2.4"
+    - id: 88
+      transactions: []
+      epoch: "2.4"
+    - id: 89
+      transactions: []
+      epoch: "2.4"
+    - id: 90
+      transactions: []
+      epoch: "2.4"
+    - id: 91
+      transactions: []
+      epoch: "2.4"
+    - id: 92
+      transactions: []
+      epoch: "2.4"
+    - id: 93
+      transactions: []
+      epoch: "2.4"
+    - id: 94
+      transactions: []
+      epoch: "2.4"
+    - id: 95
+      transactions: []
+      epoch: "2.4"
+    - id: 96
+      transactions: []
+      epoch: "2.4"
+    - id: 97
+      transactions: []
+      epoch: "2.4"
+    - id: 98
+      transactions: []
+      epoch: "2.4"
+    - id: 99
+      transactions: []
+      epoch: "2.4"
+    - id: 100
+      transactions: []
+      epoch: "2.4"
+    - id: 101
+      transactions: []
+      epoch: "2.4"
+    - id: 102
+      transactions: []
+      epoch: "2.4"
+    - id: 103
+      transactions: []
+      epoch: "2.4"
+    - id: 104
+      transactions: []
+      epoch: "2.4"
+    - id: 105
+      transactions: []
+      epoch: "2.4"
+    - id: 106
+      transactions: []
+      epoch: "2.4"
+    - id: 107
+      transactions: []
+      epoch: "2.4"
+    - id: 108
+      transactions: []
+      epoch: "2.4"
+    - id: 109
+      transactions: []
+      epoch: "2.4"
+    - id: 110
+      transactions: []
+      epoch: "2.4"
+    - id: 111
+      transactions: []
+      epoch: "2.4"
+    - id: 112
+      transactions: []
+      epoch: "2.4"
+    - id: 113
+      transactions: []
+      epoch: "2.4"
+    - id: 114
+      transactions: []
+      epoch: "2.4"
+    - id: 115
+      transactions: []
+      epoch: "2.4"
+    - id: 116
+      transactions: []
+      epoch: "2.4"
+    - id: 117
+      transactions: []
+      epoch: "2.4"
+    - id: 118
+      transactions: []
+      epoch: "2.4"
+    - id: 119
+      transactions: []
+      epoch: "2.4"
+    - id: 120
+      transactions: []
+      epoch: "2.4"
+    - id: 121
+      transactions: []
+      epoch: "2.4"
+    - id: 122
+      transactions: []
+      epoch: "2.4"
+    - id: 123
+      transactions: []
+      epoch: "2.4"
+    - id: 124
+      transactions: []
+      epoch: "2.4"
+    - id: 125
+      transactions: []
+      epoch: "2.4"
+    - id: 126
+      transactions: []
+      epoch: "2.4"
+    - id: 127
+      transactions: []
+      epoch: "2.4"
+    - id: 128
+      transactions: []
+      epoch: "2.4"
+    - id: 129
+      transactions: []
+      epoch: "2.4"
+    - id: 130
+      transactions: []
+      epoch: "2.4"
+    - id: 131
+      transactions: []
+      epoch: "2.4"
+    - id: 132
+      transactions: []
+      epoch: "2.4"
+    - id: 133
+      transactions: []
+      epoch: "2.4"
+    - id: 134
+      transactions: []
+      epoch: "2.4"
+    - id: 135
+      transactions: []
+      epoch: "2.4"
+    - id: 136
+      transactions: []
+      epoch: "2.4"
+    - id: 137
+      transactions: []
+      epoch: "2.4"
+    - id: 138
+      transactions: []
+      epoch: "2.4"
+    - id: 139
+      transactions: []
+      epoch: "2.4"
+    - id: 140
+      transactions: []
+      epoch: "2.4"
+    - id: 141
+      transactions: []
+      epoch: "2.4"
+    - id: 142
+      transactions: []
+      epoch: "2.4"
+    - id: 143
+      transactions: []
+      epoch: "2.4"
+    - id: 144
+      transactions: []
+      epoch: "2.4"
+    - id: 145
+      transactions: []
+      epoch: "2.4"
+    - id: 146
+      transactions: []
+      epoch: "2.4"
+    - id: 147
+      transactions: []
+      epoch: "2.4"
+    - id: 148
+      transactions: []
+      epoch: "2.4"
+    - id: 149
+      transactions: []
+      epoch: "2.4"
+    - id: 150
+      transactions: []
+      epoch: "2.4"
+    - id: 151
+      transactions: []
+      epoch: "2.4"
+    - id: 152
+      transactions: []
+      epoch: "2.4"
+    - id: 153
+      transactions: []
+      epoch: "2.4"
+    - id: 154
+      transactions: []
+      epoch: "2.4"
+    - id: 155
+      transactions: []
+      epoch: "2.4"
+    - id: 156
+      transactions: []
+      epoch: "2.4"
+    - id: 157
+      transactions: []
+      epoch: "2.4"
+    - id: 158
+      transactions: []
+      epoch: "2.4"
+    - id: 159
+      transactions: []
+      epoch: "2.4"
+    - id: 160
+      transactions: []
+      epoch: "2.4"
+    - id: 161
+      transactions: []
+      epoch: "2.4"
+    - id: 162
+      transactions: []
+      epoch: "2.4"
+    - id: 163
+      transactions: []
+      epoch: "2.4"
+    - id: 164
+      transactions: []
+      epoch: "2.4"
+    - id: 165
+      transactions: []
+      epoch: "2.4"
+    - id: 166
+      transactions: []
+      epoch: "2.4"
+    - id: 167
+      transactions: []
+      epoch: "2.4"
+    - id: 168
+      transactions: []
+      epoch: "2.4"
+    - id: 169
+      transactions: []
+      epoch: "2.4"
+    - id: 170
+      transactions: []
+      epoch: "2.4"
+    - id: 171
+      transactions: []
+      epoch: "2.4"
+    - id: 172
+      transactions: []
+      epoch: "2.4"
+    - id: 173
+      transactions: []
+      epoch: "2.4"
+    - id: 174
+      transactions: []
+      epoch: "2.4"
+    - id: 175
+      transactions: []
+      epoch: "2.4"
+    - id: 176
+      transactions: []
+      epoch: "2.4"
+    - id: 177
+      transactions: []
+      epoch: "2.4"
+    - id: 178
+      transactions: []
+      epoch: "2.4"
+    - id: 179
+      transactions: []
+      epoch: "2.4"
+    - id: 180
+      transactions: []
+      epoch: "2.4"
+    - id: 181
+      transactions: []
+      epoch: "2.4"
+    - id: 182
+      transactions:
+        - emulated-contract-publish:
+            contract-name: public-pools-strategy-v2
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/strategies/public-pools/public-pools-strategy.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lqstx-mint-endpoint-v2-01
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/lqstx-mint-endpoint.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: auto-whitelist-mint-helper
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/auto-whitelist-mint-helper.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: operators
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/operators.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: public-pools-strategy-manager
+            contract-name: public-pools-strategy-manager-v2
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/public-pools-strategy-manager.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: token-lisa
+            contract-name: lip004
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/token-lisa.clar
+            path: contracts/proposals/lip004.clar
             clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: boot
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/boot.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: commission-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/commission-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: endpoint-whitelist-helper-v1-02
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/endpoint-whitelist-helper.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: extension-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/extension-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member1
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member10
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member2
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-      epoch: "2.4"
-    - id: 4
-      transactions:
-        - emulated-contract-publish:
-            contract-name: fastpool-member3
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member4
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member5
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member6
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member7
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member8
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: fastpool-member9
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/fastpool-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lip001
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip001.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lip002
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip002.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lip003
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip003.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lisa-rebase
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/lisa-rebase.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: proxy-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/proxy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lisa-transfer-proxy
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proxies/lisa-transfer-proxy.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lqstx-transfer-proxy
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proxies/lqstx-transfer-proxy.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: mock-proposal
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/mock-proposal.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: mock-strategy
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/mock-strategy.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: mock-strategy-manager
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/mock-strategy-manager.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: nft-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/nft-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: rebase-1
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/rebase-1.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: rebase-strategy-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/deployed/rebase-strategy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: rebase-strategy-trait-v1-01
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/rebase-strategy-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: regtest-boot
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/regtest-boot.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: simnet-boot
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/simnet-boot.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: sip-010-extensions-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/sip-010-extensions-trait.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: sip-010-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/sip-010-trait.clar
-            clarity-version: 2
-      epoch: "2.4"
-    - id: 5
-      transactions:
-        - emulated-contract-publish:
-            contract-name: stx-transfer-many-proxy
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proxies/stx-transfer-many-proxy.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-vesting
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/token-vesting.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: token-wlqstx
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/token-wlqstx.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: treasury-v1-01
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/treasury.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member1
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member10
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member2
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member3
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member4
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member5
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member6
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member7
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member8
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: xverse-member9
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/strategies/public-pools/xverse-member.clar
-            clarity-version: 2
-      epoch: "2.4"
+      epoch: "2.5"
+    - id: 183
+      transactions: []
+      epoch: "2.5"
+    - id: 184
+      transactions: []
+      epoch: "2.5"
+    - id: 185
+      transactions: []
+      epoch: "2.5"
+    - id: 186
+      transactions: []
+      epoch: "2.5"
+    - id: 187
+      transactions: []
+      epoch: "2.5"
+    - id: 188
+      transactions: []
+      epoch: "2.5"
+    - id: 189
+      transactions: []
+      epoch: "2.5"
+    - id: 190
+      transactions: []
+      epoch: "2.5"
+    - id: 191
+      transactions: []
+      epoch: "2.5"
+    - id: 192
+      transactions: []
+      epoch: "2.5"
+    - id: 193
+      transactions: []
+      epoch: "2.5"
+    - id: 194
+      transactions: []
+      epoch: "2.5"
+    - id: 195
+      transactions: []
+      epoch: "2.5"
+    - id: 196
+      transactions: []
+      epoch: "2.5"
+    - id: 197
+      transactions: []
+      epoch: "2.5"
+    - id: 198
+      transactions: []
+      epoch: "2.5"
+    - id: 199
+      transactions: []
+      epoch: "2.5"
+    - id: 200
+      transactions: []
+      epoch: "2.5"
+    - id: 201
+      transactions: []
+      epoch: "2.5"
+    - id: 202
+      transactions: []
+      epoch: "2.5"
+    - id: 203
+      transactions: []
+      epoch: "2.5"
+    - id: 204
+      transactions: []
+      epoch: "2.5"
+    - id: 205
+      transactions: []
+      epoch: "2.5"
+    - id: 206
+      transactions: []
+      epoch: "2.5"
+    - id: 207
+      transactions: []
+      epoch: "2.5"
+    - id: 208
+      transactions: []
+      epoch: "2.5"
+    - id: 209
+      transactions: []
+      epoch: "2.5"
+    - id: 210
+      transactions: []
+      epoch: "2.5"
+    - id: 211
+      transactions: []
+      epoch: "2.5"
+    - id: 212
+      transactions: []
+      epoch: "2.5"
+    - id: 213
+      transactions: []
+      epoch: "2.5"
+    - id: 214
+      transactions: []
+      epoch: "2.5"
+    - id: 215
+      transactions: []
+      epoch: "2.5"
+    - id: 216
+      transactions: []
+      epoch: "2.5"
+    - id: 217
+      transactions: []
+      epoch: "2.5"
+    - id: 218
+      transactions: []
+      epoch: "2.5"
+    - id: 219
+      transactions: []
+      epoch: "2.5"
+    - id: 220
+      transactions: []
+      epoch: "2.5"
+    - id: 221
+      transactions: []
+      epoch: "2.5"
+    - id: 222
+      transactions: []
+      epoch: "2.5"
+    - id: 223
+      transactions: []
+      epoch: "2.5"
+    - id: 224
+      transactions: []
+      epoch: "2.5"
+    - id: 225
+      transactions: []
+      epoch: "2.5"
+    - id: 226
+      transactions: []
+      epoch: "2.5"
+    - id: 227
+      transactions: []
+      epoch: "2.5"

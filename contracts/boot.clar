@@ -36,7 +36,7 @@
 		(try! (contract-call? .public-pools-strategy-manager set-authorised-manager 'SP2G5X5HCJW31Q3Z71XGPV5S8FNBZMWW7PK45ZWG8 true))
 
 		;; Mint max LISA token supply (1bn)
-		(try! (contract-call? .token-lisa dao-mint-many (list
+		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lisa dao-mint-many (list
 			{ recipient: .treasury, amount: u1000000000000000 }
 		)))
 
