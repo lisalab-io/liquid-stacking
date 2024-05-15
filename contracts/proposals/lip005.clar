@@ -7,8 +7,7 @@
 
 (define-public (execute (sender principal))
 	(let (
-			(amount (unwrap-panic (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-balance addr)))))
-	)		
+			(amount (unwrap-panic (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-balance addr))))
 		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-burn amount addr))
 		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx dao-mint amount 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.treasury))		
 		(ok true)
