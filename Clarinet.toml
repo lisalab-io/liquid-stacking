@@ -5,7 +5,6 @@ description = ""
 authors = []
 telemetry = false
 cache_dir = "./.cache"
-
 requirements = [
   { contract_id = "SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3" },
   { contract_id = "SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox4-pools" },
@@ -19,7 +18,6 @@ requirements = [
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft" },
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft" },
 ]
-
 
 [contracts.lip004]
 path = "contracts/proposals/lip004.clar"
