@@ -23,6 +23,6 @@ requirements = [
   { contract_id = "SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B.lip005" },
 ]
 
-[contracts.lip005]
-path = "contracts/proposals/lip005.clar"
+[contracts.lip006]
+path = "contracts/proposals/lip006.clar"
 epoch = 2.5

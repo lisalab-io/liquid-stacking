@@ -438,12 +438,30 @@ plan:
             emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v2-01.clar"
             clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: public-pools-strategy-manager-v2
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lip004
+            emulated-sender: SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V
+            path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip004.clar"
+            clarity-version: 2
       epoch: "2.4"
     - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: lip005
+            emulated-sender: SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B
+            path: "./.cache/requirements/SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B.lip005.clar"
+            clarity-version: 2
+      epoch: "2.4"
+    - id: 5
+      transactions:
+        - emulated-contract-publish:
+            contract-name: lip006
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip005.clar
+            path: contracts/proposals/lip006.clar
             clarity-version: 2
       epoch: "2.5"
