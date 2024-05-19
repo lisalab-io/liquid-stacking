@@ -59,7 +59,7 @@ describe(contracts.endpoint, () => {
   it('check burn amount with lip 005 and lip 006 - simple amount', () => {
     checkBurnAmountWithLip005AndLip006('lip006-1', {
       amountAfterLip5: 1029715447186,
-      amountExtraRewards: 5_70_377773,
+      amountExtraRewards: 570_377773,
       balanceOfRestHolder: 5219520234339,
       lossAlex: 5_745_804162,
     });
