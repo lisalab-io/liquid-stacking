@@ -1,296 +1,115 @@
 // SPDX-License-Identifier: BUSL-1.1
 
-import {
-  BufferCV,
-  Cl,
-  ClarityType,
-  ListCV,
-  ResponseCV,
-  ResponseOkCV,
-  TupleCV,
-  UIntCV,
-  hexToCV,
-  principalCV,
-  uintCV,
-} from '@stacks/transactions';
-import fs from 'fs';
+import { Cl, ClarityType, principalCV, stringAsciiCV, tupleCV, uintCV } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 import {
-  alexVaultHolding,
+  alexVaultHoldingShares,
   createClientMockSetup,
+  factor,
   oneMillionHolding,
-  restLiSTXHolding,
-  treasuryHolding,
+  oneMillionHoldingAfterRewards,
+  reserve,
+  treasuryHoldingShares,
 } from './clients/mock-client';
 
-const {
-  contracts,
-  user,
-  user2,
-  oracle,
-  bot,
-  manager,
-  prepareTest,
-  goToNextCycle,
-  goToNextRequestCycle,
-  requestMint,
-  requestBurn,
-  fundStrategy,
-  finalizeMint,
-  executeLip,
-} = createClientMockSetup();
+const { contracts, user, user2, prepareTest, executeLip } = createClientMockSetup();
 
-// 1m STX
-const mintAmount = 1_000_000e6;
-const mintDelay = 432;
+const restHolding = 5500917909330;
+const tokensToShare1m = Math.floor(factor * oneMillionHolding); // for 1m STX = 995730662698
 
 describe(contracts.endpoint, () => {
   it('check burn amount without lip 005', () => {
     prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
+    expectTokensToShares(tokensToShare1m);
+    console.log(tokensToShare1m);
     let response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user)], user);
-    // without lip005, all listx holder have 6.5m LiSTX - 1m LiSTX
-    expect(response.result).toBeOk(Cl.uint(restLiSTXHolding - oneMillionHolding));
+    // without lip005, all listx holder have 6.5m STX - 1m STX
+    expect(response.result).toBeOk(Cl.uint(restHolding));
 
     response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user2)], user);
-    expect(response.result).toBeOk(Cl.uint(oneMillionHolding));
+    expect(response.result).toBeOk(Cl.uint(oneMillionHoldingAfterRewards));
   });
 
-  it('check burn amount with lip 005 and lip 006 - simple amount', () => {
-    checkBurnAmountWithLip005AndLip006('lip006-1', {
-      amountAfterLip5: 1029715447186,
-      amountExtraRewards: 570_377773,
-      balanceOfRestHolder: 5219520234339,
-      lossAlex: 5_745_804162,
-    });
-  });
+  it('check burn amount with lip 005 and lip6', () => {
+    prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
 
-  it('check burn amount with lip 005 and lip 006 - guesstimate amount', () => {
-    checkBurnAmountWithLip005AndLip006('lip006-2', {
-      amountAfterLip5: 1029715447186,
-      amountExtraRewards: 93221,
-      balanceOfRestHolder: 5216545319409,
-      lossAlex: 2_091_960839,
-    });
-  });
+    expectTokensToShares(tokensToShare1m);
 
-  it('check burn amount with lip 005 and lip 006 - calculated amount', () => {
-    checkBurnAmountWithLip005AndLip006('lip006-3', {
-      amountAfterLip5: 1029715447186,
-      amountExtraRewards: 835_927592,
-      balanceOfRestHolder: 5220905486876,
-      lossAlex: 7_447_195916,
+    let response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user)], user);
+    // without lip005, all listx holder have 6.4m STX - 1m STX
+    expect(response.result).toBeOk(Cl.uint(restHolding));
+    //expect(response.result).toBeOk(Cl.uint(restLiSTXHolding - oneMillionHolding));
+
+    response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user2)], user);
+    expect(response.result).toBeOk(Cl.uint(oneMillionHoldingAfterRewards));
+
+    response = executeLip('SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B.lip005');
+    expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
+    console.log(response);
+    // due to rounding errors we substract 1 uSTX here
+    expect(response.events[1].data.amount).toBe(Number(alexVaultHoldingShares - 1).toString());
+    expect(response.events[2].data.amount).toBe(Number(treasuryHoldingShares - 1).toString());
+
+    //
+    // execute mint/burn requests
+    //
+
+    // from https://explorer.hiro.so/txid/0x5a0fc63680c20f8c9003811f2970cdba6208e82c6f761bb17dd1a4df20ef6eb4?chain=mainnet
+    const reserveAfterBurns = 7764857094940;
+    const sharesAfterBurns = 7508585330100;
+
+    response = simnet.callPublicFn(
+      contracts.endpoint,
+      'request-burn',
+      [uintCV(reserve - reserveAfterBurns)],
+      user
+    );
+    expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
+    expectRebaseEvent(response.events[4], {
+      reserve: reserveAfterBurns,
+      totalShare: sharesAfterBurns - 12, // 12 micro vLiSTX accepted as rounding differences
     });
+
+    //
+    // execute lip006
+    //
+
+    const tokensToMint = 230680068478; // from lip006;
+    // shares to mint = 223066690982 from https://explorer.hiro.so/txid/0xcdf261e9610abf41a214599cbec90b37ec698f1b5014b822290d52e5c6bd0d3a?chain=mainnet
+    const sharesToMint = Math.floor((tokensToMint * sharesAfterBurns) / reserveAfterBurns);
+
+    response = executeLip(`${simnet.deployer}.lip006`);
+    expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
+    expectRebaseEvent(response.events[2], {
+      reserve: reserveAfterBurns,
+      totalShare: sharesAfterBurns + sharesToMint - 12, // 7731652021070
+    });
+    expect(response.events[1].data.amount).toBe(Number(sharesToMint).toString());
+
+    expectTokensToShares(tokensToShare1m - 6990449); // accepted as rounding difference
   });
 });
 
-function checkBurnAmountWithLip005AndLip006(
-  lip006Name: string,
-  {
-    amountAfterLip5,
-    // amounts after lip6
-    amountExtraRewards,
-    balanceOfRestHolder,
-    lossAlex,
-  }: {
-    amountAfterLip5: number;
-    amountExtraRewards: number;
-    balanceOfRestHolder: number;
-    lossAlex: number;
-  }
-) {
-  prepareTest().map((e: any) => expect(e.result).toBeOk(Cl.bool(true)));
-
-  // check balance
-  let response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user)], user);
-  console.log(response);
-  expect(response.result).toBeOk(Cl.uint(restLiSTXHolding - oneMillionHolding));
-
-  //
-  // execute lip 005
-  //
-
-  const result = executeLip('SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B.lip005');
-  expect(result.events[1].data.amount).toBe(alexVaultHolding.toString());
-  // due to rounding errors we substract 1 uSTX here
-  expect(result.events[2].data.amount).toBe(Number(treasuryHolding - 1).toString()); // value from https://stxscan.co/transactions/0xeadfe530ae96a9b78468dc0b5707fa7a40796af9063695d52f3e2571e99b893e
-
-  // check balance for 1m holding user after lip 005
-  response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user2)], user2);
-  expect(response.result).toBeOk(Cl.uint(amountAfterLip5));
-
-  // execute mint/burn requests
-  replayTxs();
-
-  //
-  // execute lip 006
-  //
-
-  response = executeLip(`${simnet.deployer}.${lip006Name}`);
-  expect(response.result).toBeOk(Cl.bool(true));
-  // expect(response.events[1].data.amount).toBe('212368756023');
-
-  // check balance of 1m holder
-  response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user2)], user2);
-  expect(response.result).toBeOk(Cl.uint(oneMillionHolding + amountExtraRewards));
-
-  // check balance of all other LiSTX holders (some have left with the replay)
-  response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user)], user);
-  expect(response.result).toBeOk(Cl.uint(balanceOfRestHolder));
-
-  // check balance
-  response = simnet.callReadOnlyFn(
+function expectTokensToShares(tokensToShare1m: number) {
+  let response = simnet.callReadOnlyFn(
     contracts.lqstx,
-    'get-balance',
-    [principalCV(contracts.treasury)],
-    user2
+    'get-tokens-to-shares',
+    [uintCV(1_000_000_000_000)],
+    user
   );
-  expect(response.result).toBeOk(Cl.uint(alexVaultHolding - lossAlex));
+  expect(response.result).toBeUint(tokensToShare1m);
 }
 
-function replayTxs() {
-  let txList = JSON.parse(
-    fs
-      .readFileSync(
-        './scripts/lip006/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v2-01_transactions.json'
-      )
-      .toString()
-  );
-  txList = txList.filter((t: any) => t.tx.tx_status === 'success');
-  txList.reverse();
-  let sum = txList.reduce((sum: number, t: any) => {
-    if (t.tx.contract_call.function_name === 'request-mint') {
-      return sum + Number((hexToCV(t.tx.contract_call.function_args[0].hex) as UIntCV).value);
-    } else {
-      return sum;
-    }
-  }, 0);
-  console.log('mints', sum);
-
-  sum = txList.reduce((sum: number, t: any) => {
-    if (
-      t.tx.contract_call.function_name === 'request-burn' &&
-      (hexToCV(t.tx.tx_result.hex) as ResponseOkCV<TupleCV<{ status: BufferCV }>>).value.data.status
-        .buffer[0] === 0
-    ) {
-      return sum + Number((hexToCV(t.tx.contract_call.function_args[0].hex) as UIntCV).value);
-    } else {
-      return sum;
-    }
-  }, 0);
-  console.log('burns-finalized', sum);
-
-  sum = txList.reduce((sum: number, t: any) => {
-    if (
-      t.tx.contract_call.function_name === 'request-burn' &&
-      (hexToCV(t.tx.tx_result.hex) as ResponseOkCV<TupleCV<{ status: BufferCV }>>).value.data.status
-        .buffer[0] === 1
-    ) {
-      return sum + Number((hexToCV(t.tx.contract_call.function_args[0].hex) as UIntCV).value);
-    } else {
-      return sum;
-    }
-  }, 0);
-  console.log('burns-pending', sum);
-
-  const stats: any = { finalizedMints: [], pendingBurns: {}, mint: {}, mintTotal: 0 };
-  txList.forEach((t: any) => {
-    let functionName = t.tx.contract_call.function_name;
-    const arg0 = Number((hexToCV(t.tx.contract_call.function_args[0].hex) as UIntCV).value);
-    switch (functionName) {
-      case 'request-burn':
-        const requestBurnResult = (
-          hexToCV(t.tx.tx_result.hex) as ResponseOkCV<
-            TupleCV<{ status: BufferCV; 'request-id': UIntCV }>
-          >
-        ).value.data;
-        switch (requestBurnResult.status.buffer[0]) {
-          case 0:
-            stats.requestMintPending = arg0 + (stats.requestMintPending || 0);
-            stats.pendingBurns[Number(requestBurnResult['request-id'].value).toString()] = arg0;
-            break;
-          case 1:
-            stats.requestBurnFinalized = arg0 + (stats.requestBurnFinalized || 0);
-            break;
-          case 2:
-            console.log(arg0);
-            break;
-          default:
-            throw new Error('invalid status' + t.tx.tx_result.repr);
-        }
-        break;
-      case 'revoke-mint':
-        if (!isNaN(stats.mint[arg0.toString()])) {
-          stats.mintTotal -= stats.mint[arg0.toString()];
-        }
-        stats.mint[arg0.toString()] = (stats.mint[arg0.toString()] || '') + 'revoked';
-        break;
-      case 'request-mint':
-        const result = (hexToCV(t.tx.tx_result.hex) as ResponseOkCV<UIntCV>).value.value.toString();
-        stats.mint[result] = arg0;
-        stats.mintTotal += arg0;
-        break;
-      case 'finalize-mint-many':
-        const results = (hexToCV(t.tx.tx_result.hex) as ResponseOkCV<ListCV<ResponseCV>>).value
-          .list;
-        const argList = (hexToCV(t.tx.contract_call.function_args[0].hex) as ListCV<UIntCV>).list;
-        results.map((r: ResponseCV, index: number) => {
-          if (r.type === ClarityType.ResponseOk) {
-            stats.finalizedMints.push(argList[index].value);
-          } else {
-            // ignore
-          }
-        });
-        break;
-      case 'revoke-burn':
-        stats.requestMintPending -= stats.pendingBurns[arg0.toString()];
-        stats.pendingBurns[arg0.toString()] = stats.pendingBurns[arg0.toString()] + ' revoked';
-        console.log(arg0);
-        break;
-      default:
-        stats[functionName] = 'missing';
-    }
+function expectRebaseEvent(
+  event: any,
+  { reserve, totalShare }: { reserve: number; totalShare: number }
+) {
+  expect(event.data.value).toBeTuple({
+    notification: stringAsciiCV('rebase'),
+    payload: tupleCV({
+      reserve: uintCV(reserve),
+      'total-shares': uintCV(totalShare),
+    }),
   });
-
-  console.log(stats);
-  // burn listx as requested and finalized
-  let response = simnet.callPublicFn(
-    contracts.endpoint,
-    'request-burn',
-    [uintCV(stats.requestBurnFinalized)],
-    user
-  );
-  console.log('request-burn', response);
-  expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
-
-  // lock remaining stx
-  response = fundStrategy(
-    Number(
-      simnet
-        .getAssetsMap()
-        .get('STX')
-        ?.get('SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault') || 0
-    )
-  );
-  console.log('fund-strategy', response);
-  expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
-
-  // request to burn as requested and pending
-  response = simnet.callPublicFn(
-    contracts.endpoint,
-    'request-burn',
-    [uintCV(stats.requestMintPending)],
-    user
-  );
-  expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
-
-  // request mints
-  response = simnet.callPublicFn(
-    contracts.endpoint,
-    'request-mint',
-    [uintCV(stats.mintTotal)],
-    user
-  );
-  console.log('mint-request', response);
-  expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
 }

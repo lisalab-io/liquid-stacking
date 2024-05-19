@@ -61,7 +61,7 @@ async function main() {
     anchorMode: AnchorMode.Any,
     fee: 0,
   };
-  const contractName = 'lip006-3';
+  const contractName = 'lip006';
   const codeBody = fs.readFileSync(
     path.resolve(
       path.dirname(fileURLToPath(import.meta.url)),

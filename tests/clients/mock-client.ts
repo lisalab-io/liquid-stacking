@@ -1,23 +1,23 @@
 import { tx } from '@hirosystems/clarinet-sdk';
 import { IntegerType } from '@stacks/common';
 import { poxAddressToTuple } from '@stacks/stacking';
-import {
-  Cl,
-  ResponseOkCV,
-  TupleCV,
-  UIntCV,
-  noneCV,
-  principalCV,
-  uintCV,
-} from '@stacks/transactions';
+import { Cl, ResponseOkCV, UIntCV, noneCV, principalCV, uintCV } from '@stacks/transactions';
 import { expect } from 'vitest';
 
 // listx holding of alex vault before lip005
-export const alexVaultHolding = 1325539144827; // from https://stxscan.co/transactions/0xeadfe530ae96a9b78468dc0b5707fa7a40796af9063695d52f3e2571e99b893e
+export const shares = 7802971780136; // from https://explorer.hiro.so/txid/0x821fd4ae7fe97cf712731a2f85a11a7e819de6ac534dcedff58fe27f8b14dcda?chain=mainnet
+export const reserve = 7836428135082; // from https://explorer.hiro.so/txid/0x821fd4ae7fe97cf712731a2f85a11a7e819de6ac534dcedff58fe27f8b14dcda?chain=mainnet
+export const factor = shares / reserve;
+
+export const alexVaultHoldingShares = 1325539144827; // from https://stxscan.co/transactions/0xeadfe530ae96a9b78468dc0b5707fa7a40796af9063695d52f3e2571e99b893e
+// alexVault holding after rewards before lip005
+export const alexVaultHolding = Math.floor(alexVaultHoldingShares / factor); // 1331231929699;
 // listx holding of treasury after lip005
-export const treasuryHolding = 1_100_361_600428;
+export const treasuryHoldingShares = 1_100_361_600428; // value from https://stxscan.co/transactions/0xeadfe530ae96a9b78468dc0b5707fa7a40796af9063695d52f3e2571e99b893e
+export const treasuryHolding = Math.floor(treasuryHoldingShares / factor); // 1_105_087_316_675;
 export const oneMillionHolding = 1_000_000_000_000;
-export const restLiSTXHolding = 7802971780136 - alexVaultHolding; // from https://explorer.hiro.so/txid/0x821fd4ae7fe97cf712731a2f85a11a7e819de6ac534dcedff58fe27f8b14dcda?chain=mainnet
+export const oneMillionHoldingAfterRewards = Math.floor(oneMillionHolding / factor);
+export const restLiSTXHolding = reserve - alexVaultHolding;
 
 export const createClientMockSetup = () => {
   const accounts = simnet.getAccounts();
@@ -42,6 +42,7 @@ export const createClientMockSetup = () => {
     wstx: '',
     wlqstx: '',
     amm: '',
+    lqstxVault: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault',
     alexVault11: 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-vault-v1-1',
   };
   const executeLip = (lipContractId: string) => {
@@ -80,7 +81,7 @@ export const createClientMockSetup = () => {
   };
 
   const prepareTest = () => {
-    simnet.mineBlock([tx.transferSTX(100_000_000_000_000, user, faucet)]);
+    simnet.mineBlock([tx.transferSTX(10_000_000_000_000, user, faucet)]);
     simnet.mineBlock([tx.transferSTX(1_000_000_000, manager, faucet)]);
     simnet.mineBlock([
       tx.transferSTX(1_000_000_000, 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP', faucet),
@@ -101,25 +102,27 @@ export const createClientMockSetup = () => {
     executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003');
     executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip004');
 
-    // total share from before lip5 minus holding of alex vault
-    const mintAmount2 = restLiSTXHolding;
-
+    // mint shares (=reserve) at 1:1
     const result2 = simnet.mineBlock([
-      tx.callPublicFn(contracts.endpoint, 'request-mint', [uintCV(alexVaultHolding)], user),
-      tx.callPublicFn(contracts.endpoint, 'request-mint', [uintCV(mintAmount2)], user),
+      tx.callPublicFn(contracts.endpoint, 'request-mint', [uintCV(shares)], user),
     ]);
     expect(result2[0].result).toBeOk(Cl.uint(1));
-    expect(result2[1].result).toBeOk(Cl.uint(2));
     simnet.mineEmptyBlocks(1500);
     const result3 = simnet.mineBlock([
       tx.callPublicFn(contracts.endpoint, 'finalize-mint', [uintCV(1)], user),
-      tx.callPublicFn(contracts.endpoint, 'finalize-mint', [uintCV(2)], user),
+      // move shares of alex vault
       tx.callPublicFn(
         contracts.lqstx,
         'transfer',
-        [uintCV(alexVaultHolding), principalCV(user), principalCV(contracts.alexVault11), noneCV()],
+        [
+          uintCV(alexVaultHoldingShares),
+          principalCV(user),
+          principalCV(contracts.alexVault11),
+          noneCV(),
+        ],
         user
       ),
+      // move shares for 1m STX
       tx.callPublicFn(
         contracts.lqstx,
         'transfer',
@@ -130,6 +133,26 @@ export const createClientMockSetup = () => {
     expect(result3[0].result).toBeOk(Cl.bool(true));
     expect(result3[1].result).toBeOk(Cl.bool(true));
     expect(result3[2].result).toBeOk(Cl.bool(true));
+
+    let response = simnet.callReadOnlyFn(
+      contracts.lqstx,
+      'get-balance',
+      [principalCV(user2)],
+      user
+    );
+    expect(response.result).toBeOk(Cl.uint(oneMillionHolding));
+
+    const result4 = simnet.mineBlock([
+      // add STX to reserve to match the reserve before lip005
+      tx.transferSTX(reserve - shares, contracts.lqstxVault, faucet),
+      tx.callPublicFn(contracts.endpoint, 'rebase', [], user),
+    ]);
+    expect(result4[0].result).toBeOk(Cl.bool(true));
+    expect(result4[1].result).toBeOk(Cl.uint(reserve));
+
+    // check balance for 1m holder after rewards
+    response = simnet.callReadOnlyFn(contracts.lqstx, 'get-balance', [principalCV(user2)], user);
+    expect(response.result).toBeOk(Cl.uint(oneMillionHoldingAfterRewards));
 
     simnet.callPublicFn(
       'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3',
