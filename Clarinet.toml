@@ -30,3 +30,7 @@ epoch = 2.5
 [contracts.lip006-2]
 path = "contracts/proposals/lip006-2.clar"
 epoch = 2.5
+
+[contracts.lip006-3]
+path = "contracts/proposals/lip006-3.clar"
+epoch = 2.5

@@ -65,12 +65,21 @@ describe(contracts.endpoint, () => {
     });
   });
 
-  it('check burn amount with lip 005 and lip 006 - corrected amount', () => {
+  it('check burn amount with lip 005 and lip 006 - guesstimate amount', () => {
     checkBurnAmountWithLip005AndLip006('lip006-2', {
       amountAfterLip5: 1029715447186,
       amountExtraRewards: 93221,
       balanceOfRestHolder: 5216545319409,
       lossAlex: 2_091_960839,
+    });
+  });
+
+  it('check burn amount with lip 005 and lip 006 - calculated amount', () => {
+    checkBurnAmountWithLip005AndLip006('lip006-3', {
+      amountAfterLip5: 1029715447186,
+      amountExtraRewards: 835_927592,
+      balanceOfRestHolder: 5220905486876,
+      lossAlex: 7_447_195916,
     });
   });
 });
