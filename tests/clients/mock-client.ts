@@ -16,6 +16,8 @@ import { expect } from 'vitest';
 export const alexVaultHolding = 1325539144827; // from https://stxscan.co/transactions/0xeadfe530ae96a9b78468dc0b5707fa7a40796af9063695d52f3e2571e99b893e
 // listx holding of treasury after lip005
 export const treasuryHolding = 1_100_361_600428;
+export const oneMillionHolding = 1_000_000_000_000;
+export const restLiSTXHolding = 7802971780136 - alexVaultHolding; // from https://explorer.hiro.so/txid/0x821fd4ae7fe97cf712731a2f85a11a7e819de6ac534dcedff58fe27f8b14dcda?chain=mainnet
 
 export const createClientMockSetup = () => {
   const accounts = simnet.getAccounts();
@@ -40,6 +42,7 @@ export const createClientMockSetup = () => {
     wstx: '',
     wlqstx: '',
     amm: '',
+    alexVault11: 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-vault-v1-1',
   };
   const executeLip = (lipContractId: string) => {
     simnet.mineBlock([
@@ -99,7 +102,7 @@ export const createClientMockSetup = () => {
     executeLip('SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip004');
 
     // total share from before lip5 minus holding of alex vault
-    const mintAmount2 = 7802971780136 - alexVaultHolding; // from https://explorer.hiro.so/txid/0x821fd4ae7fe97cf712731a2f85a11a7e819de6ac534dcedff58fe27f8b14dcda?chain=mainnet
+    const mintAmount2 = restLiSTXHolding;
 
     const result2 = simnet.mineBlock([
       tx.callPublicFn(contracts.endpoint, 'request-mint', [uintCV(alexVaultHolding)], user),
@@ -114,12 +117,13 @@ export const createClientMockSetup = () => {
       tx.callPublicFn(
         contracts.lqstx,
         'transfer',
-        [
-          uintCV(alexVaultHolding),
-          principalCV(user),
-          principalCV('SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-vault-v1-1'),
-          noneCV(),
-        ],
+        [uintCV(alexVaultHolding), principalCV(user), principalCV(contracts.alexVault11), noneCV()],
+        user
+      ),
+      tx.callPublicFn(
+        contracts.lqstx,
+        'transfer',
+        [uintCV(oneMillionHolding), principalCV(user), principalCV(user2), noneCV()],
         user
       ),
     ]);
