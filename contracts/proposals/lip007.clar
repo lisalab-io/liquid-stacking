@@ -12,7 +12,7 @@
 			'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx
 			))
 
-		;; Set initial operators
+		;; Replace operators from Alex
 		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.operators set-operators (list
 			{ operator: 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7, enabled: false }
 			{ operator: 'SPHFAXDZVFHMY8YR3P9J7ZCV6N89SBET203ZAY25, enabled: false }
@@ -20,7 +20,11 @@
 			{ operator: 'SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC, enabled: true }
 			{ operator: 'SP1ESCTF9029MH550RKNE8R4D62G5HBY8PBBAF2N8, enabled: true }
 			{ operator: 'SP1EF1PKR40XW37GDC0BP7SN4V4JCVSHSDVG71YTH, enabled: true }
-		)))		
+		)))
+		;; Replace strategy manager
+		(try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2 set-authorised-manager 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7 false))
+		(try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2 set-authorised-manager 'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B false))
+		(try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2 set-authorised-manager 'SPDQYG895XNB82F9T2NWRS48XBF3N137V1R5CFA3 true))
 		(ok true)
 	)
 )
