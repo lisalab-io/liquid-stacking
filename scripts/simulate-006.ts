@@ -61,8 +61,7 @@ async function main() {
     anchorMode: AnchorMode.Any,
     fee: 0,
   };
-
-  const contractName = 'lip007';
+  const contractName = 'lip006';
   const codeBody = fs.readFileSync(
     path.resolve(
       path.dirname(fileURLToPath(import.meta.url)),
@@ -113,8 +112,7 @@ async function main() {
     block_hash: bufferCV(
       Buffer.from(block_hash.startsWith('0x') ? block_hash.substring(2) : block_hash, 'hex')
     ),
-
-    steps: listCV([      
+    steps: listCV([
       runTx(tx0),
       runEval(
         address,
@@ -124,9 +122,8 @@ async function main() {
       runEval(
         address,
         contractName,
-
-        "(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-balance 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao)"
-      ),      
+        "(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-tokens-to-shares u1000000)"
+      ),
       ...votes.map(v => runTx(v)),
       runEval(
         address,
@@ -136,7 +133,7 @@ async function main() {
       runEval(
         address,
         contractName,
-        "(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-balance 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao)"
+        "(contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx get-tokens-to-shares u1000000)"
       ),
     ]),
   });
