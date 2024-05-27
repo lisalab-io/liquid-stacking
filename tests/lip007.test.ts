@@ -96,7 +96,10 @@ describe(contracts.endpoint, () => {
       );
     });
 
-    const validStrategyManagers = ['SPDQYG895XNB82F9T2NWRS48XBF3N137V1R5CFA3'];
+    const validStrategyManagers = [
+      'SP2N8EM3C6WTZXAR19DPWKV78224EK85HB75Y8M84',
+      'SPDQYG895XNB82F9T2NWRS48XBF3N137V1R5CFA3',
+    ];
     const invalidStrategyManagers = [
       'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7',
       'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B',

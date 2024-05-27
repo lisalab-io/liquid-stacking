@@ -24,7 +24,9 @@
 		;; Replace strategy manager
 		(try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2 set-authorised-manager 'SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7 false))
 		(try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2 set-authorised-manager 'SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B false))
+		(try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2 set-authorised-manager 'SP2N8EM3C6WTZXAR19DPWKV78224EK85HB75Y8M84 true))
 		(try! (contract-call? 'SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2 set-authorised-manager 'SPDQYG895XNB82F9T2NWRS48XBF3N137V1R5CFA3 true))
+
 		(ok true)
 	)
 )
