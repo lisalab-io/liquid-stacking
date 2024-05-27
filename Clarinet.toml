@@ -15,16 +15,19 @@ requirements = [
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip001" },
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip002" },
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003" },
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip004" },
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-mint-nft" },
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.li-stx-burn-nft" },
   { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v2-01" },
   { contract_id = "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao" }  
+  { contract_id = "SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v2-01" },
+  { contract_id = "SPGAB1P3YV109E22KXFJYM63GK0G21BYX50CQ80B.lip005" },
 ]
-
-[contracts.lip005]
-path = "contracts/proposals/lip005.clar"
-epoch = 2.5
 
 [contracts.lip006]
 path = "contracts/proposals/lip006.clar"
+epoch = 2.5
+
+[contracts.lip007]
+path = "contracts/proposals/lip007.clar"
 epoch = 2.5
