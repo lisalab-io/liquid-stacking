@@ -69,6 +69,24 @@ plan:
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.extension-trait.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: proposal-trait
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.proposal-trait.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: executor-dao
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao.clar"
+            clarity-version: 1
+      epoch: "2.05"
+    - id: 2
+      transactions:
+        - emulated-contract-publish:
+            contract-name: extension-trait
             emulated-sender: SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.extension-trait.clar"
             clarity-version: 2
@@ -193,7 +211,7 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member1.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 2
+    - id: 3
       transactions:
         - emulated-contract-publish:
             contract-name: xverse-member10
@@ -321,7 +339,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.fastpool-v2-member2.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 3
+    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: fastpool-v2-member3
@@ -439,11 +457,16 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lqstx-mint-endpoint-v2-01.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 4
+    - id: 5
       transactions:
         - emulated-contract-publish:
             contract-name: lip005
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/lip005.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: lip006
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/proposals/lip006.clar
             clarity-version: 2
       epoch: "2.5"
