@@ -79,7 +79,7 @@ describe(contracts.endpoint, () => {
     // shares to mint = 223066690982 from https://explorer.hiro.so/txid/0xcdf261e9610abf41a214599cbec90b37ec698f1b5014b822290d52e5c6bd0d3a?chain=mainnet
     const sharesToMint = Math.floor((tokensToMint * sharesAfterBurns) / reserveAfterBurns);
 
-    response = executeLip(`${simnet.deployer}.lip006`);
+    response = executeLip('SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7.lip006');
     expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
     expectRebaseEvent(response.events[2], {
       reserve: reserveAfterBurns,
