@@ -7,7 +7,6 @@
 (define-constant dms-activation-period u12960) ;; ~90 days
 
 (define-map authorised-managers principal bool)
-(map-set authorised-managers tx-sender true)
 
 (define-data-var last-manager-action-height uint burn-block-height)
 
