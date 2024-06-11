@@ -48,12 +48,6 @@ genesis:
 plan:
   batches:
     - id: 0
-      transactions: []
-      epoch: "2.0"
-    - id: 1
-      transactions: []
-      epoch: "2.05"
-    - id: 2
       transactions:
         - emulated-contract-publish:
             contract-name: sip-010-trait-ft-standard
@@ -70,6 +64,9 @@ plan:
             emulated-sender: SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335
             path: "./.cache/requirements/SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait.clar"
             clarity-version: 1
+      epoch: "2.0"
+    - id: 1
+      transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
             emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
@@ -85,65 +82,8 @@ plan:
             emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
             path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao.clar"
             clarity-version: 1
-      epoch: "2.1"
-    - id: 3
-      transactions: []
-      epoch: "2.1"
-    - id: 4
-      transactions: []
-      epoch: "2.1"
-    - id: 5
-      transactions: []
-      epoch: "2.1"
-    - id: 6
-      transactions: []
-      epoch: "2.1"
-    - id: 7
-      transactions: []
-      epoch: "2.1"
-    - id: 8
-      transactions: []
-      epoch: "2.1"
-    - id: 9
-      transactions: []
-      epoch: "2.1"
-    - id: 10
-      transactions: []
-      epoch: "2.1"
-    - id: 11
-      transactions: []
-      epoch: "2.1"
-    - id: 12
-      transactions: []
-      epoch: "2.1"
-    - id: 13
-      transactions: []
-      epoch: "2.1"
-    - id: 14
-      transactions: []
-      epoch: "2.1"
-    - id: 15
-      transactions: []
-      epoch: "2.1"
-    - id: 16
-      transactions: []
-      epoch: "2.1"
-    - id: 17
-      transactions: []
-      epoch: "2.1"
-    - id: 18
-      transactions: []
-      epoch: "2.1"
-    - id: 19
-      transactions: []
-      epoch: "2.1"
-    - id: 20
-      transactions: []
-      epoch: "2.1"
-    - id: 21
-      transactions: []
-      epoch: "2.1"
-    - id: 22
+      epoch: "2.05"
+    - id: 2
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
@@ -271,7 +211,7 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member1.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 23
+    - id: 3
       transactions:
         - emulated-contract-publish:
             contract-name: xverse-member10
@@ -399,7 +339,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.fastpool-v2-member2.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 24
+    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: fastpool-v2-member3
@@ -527,7 +467,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip004.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 25
+    - id: 5
       transactions:
         - emulated-contract-publish:
             contract-name: lip005
@@ -540,293 +480,31 @@ plan:
             path: "./.cache/requirements/SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7.lip006.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 26
-      transactions: []
-      epoch: "2.4"
-    - id: 27
-      transactions: []
-      epoch: "2.4"
-    - id: 28
-      transactions: []
-      epoch: "2.4"
-    - id: 29
-      transactions: []
-      epoch: "2.4"
-    - id: 30
-      transactions: []
-      epoch: "2.4"
-    - id: 31
-      transactions: []
-      epoch: "2.4"
-    - id: 32
-      transactions: []
-      epoch: "2.4"
-    - id: 33
-      transactions: []
-      epoch: "2.4"
-    - id: 34
-      transactions: []
-      epoch: "2.4"
-    - id: 35
-      transactions: []
-      epoch: "2.4"
-    - id: 36
-      transactions: []
-      epoch: "2.4"
-    - id: 37
-      transactions: []
-      epoch: "2.4"
-    - id: 38
-      transactions: []
-      epoch: "2.4"
-    - id: 39
-      transactions: []
-      epoch: "2.4"
-    - id: 40
-      transactions: []
-      epoch: "2.4"
-    - id: 41
-      transactions: []
-      epoch: "2.4"
-    - id: 42
-      transactions: []
-      epoch: "2.4"
-    - id: 43
-      transactions: []
-      epoch: "2.4"
-    - id: 44
-      transactions: []
-      epoch: "2.4"
-    - id: 45
-      transactions: []
-      epoch: "2.4"
-    - id: 46
-      transactions: []
-      epoch: "2.4"
-    - id: 47
-      transactions: []
-      epoch: "2.4"
-    - id: 48
-      transactions: []
-      epoch: "2.4"
-    - id: 49
-      transactions: []
-      epoch: "2.4"
-    - id: 50
-      transactions: []
-      epoch: "2.4"
-    - id: 51
-      transactions: []
-      epoch: "2.4"
-    - id: 52
-      transactions: []
-      epoch: "2.4"
-    - id: 53
-      transactions: []
-      epoch: "2.4"
-    - id: 54
-      transactions: []
-      epoch: "2.4"
-    - id: 55
-      transactions: []
-      epoch: "2.4"
-    - id: 56
-      transactions: []
-      epoch: "2.4"
-    - id: 57
-      transactions: []
-      epoch: "2.4"
-    - id: 58
-      transactions: []
-      epoch: "2.4"
-    - id: 59
-      transactions: []
-      epoch: "2.4"
-    - id: 60
-      transactions: []
-      epoch: "2.4"
-    - id: 61
-      transactions: []
-      epoch: "2.4"
-    - id: 62
-      transactions: []
-      epoch: "2.4"
-    - id: 63
-      transactions: []
-      epoch: "2.4"
-    - id: 64
-      transactions: []
-      epoch: "2.4"
-    - id: 65
-      transactions: []
-      epoch: "2.4"
-    - id: 66
-      transactions: []
-      epoch: "2.4"
-    - id: 67
-      transactions: []
-      epoch: "2.4"
-    - id: 68
-      transactions: []
-      epoch: "2.4"
-    - id: 69
-      transactions: []
-      epoch: "2.4"
-    - id: 70
-      transactions: []
-      epoch: "2.4"
-    - id: 71
-      transactions: []
-      epoch: "2.4"
-    - id: 72
-      transactions: []
-      epoch: "2.4"
-    - id: 73
-      transactions: []
-      epoch: "2.4"
-    - id: 74
-      transactions: []
-      epoch: "2.4"
-    - id: 75
-      transactions: []
-      epoch: "2.4"
-    - id: 76
-      transactions: []
-      epoch: "2.4"
-    - id: 77
-      transactions: []
-      epoch: "2.4"
-    - id: 78
-      transactions: []
-      epoch: "2.4"
-    - id: 79
-      transactions: []
-      epoch: "2.4"
-    - id: 80
-      transactions: []
-      epoch: "2.4"
-    - id: 81
-      transactions: []
-      epoch: "2.4"
-    - id: 82
-      transactions: []
-      epoch: "2.4"
-    - id: 83
-      transactions: []
-      epoch: "2.4"
-    - id: 84
-      transactions: []
-      epoch: "2.4"
-    - id: 85
-      transactions: []
-      epoch: "2.4"
-    - id: 86
-      transactions: []
-      epoch: "2.4"
-    - id: 87
-      transactions: []
-      epoch: "2.4"
-    - id: 88
-      transactions: []
-      epoch: "2.4"
-    - id: 89
-      transactions: []
-      epoch: "2.4"
-    - id: 90
-      transactions: []
-      epoch: "2.4"
-    - id: 91
-      transactions: []
-      epoch: "2.4"
-    - id: 92
-      transactions: []
-      epoch: "2.4"
-    - id: 93
-      transactions: []
-      epoch: "2.4"
-    - id: 94
-      transactions: []
-      epoch: "2.4"
-    - id: 95
-      transactions: []
-      epoch: "2.4"
-    - id: 96
-      transactions: []
-      epoch: "2.4"
-    - id: 97
-      transactions: []
-      epoch: "2.4"
-    - id: 98
-      transactions: []
-      epoch: "2.4"
-    - id: 99
-      transactions: []
-      epoch: "2.4"
-    - id: 100
+    - id: 6
       transactions:
+        - emulated-contract-publish:
+            contract-name: auto-alex-v3
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/aux/auto-alex-v3.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: auto-alex-v3-registry
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/aux/auto-alex-v3-registry.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: auto-alex-v3-endpoint
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/auto-alex-v3-endpoint.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: auto-alex-v3-wrapped
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/aux/auto-alex-v3-wrapped.clar
+            clarity-version: 2
         - emulated-contract-publish:
             contract-name: lip007
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/lip007.clar
             clarity-version: 2
-      epoch: "2.5"
-    - id: 101
-      transactions: []
-      epoch: "2.5"
-    - id: 102
-      transactions: []
-      epoch: "2.5"
-    - id: 103
-      transactions: []
-      epoch: "2.5"
-    - id: 104
-      transactions: []
-      epoch: "2.5"
-    - id: 105
-      transactions: []
-      epoch: "2.5"
-    - id: 106
-      transactions: []
-      epoch: "2.5"
-    - id: 107
-      transactions: []
-      epoch: "2.5"
-    - id: 108
-      transactions: []
-      epoch: "2.5"
-    - id: 109
-      transactions: []
-      epoch: "2.5"
-    - id: 110
-      transactions: []
-      epoch: "2.5"
-    - id: 111
-      transactions: []
-      epoch: "2.5"
-    - id: 112
-      transactions: []
-      epoch: "2.5"
-    - id: 113
-      transactions: []
-      epoch: "2.5"
-    - id: 114
-      transactions: []
-      epoch: "2.5"
-    - id: 115
-      transactions: []
-      epoch: "2.5"
-    - id: 116
-      transactions: []
-      epoch: "2.5"
-    - id: 117
-      transactions: []
-      epoch: "2.5"
-    - id: 118
-      transactions: []
-      epoch: "2.5"
-    - id: 119
-      transactions: []
-      epoch: "2.5"
-    - id: 120
-      transactions: []
       epoch: "2.5"
