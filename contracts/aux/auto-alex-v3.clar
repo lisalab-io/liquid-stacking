@@ -149,12 +149,12 @@
 
 ;; staking related fuctions
 
-(use-trait ft-trait .trait-sip-010.sip-010-trait)
+(use-trait ft-trait 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.trait-sip-010.sip-010-trait)
 
 (define-public (stake-tokens (amount-tokens uint) (lock-period uint))
 	(begin
 		(try! (is-dao-or-extension))
-		(as-contract (contract-call? .alex-staking stake-tokens amount-tokens lock-period))))
+		(as-contract (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking stake-tokens amount-tokens lock-period))))
 
 (define-public (transfer-token (token-trait <ft-trait>) (amount uint) (recipient principal))
 	(begin 
@@ -166,14 +166,14 @@
 (define-public (claim-staking-reward (reward-cycle uint))
 	(begin 
 		(try! (is-dao-or-extension))
-		(as-contract (contract-call? .alex-staking claim-staking-reward reward-cycle))))
+		(as-contract (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking claim-staking-reward reward-cycle))))
 
 (define-public (reduce-position-v2)
 	(let (
 			(bal-v2 (unwrap-panic (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 get-balance (as-contract tx-sender))))
 			(reduced (if (is-eq u0 bal-v2) u0 (as-contract (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 reduce-position ONE_8))))))
 		(try! (is-dao-or-extension))
-		(as-contract (try! (contract-call? .migrate-legacy-v2-wl migrate)))
+		(as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.migrate-legacy-v2-wl migrate)))
 		(ok reduced)))
 		
 

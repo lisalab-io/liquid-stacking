@@ -82,8 +82,76 @@ plan:
             emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
             path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao.clar"
             clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: governance-token-trait
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.governance-token-trait.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: trait-sip-010
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.trait-sip-010.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: age000-governance-token
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.age000-governance-token.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: trait-flash-loan-user
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.trait-flash-loan-user.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: trait-ownable
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.trait-ownable.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: trait-semi-fungible
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.trait-semi-fungible.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: trait-vault
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.trait-vault.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: alex-vault
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-vault.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: token-apower
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-apower.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: alex-reserve-pool
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-reserve-pool.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: age009-token-lock
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.age009-token-lock.clar"
+            clarity-version: 1
+        - emulated-contract-publish:
+            contract-name: staking-helper
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.staking-helper.clar"
+            clarity-version: 1
       epoch: "2.05"
     - id: 2
+      transactions:
+        - emulated-contract-publish:
+            contract-name: auto-alex-v2
+            emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
+            path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2.clar"
+            clarity-version: 2
+      epoch: "2.3"
+    - id: 3
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
@@ -211,7 +279,7 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member1.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 3
+    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: xverse-member10
@@ -339,7 +407,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.fastpool-v2-member2.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 4
+    - id: 5
       transactions:
         - emulated-contract-publish:
             contract-name: fastpool-v2-member3
@@ -467,7 +535,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip004.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 5
+    - id: 6
       transactions:
         - emulated-contract-publish:
             contract-name: lip005
@@ -480,8 +548,48 @@ plan:
             path: "./.cache/requirements/SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7.lip006.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 6
+    - id: 7
       transactions:
+        - emulated-contract-publish:
+            contract-name: extension-trait
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.extension-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: proposal-trait
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.proposal-trait.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: executor-dao
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.executor-dao.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: trait-sip-010
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.trait-sip-010.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: token-alex
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: alex-staking
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: migrate-legacy-v2
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.migrate-legacy-v2.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: migrate-legacy-v2-wl
+            emulated-sender: SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM
+            path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.migrate-legacy-v2-wl.clar"
+            clarity-version: 2
         - emulated-contract-publish:
             contract-name: auto-alex-v3
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM

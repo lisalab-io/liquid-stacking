@@ -1,7 +1,6 @@
 ;; SPDX-License-Identifier: BUSL-1.1
 
-(impl-trait .extension-trait.extension-trait)
-(impl-trait .proposal-trait.proposal-trait)
+(impl-trait 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait.proposal-trait)
 
 ;; -- autoALEX creation/staking/redemption
 
@@ -85,7 +84,7 @@
         (get amount-staked (as-contract (get-staker-at-cycle (+ current-cycle u1))))
         (get to-return (as-contract (get-staker-at-cycle current-cycle)))
         (as-contract (get-staking-reward current-cycle))
-        (unwrap-panic (contract-call? .token-alex get-balance-fixed .auto-alex-v3))
+        (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex get-balance-fixed .auto-alex-v3))
         (if (is-eq auto-alex-v2-bal u0) u0 (mul-down auto-alex-v2-bal (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 get-intrinsic))))))))
 
 ;; @desc get the intrinsic value of auto-alex-v3
@@ -142,7 +141,7 @@
 ;; claims alex for the reward-cycles and mint auto-alex-v3
 (define-public (claim-and-mint (reward-cycles (list 200 uint)))
   (let (
-      (claimed (unwrap-panic (contract-call? .alex-staking claim-staking-reward-many reward-cycles))))
+      (claimed (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking claim-staking-reward-many reward-cycles))))
     (try! (add-to-position (try! (fold sum-claimed claimed (ok u0)))))
     (ok claimed)))  
 
@@ -155,7 +154,7 @@
       (sender tx-sender))
     (asserts! (> dx u0) err-invalid-liquidity)
     (asserts! (not (is-create-paused)) err-paused)
-    (try! (contract-call? .token-alex transfer-fixed dx sender .auto-alex-v3 none))
+    (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex transfer-fixed dx sender .auto-alex-v3 none))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: dx })))
     (as-contract (try! (contract-call? .auto-alex-v3 mint-fixed dx sender)))
     (print { notification: "position-added", payload: { new-supply: dx } })
@@ -203,7 +202,7 @@
     (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
     
     (as-contract (try! (contract-call? .auto-alex-v3 burn-fixed (get amount request-details) .auto-alex-v3)))
-    (as-contract (try! (contract-call? .auto-alex-v3 transfer-token .token-alex tokens (get requested-by request-details))))
+    (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
     (print { notification: "finalize-redeem", payload: updated-request-details })
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
     (try! (rebase))
@@ -226,12 +225,9 @@
     (try! (rebase))
 		(ok true)))
 
-(define-public (callback (sender principal) (payload (buff 2048)))
-	(ok true))
-
 (define-public (execute (sender principal))
 	(let (
-      (current-cycle (unwrap-panic (contract-call? .alex-staking get-reward-cycle block-height))))
+      (current-cycle (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-reward-cycle block-height))))
 		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list { extension: .auto-alex-v3-endpoint, enabled: true } )))
     (try! (contract-call? .auto-alex-v3-registry set-start-cycle current-cycle))
     (try! (pause-create false))
@@ -265,16 +261,16 @@
     err-value previous-response))
 
 (define-private (get-reward-cycle (burn-height uint))
-  (contract-call? .alex-staking get-reward-cycle burn-height))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-reward-cycle burn-height))
 
 (define-private (get-staking-reward (reward-cycle uint))
-  (contract-call? .alex-staking get-staking-reward (get-user-id) reward-cycle))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-staking-reward (get-user-id) reward-cycle))
 
 (define-private (get-staker-at-cycle (reward-cycle uint))
-  (contract-call? .alex-staking get-staker-at-cycle-or-default reward-cycle (get-user-id)))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-staker-at-cycle-or-default reward-cycle (get-user-id)))
 
 (define-private (get-user-id)
-  (default-to u0 (contract-call? .alex-staking get-user-id .auto-alex-v3)))
+  (default-to u0 (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-user-id .auto-alex-v3)))
 
 (define-private (stake-tokens (amount-tokens uint) (lock-period uint))
   (contract-call? .auto-alex-v3 stake-tokens amount-tokens lock-period))
