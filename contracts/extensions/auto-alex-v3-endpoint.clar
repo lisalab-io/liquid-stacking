@@ -154,7 +154,7 @@
     (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex transfer-fixed dx sender .auto-alex-v3 none))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: dx })))
     (as-contract (try! (contract-call? .auto-alex-v3 mint-fixed dx sender)))
-    (print { notification: "position-added", payload: { new-supply: dx } })
+    (print { notification: "position-added", payload: { new-supply: dx , sender: sender } })
     (try! (rebase))
 		(ok true)))
 
@@ -170,7 +170,7 @@
     (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 transfer-fixed dx sender .auto-alex-v3 none))
     (and (< end-cycle-v2 current-cycle) (begin (as-contract (try! (reduce-position-v2))) true))
     (as-contract (try! (contract-call? .auto-alex-v3 mint-fixed intrinsic-dx sender)))
-    (print { notification: "upgrade-position-added", payload: { new-supply: intrinsic-dx } })
+    (print { notification: "upgrade-position-added", payload: { new-supply: intrinsic-dx, sender: sender } })
     (try! (rebase))
 		(ok true)))
 
