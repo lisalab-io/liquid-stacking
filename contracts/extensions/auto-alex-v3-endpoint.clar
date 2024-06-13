@@ -28,10 +28,7 @@
 (define-data-var create-paused bool true)
 (define-data-var redeem-paused bool true)
 
-;; __IF_MAINNET__
 (define-constant max-cycles u32)
-;; (define-constant max-cycles u2)
-;; __ENDIF__
 
 ;; read-only calls
 
@@ -113,7 +110,7 @@
       (start-cycle (get-start-cycle))
       (check-start-cycle (asserts! (<= start-cycle current-cycle) err-not-activated)))
     (and (> current-cycle start-cycle) (not (is-cycle-staked (- current-cycle u1))) (try! (claim-and-stake (- current-cycle u1))))
-    (as-contract (try! (contract-call? .auto-alex-v3 set-reserve (try! (get-next-base)))))    
+    (as-contract (try! (contract-call? .auto-alex-v3 set-reserve (try! (get-next-base)))))
     (ok current-cycle)))
 
 ;; @desc triggers external event that claims all that's available and stake for another 32 cycles
@@ -136,14 +133,14 @@
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-shares-to-tokens-per-cycle reward-cycle intrinsic)))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: (- tokens redeeming) })))
     (print { notification: "claim-and-stake", payload: { redeeming: redeeming, tokens: tokens }})
-    (ok true)))  
+    (ok true)))
 
 ;; claims alex for the reward-cycles and mint auto-alex-v3
 (define-public (claim-and-mint (reward-cycles (list 200 uint)))
   (let (
       (claimed (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking claim-staking-reward-many reward-cycles))))
     (try! (add-to-position (try! (fold sum-claimed claimed (ok u0)))))
-    (ok claimed)))  
+    (ok claimed)))
 
 ;; @desc add to position
 ;; @desc transfers dx to vault, stake them for 32 cycles and mints auto-alex-v3, the number of which is determined as % of total supply / next base
@@ -157,7 +154,7 @@
     (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex transfer-fixed dx sender .auto-alex-v3 none))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: dx })))
     (as-contract (try! (contract-call? .auto-alex-v3 mint-fixed dx sender)))
-    (print { notification: "position-added", payload: { new-supply: dx } })
+    (print { notification: "position-added", payload: { new-supply: dx, sender: sender } })
     (try! (rebase))
 		(ok true)))
 
@@ -173,7 +170,7 @@
     (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 transfer-fixed dx sender .auto-alex-v3 none))
     (and (< end-cycle-v2 current-cycle) (begin (as-contract (try! (reduce-position-v2))) true))
     (as-contract (try! (contract-call? .auto-alex-v3 mint-fixed intrinsic-dx sender)))
-    (print { notification: "upgrade-position-added", payload: { new-supply: intrinsic-dx } })
+    (print { notification: "upgrade-position-added", payload: { new-supply: intrinsic-dx, sender: sender } })
     (try! (rebase))
 		(ok true)))
 
@@ -186,7 +183,7 @@
     (asserts! (not (is-redeem-paused)) err-paused)
     (try! (contract-call? .auto-alex-v3 transfer-fixed amount tx-sender .auto-alex-v3 none))
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-shares-per-cycle redeem-cycle (+ (get-redeem-shares-per-cycle-or-default redeem-cycle) amount))))
-    (print { notification: "redeem-request", payload: request-details })    
+    (print { notification: "redeem-request", payload: request-details })
     (try! (rebase))
 		(ok request-id)))
 
@@ -200,7 +197,7 @@
       (updated-request-details (merge request-details { status: (get-finalized) })))
     (asserts! (not (is-redeem-paused)) err-paused)
     (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
-    
+
     (as-contract (try! (contract-call? .auto-alex-v3 burn-fixed (get amount request-details) .auto-alex-v3)))
     (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
     (print { notification: "finalize-redeem", payload: updated-request-details })
@@ -213,10 +210,10 @@
       (request-details (try! (get-redeem-request-or-fail request-id)))
       (current-cycle (try! (rebase)))
       (redeem-cycle (get redeem-cycle request-details))
-      (check-cycle (asserts! (> redeem-cycle current-cycle) err-no-redeem-revoke))      
+      (check-cycle (asserts! (> redeem-cycle current-cycle) err-no-redeem-revoke))
       (tokens (mul-down (get-shares-to-tokens-per-cycle-or-default (- current-cycle u1)) (get amount request-details)))
-      (updated-request-details (merge request-details { status: (get-revoked) })))    
-    (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)    
+      (updated-request-details (merge request-details { status: (get-revoked) })))
+    (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
     (asserts! (is-eq (get-pending) (get status request-details)) err-request-finalized-or-revoked)
     (as-contract (try! (contract-call? .auto-alex-v3 transfer-token .auto-alex-v3 tokens (get requested-by request-details))))
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-shares-per-cycle redeem-cycle (- (get-redeem-shares-per-cycle-or-default redeem-cycle) (get amount request-details)))))
@@ -238,7 +235,7 @@
 ;;
 
 (define-private (sum-claimed (claimed-response (response (tuple (entitled-token uint) (to-return uint)) uint)) (prior (response uint uint)))
-  (match prior 
+  (match prior
     ok-value (match claimed-response claimed (ok (+ ok-value (get to-return claimed) (get entitled-token claimed))) err (err err))
     err-value (err err-value)))
 
