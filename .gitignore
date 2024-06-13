@@ -16,3 +16,4 @@ plan.json
 config.json*
 .DS_Store
 /yarn*
+.idea
