@@ -154,7 +154,7 @@
     (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex transfer-fixed dx sender .auto-alex-v3 none))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: dx })))
     (as-contract (try! (contract-call? .auto-alex-v3 mint-fixed dx sender)))
-    (print { notification: "position-added", payload: { new-supply: dx , sender: sender } })
+    (print { notification: "position-added", payload: { new-supply: dx, sender: sender } })
     (try! (rebase))
 		(ok true)))
 
