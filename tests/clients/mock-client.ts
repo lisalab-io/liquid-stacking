@@ -43,10 +43,46 @@ export const createClientMockSetup = () => {
     wlqstx: '',
     amm: '',
     lqstxVault: 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lqstx-vault',
+    alexLegacyDAO: 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao',
+    alexDAO: 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.executor-dao',
     alexVault11: 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-vault-v1-1',
     oldAlex: 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.age000-governance-token',
     newAlex: 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex',
     autoAlexV2: 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2',
+  };
+
+  const prepareALEX = () => {
+    console.log(`${simnet.deployer}.mock-boot`);
+    const result = simnet.mineBlock([
+      tx.callPublicFn(
+        contracts.autoAlexV2,
+        'set-contract-owner',
+        [principalCV("SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.executor-dao")],
+        "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9"
+      ),
+      tx.callPublicFn(
+        contracts.alexLegacyDAO,
+        'construct',
+        [principalCV(`${simnet.deployer}.legacy-boot`)],
+        "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9"
+      ),
+      tx.callPublicFn(
+        contracts.alexDAO,
+        'construct',
+        [principalCV(`${simnet.deployer}.alex-boot`)],
+        "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM"
+      ),      
+      tx.callPublicFn(
+        "lisa-dao",
+        "construct",
+        [principalCV(`${simnet.deployer}.mock-boot`)],
+        simnet.deployer
+      )
+    ]);
+    expect(result[0].result).toBeOk(Cl.bool(true));
+    expect(result[2].result).toBeOk(Cl.bool(true));
+    expect(result[3].result).toBeOk(Cl.bool(true));
+    return result[1];
   };
   const executeLip = (lipContractId: string) => {
     simnet.mineBlock([
@@ -257,6 +293,7 @@ export const createClientMockSetup = () => {
     getRequestCutoff,
     liSTXBalance,
     executeLip,
+    prepareALEX,
     user,
     user2,
     oracle,

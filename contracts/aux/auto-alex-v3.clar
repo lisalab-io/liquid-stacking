@@ -74,7 +74,7 @@
 ;; read-only functions
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised)))
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (get-name)
 	(ok (var-get token-name)))
@@ -154,7 +154,7 @@
 (define-public (stake-tokens (amount-tokens uint) (lock-period uint))
 	(begin
 		(try! (is-dao-or-extension))
-		(as-contract (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking stake-tokens amount-tokens lock-period))))
+		(as-contract (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 stake-tokens amount-tokens lock-period))))
 
 (define-public (transfer-token (token-trait <ft-trait>) (amount uint) (recipient principal))
 	(begin 
@@ -166,7 +166,7 @@
 (define-public (claim-staking-reward (reward-cycle uint))
 	(begin 
 		(try! (is-dao-or-extension))
-		(as-contract (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking claim-staking-reward reward-cycle))))
+		(as-contract (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 claim-staking-reward reward-cycle))))
 
 (define-public (reduce-position-v2)
 	(let (

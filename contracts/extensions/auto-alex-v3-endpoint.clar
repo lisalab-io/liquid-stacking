@@ -1,6 +1,6 @@
 ;; SPDX-License-Identifier: BUSL-1.1
 
-(impl-trait 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait.proposal-trait)
+(impl-trait .proposal-trait.proposal-trait)
 
 ;; -- autoALEX creation/staking/redemption
 
@@ -11,7 +11,7 @@
 (define-constant err-not-activated (err u2043))
 (define-constant err-paused (err u2046))
 (define-constant err-staking-not-available (err u10015))
-(define-constant err-reward-cycle-not-completed (err u10017))
+(define-constant err-reward-cycle-not-completed (err u100171))
 (define-constant err-claim-and-stake (err u10018))
 (define-constant err-no-redeem-revoke (err u10019))
 (define-constant err-request-finalized-or-revoked (err u10020))
@@ -33,7 +33,7 @@
 ;; read-only calls
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised)))
+	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (get-pending)
   (contract-call? .auto-alex-v3-registry get-pending))
@@ -138,7 +138,7 @@
 ;; claims alex for the reward-cycles and mint auto-alex-v3
 (define-public (claim-and-mint (reward-cycles (list 200 uint)))
   (let (
-      (claimed (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking claim-staking-reward-many reward-cycles))))
+      (claimed (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 claim-staking-reward-many reward-cycles))))
     (try! (add-to-position (try! (fold sum-claimed claimed (ok u0)))))
     (ok claimed)))
 
@@ -224,8 +224,8 @@
 
 (define-public (execute (sender principal))
 	(let (
-      (current-cycle (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-reward-cycle block-height))))
-		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list { extension: .auto-alex-v3-endpoint, enabled: true } )))
+      (current-cycle (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-reward-cycle block-height))))
+		(try! (contract-call? .lisa-dao set-extensions (list { extension: .auto-alex-v3-endpoint, enabled: true } )))
     (try! (contract-call? .auto-alex-v3-registry set-start-cycle current-cycle))
     (try! (pause-create false))
     (try! (pause-redeem false))
@@ -258,16 +258,16 @@
     err-value previous-response))
 
 (define-private (get-reward-cycle (burn-height uint))
-  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-reward-cycle burn-height))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-reward-cycle burn-height))
 
 (define-private (get-staking-reward (reward-cycle uint))
-  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-staking-reward (get-user-id) reward-cycle))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staking-reward (get-user-id) reward-cycle))
 
 (define-private (get-staker-at-cycle (reward-cycle uint))
-  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-staker-at-cycle-or-default reward-cycle (get-user-id)))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staker-at-cycle-or-default reward-cycle (get-user-id)))
 
 (define-private (get-user-id)
-  (default-to u0 (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking get-user-id .auto-alex-v3)))
+  (default-to u0 (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-user-id .auto-alex-v3)))
 
 (define-private (stake-tokens (amount-tokens uint) (lock-period uint))
   (contract-call? .auto-alex-v3 stake-tokens amount-tokens lock-period))
