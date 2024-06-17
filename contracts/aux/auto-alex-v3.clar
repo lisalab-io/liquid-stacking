@@ -54,22 +54,13 @@
 		(try! (is-dao-or-extension))
 		(ft-mint? auto-alex-v3 (get-tokens-to-shares amount) recipient)))
 
-(define-public (mint-fixed (amount uint) (recipient principal))
-	(mint amount recipient))
-
 (define-public (burn (amount uint) (sender principal))
 	(begin
 		(try! (is-dao-or-extension))
 		(ft-burn? auto-alex-v3 (get-tokens-to-shares amount) sender)))
-	
-(define-public (burn-fixed (amount uint) (sender principal))
-	(burn amount sender))
 
 (define-public (burn-many (senders (list 200 {amount: uint, sender: principal})))
 	(fold check-err (map burn-many-iter senders) (ok true)))
-
-(define-public (burn-fixed-many (senders (list 200 {amount: uint, sender: principal})))
-	(burn-many senders))
 
 ;; read-only functions
 
@@ -91,26 +82,14 @@
 (define-read-only (get-balance (who principal))
 	(ok (get-shares-to-tokens (unwrap-panic (get-share who)))))
 
-(define-read-only (get-balance-fixed (who principal))
-	(get-balance who))
-
 (define-read-only (get-total-supply)
 	(get-reserve))
-
-(define-read-only (get-total-supply-fixed)
-	(get-total-supply))
 
 (define-read-only (get-share (who principal))
 	(ok (ft-get-balance auto-alex-v3 who)))
 
-(define-read-only (get-share-fixed (who principal))
-	(get-share who))
-
 (define-read-only (get-total-shares)
 	(ok (ft-get-supply auto-alex-v3)))
-
-(define-read-only (get-total-shares-fixed)
-	(get-total-shares))
 
 (define-read-only (get-reserve)
 	(ok (var-get reserve)))
@@ -136,9 +115,6 @@
 		(print { notification: "transfer", payload: { amount: amount, shares: shares, sender: sender, recipient: recipient } })
 		(ok true)))
 
-(define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
-	(transfer amount sender recipient memo))
-
 ;; private functions
 
 (define-private (burn-many-iter (item {amount: uint, sender: principal}))
@@ -149,7 +125,7 @@
 
 ;; staking related fuctions
 
-(use-trait ft-trait 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.trait-sip-010.sip-010-trait)
+(use-trait ft-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 
 (define-public (stake-tokens (amount-tokens uint) (lock-period uint))
 	(begin
@@ -160,8 +136,8 @@
 	(begin 
 		(try! (is-dao-or-extension))
 		(if (is-eq (contract-of token-trait) (as-contract tx-sender))
-			(as-contract (transfer-fixed amount tx-sender recipient none))
-			(as-contract (contract-call? token-trait transfer-fixed amount tx-sender recipient none)))))
+			(as-contract (transfer amount tx-sender recipient none))
+			(as-contract (contract-call? token-trait transfer amount tx-sender recipient none)))))
 
 (define-public (claim-staking-reward (reward-cycle uint))
 	(begin 

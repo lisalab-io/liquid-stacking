@@ -20,15 +20,14 @@ describe('auto-alex-v3', () => {
         const end_cycle = 32;
         const ACTIVATION_BLOCK = 20;
 
-        let response = prepareALEX();
-        expect(response.result).toHaveClarityType(ClarityType.ResponseOk);
+        prepareALEX();        
 
         if (simnet.blockHeight < ACTIVATION_BLOCK) {
             simnet.mineEmptyBlocks(ACTIVATION_BLOCK - simnet.blockHeight);
         }
 
         // add some legacy auto-alex-v2 position and new auto-alex-v3 positions.
-        response = simnet.mineBlock([
+        let response = simnet.mineBlock([
             tx.callPublicFn(contracts.autoAlexV2, "add-to-position", [Cl.uint(dx)], wallet_1),
             tx.callPublicFn("auto-alex-v3-endpoint", "add-to-position", [Cl.uint(dx)], wallet_2),
             tx.callPublicFn("auto-alex-v3-endpoint", "add-to-position", [Cl.uint(dx)], wallet_3),
@@ -43,7 +42,7 @@ describe('auto-alex-v3', () => {
             // this fixes a minor bug in auto-alex-v2 that bounty must be greater than 0
             tx.callPublicFn(contracts.oldAlex, 'mint-fixed', [Cl.uint(3), Cl.principal(contracts.autoAlexV2)], simnet.deployer),
             // rebase the lialex
-            tx.callPublicFn('auto-alex-v3-endpoint', 'rebase', [], simnet.deployer),
+            // tx.callPublicFn('auto-alex-v3-endpoint', 'rebase', [], simnet.deployer),
             // upgrade legacy auto-alex-v2 to v3
             tx.callPublicFn('auto-alex-v3-endpoint', 'upgrade', [Cl.uint(dx)], wallet_1),
             // test redeems
@@ -83,9 +82,9 @@ describe('auto-alex-v3', () => {
 
         simnet.mineEmptyBlocks(ACTIVATION_BLOCK + (redeem_cycle + 1) * 525 - simnet.blockHeight);
 
-        console.log(simnet.callReadOnlyFn(contracts.oldAlex, 'get-balance-fixed', [Cl.principal(simnet.deployer + '.auto-alex-v3')], wallet_1));
-        console.log(simnet.callReadOnlyFn('auto-alex-v3-endpoint', 'get-intrinsic', [], wallet_1));
-        console.log(simnet.callReadOnlyFn('auto-alex-v3-endpoint', 'get-shares-to-tokens-per-cycle-or-default', [Cl.uint(redeem_cycle - 1)], wallet_1));
+        // console.log(simnet.callReadOnlyFn(contracts.oldAlex, 'get-balance-fixed', [Cl.principal(simnet.deployer + '.auto-alex-v3')], wallet_1));
+        // console.log(simnet.callReadOnlyFn('auto-alex-v3-endpoint', 'get-intrinsic', [], wallet_1));
+        // console.log(simnet.callReadOnlyFn('auto-alex-v3-endpoint', 'get-shares-to-tokens-per-cycle-or-default', [Cl.uint(redeem_cycle - 1)], wallet_1));
 
         response = simnet.mineBlock([
             tx.callPublicFn('auto-alex-v3-endpoint', 'rebase', [], simnet.deployer),

@@ -80,9 +80,9 @@ export const createClientMockSetup = () => {
       )
     ]);
     expect(result[0].result).toBeOk(Cl.bool(true));
+    expect(result[1].result).toBeOk(Cl.bool(true));
     expect(result[2].result).toBeOk(Cl.bool(true));
     expect(result[3].result).toBeOk(Cl.bool(true));
-    return result[1];
   };
   const executeLip = (lipContractId: string) => {
     simnet.mineBlock([

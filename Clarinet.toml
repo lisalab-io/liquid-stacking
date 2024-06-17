@@ -34,6 +34,10 @@ requirements = [
 path = "contracts/proposals/lip007.clar"
 epoch = 2.5
 
+[contracts.lip008]
+path = "contracts/proposals/lip008.clar"
+epoch = 2.5
+
 [contracts.auto-alex-v3-endpoint]
 path = "contracts/extensions/auto-alex-v3-endpoint.clar"
 epoch = 2.5

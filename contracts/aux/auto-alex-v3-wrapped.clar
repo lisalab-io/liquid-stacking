@@ -37,26 +37,17 @@
 		(print { type: "transfer", amount: amount, sender: sender, recipient: recipient, memo: memo })
 		(ok true)))
 
-(define-public (transfer-fixed (amount uint) (sender principal) (recipient principal) (memo (optional (buff 34))))
-    (transfer amount sender recipient memo))
-
 (define-public (mint (amount uint) (recipient principal))
 	(begin 
 		(asserts! (or (is-eq tx-sender recipient) (is-eq contract-caller recipient)) err-unauthorised)				
 		(try! (ft-mint? auto-alex-v3-wrapped (get-tokens-to-shares amount) recipient))
 		(contract-call? .auto-alex-v3 transfer amount recipient (as-contract tx-sender) none)))
 
-(define-public (mint-fixed (amount uint) (recipient principal))
-    (mint amount recipient))
-
 (define-public (burn (amount uint) (sender principal))
 	(begin
 		(asserts! (or (is-eq tx-sender sender) (is-eq contract-caller sender)) err-unauthorised)
 		(as-contract (try! (contract-call? .auto-alex-v3 transfer (get-shares-to-tokens amount) tx-sender sender none)))
 		(ft-burn? auto-alex-v3-wrapped amount sender)))
-
-(define-public (burn-fixed (amount uint) (sender principal))
-    (burn amount sender))
 
 ;; read-only functions
 
@@ -78,14 +69,8 @@
 (define-read-only (get-balance (who principal))
 	(ok (ft-get-balance auto-alex-v3-wrapped who)))
 
-(define-read-only (get-balance-fixed (who principal))
-	(get-balance who))
-
 (define-read-only (get-total-supply)
 	(ok (ft-get-supply auto-alex-v3-wrapped)))
-
-(define-read-only (get-total-supply-fixed)
-	(get-total-supply))
 
 (define-read-only (get-share (who principal))
 	(ok (get-shares-to-tokens (unwrap-panic (get-balance who)))))

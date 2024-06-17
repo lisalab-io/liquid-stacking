@@ -24,15 +24,6 @@
 
 ;; read-only calls
 
-(define-read-only (get-pending)
-  PENDING)
-
-(define-read-only (get-finalized)
-  FINALIZED)
-
-(define-read-only (get-revoked)
-  REVOKED)
-
 (define-read-only (is-dao-or-extension)
 	(ok (asserts! (or (is-eq tx-sender .lisa-dao) (contract-call? .lisa-dao is-extension contract-caller)) err-unauthorised)))
 
