@@ -73,10 +73,10 @@ export const createClientMockSetup = () => {
         "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM"
       ),      
       tx.callPublicFn(
-        "lisa-dao",
+        contracts.dao,
         "construct",
         [principalCV(`${simnet.deployer}.mock-boot`)],
-        simnet.deployer
+        "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH"
       )
     ]);
     expect(result[0].result).toBeOk(Cl.bool(true));

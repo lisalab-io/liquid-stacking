@@ -54,18 +54,18 @@ epoch = 2.5
 path = "contracts/aux/auto-alex-v3-wrapped.clar"
 epoch = 2.5
 
-[contracts.extension-trait]
-path = "contracts/traits/extension-trait.clar"
-epoch = 2.5
+# [contracts.extension-trait]
+# path = "contracts/traits/extension-trait.clar"
+# epoch = 2.5
 
-[contracts.proposal-trait]
-path = "contracts/traits/proposal-trait.clar"
-epoch = 2.5
+# [contracts.proposal-trait]
+# path = "contracts/traits/proposal-trait.clar"
+# epoch = 2.5
 
 
-[contracts.lisa-dao]
-path = "contracts/lisa-dao.clar"
-epoch = 2.5
+# [contracts.lisa-dao]
+# path = "contracts/lisa-dao.clar"
+# epoch = 2.5
 
 [contracts.mock-boot]
 path = "contracts/mocks/tests/mock-boot.clar"
