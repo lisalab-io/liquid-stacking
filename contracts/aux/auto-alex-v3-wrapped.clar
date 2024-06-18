@@ -73,20 +73,24 @@
 	(ok (ft-get-supply auto-alex-v3-wrapped)))
 
 (define-read-only (get-share (who principal))
-	(ok (get-shares-to-tokens (unwrap-panic (get-balance who)))))
+	(ok (get-shares-to-tokens (ft-get-balance auto-alex-v3-wrapped who))))
 
 (define-read-only (get-total-shares)
 	(contract-call? .auto-alex-v3 get-balance (as-contract tx-sender)))
 
 (define-read-only (get-tokens-to-shares (amount uint))
-	(if (is-eq (get-total-shares) (ok u0))
-		amount
-		(/ (* amount (unwrap-panic (get-total-supply))) (unwrap-panic (get-total-shares)))))
+	(let (
+			(total-shares (unwrap-panic (get-total-shares))))
+		(if (is-eq total-shares u0)
+			amount
+			(/ (* amount (unwrap-panic (get-total-supply))) total-shares))))
 
 (define-read-only (get-shares-to-tokens (shares uint))
-	(if (is-eq (get-total-supply) (ok u0))
-		shares
-		(/ (* shares (unwrap-panic (get-total-shares))) (unwrap-panic (get-total-supply)))))
+	(let (
+			(total-supply (ft-get-supply auto-alex-v3-wrapped)))
+		(if (is-eq total-supply u0)
+			shares
+			(/ (* shares (unwrap-panic (get-total-shares))) total-supply))))
 
 ;; private functions
 

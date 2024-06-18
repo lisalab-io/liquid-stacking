@@ -147,9 +147,6 @@ plan:
             clarity-version: 1
       epoch: "2.1"
     - id: 3
-      transactions: []
-      epoch: "2.1"
-    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: auto-alex-v2
@@ -157,13 +154,10 @@ plan:
             path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2.clar"
             clarity-version: 2
       epoch: "2.3"
+    - id: 4
+      transactions: []
+      epoch: "2.3"
     - id: 5
-      transactions: []
-      epoch: "2.3"
-    - id: 6
-      transactions: []
-      epoch: "2.3"
-    - id: 7
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
@@ -291,7 +285,7 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member1.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 8
+    - id: 6
       transactions:
         - emulated-contract-publish:
             contract-name: xverse-member10
@@ -414,16 +408,10 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 9
+    - id: 7
       transactions: []
       epoch: "2.4"
-    - id: 10
-      transactions: []
-      epoch: "2.4"
-    - id: 11
-      transactions: []
-      epoch: "2.4"
-    - id: 12
+    - id: 8
       transactions:
         - emulated-contract-publish:
             contract-name: pox4-fast-pool-v3
@@ -551,7 +539,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2.clar"
             clarity-version: 2
       epoch: "2.5"
-    - id: 13
+    - id: 9
       transactions:
         - emulated-contract-publish:
             contract-name: lip004
@@ -654,12 +642,6 @@ plan:
             path: contracts/mocks/tests/mock-boot.clar
             clarity-version: 2
       epoch: "2.5"
-    - id: 14
-      transactions: []
-      epoch: "2.5"
-    - id: 15
-      transactions: []
-      epoch: "2.5"
-    - id: 16
+    - id: 10
       transactions: []
       epoch: "2.5"

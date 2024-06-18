@@ -241,7 +241,7 @@
     err-value previous-response))
 
 (define-private (get-reward-cycle (burn-height uint))
-  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-reward-cycle burn-height))
+  (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-reserve-pool get-reward-cycle 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.age000-governance-token burn-height))
 
 (define-private (get-staking-reward (reward-cycle uint))
   (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staking-reward (get-user-id) reward-cycle))
