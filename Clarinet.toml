@@ -78,3 +78,7 @@ epoch = 2.5
 [contracts.alex-boot]
 path = "contracts/mocks/tests/alex-boot.clar"
 epoch = 2.5
+
+[contracts.lip009]
+path = "contracts/proposals/lip009.clar"
+epoch = 2.5

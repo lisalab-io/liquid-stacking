@@ -48,12 +48,6 @@ genesis:
 plan:
   batches:
     - id: 0
-      transactions: []
-      epoch: "2.0"
-    - id: 1
-      transactions: []
-      epoch: "2.05"
-    - id: 2
       transactions:
         - emulated-contract-publish:
             contract-name: sip-010-trait-ft-standard
@@ -70,6 +64,9 @@ plan:
             emulated-sender: SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335
             path: "./.cache/requirements/SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.commission-trait.clar"
             clarity-version: 1
+      epoch: "2.0"
+    - id: 1
+      transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
             emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
@@ -145,8 +142,8 @@ plan:
             emulated-sender: SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9
             path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.staking-helper.clar"
             clarity-version: 1
-      epoch: "2.1"
-    - id: 3
+      epoch: "2.05"
+    - id: 2
       transactions:
         - emulated-contract-publish:
             contract-name: auto-alex-v2
@@ -154,10 +151,7 @@ plan:
             path: "./.cache/requirements/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2.clar"
             clarity-version: 2
       epoch: "2.3"
-    - id: 4
-      transactions: []
-      epoch: "2.3"
-    - id: 5
+    - id: 3
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
@@ -285,7 +279,7 @@ plan:
             path: "./.cache/requirements/SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.xverse-member1.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 6
+    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: xverse-member10
@@ -408,10 +402,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.lip003.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 7
-      transactions: []
-      epoch: "2.4"
-    - id: 8
+    - id: 5
       transactions:
         - emulated-contract-publish:
             contract-name: pox4-fast-pool-v3
@@ -539,7 +530,7 @@ plan:
             path: "./.cache/requirements/SM3KNVZS30WM7F89SXKVVFY4SN9RMPZZ9FX929N0V.public-pools-strategy-manager-v2.clar"
             clarity-version: 2
       epoch: "2.5"
-    - id: 9
+    - id: 6
       transactions:
         - emulated-contract-publish:
             contract-name: lip004
@@ -637,11 +628,13 @@ plan:
             path: contracts/proposals/lip008.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: lip009
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/proposals/lip009.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: mock-boot
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/mocks/tests/mock-boot.clar
             clarity-version: 2
-      epoch: "2.5"
-    - id: 10
-      transactions: []
       epoch: "2.5"
