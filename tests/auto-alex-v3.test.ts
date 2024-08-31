@@ -48,10 +48,9 @@ describe('auto-alex-v3', () => {
             // test redeems
             tx.callPublicFn('auto-alex-v3-endpoint', 'request-redeem', [Cl.uint(dx)], wallet_1),
             tx.callPublicFn('auto-alex-v3-endpoint', 'request-redeem', [Cl.uint(dx)], wallet_2),
-            tx.callPublicFn('auto-alex-v3-endpoint', 'request-redeem', [Cl.uint(dx)], wallet_3),
             tx.callPublicFn('auto-alex-v3-endpoint', 'request-redeem', [Cl.uint(dx)], wallet_4),
             // test revoke redeem request
-            tx.callPublicFn('auto-alex-v3-endpoint', 'revoke-redeem', [Cl.uint(4)], wallet_4),
+            tx.callPublicFn('auto-alex-v3-endpoint', 'revoke-redeem', [Cl.uint(3)], wallet_4),
         ]);
         response.map((e: any) => expect(e.result).toHaveClarityType(ClarityType.ResponseOk));
 
@@ -78,6 +77,12 @@ describe('auto-alex-v3', () => {
             expect(response[0].result).toHaveClarityType(ClarityType.ResponseOk);
             expect(response[1].result).toHaveClarityType(ClarityType.ResponseOk);
             expect(response[2].result).toBeErr(Cl.uint(10017));
+            if(cycle == 3){
+                response = simnet.mineBlock([
+                    tx.callPublicFn('auto-alex-v3-endpoint', 'request-redeem', [Cl.uint(dx)], wallet_3),                    
+                ]);
+                expect(response[0].result).toHaveClarityType(ClarityType.ResponseOk);
+            }
         }
 
         simnet.mineEmptyBlocks(ACTIVATION_BLOCK + (redeem_cycle + 1) * 525 - simnet.blockHeight);
@@ -100,15 +105,18 @@ describe('auto-alex-v3', () => {
         console.log(simnet.callReadOnlyFn(contracts.oldAlex, 'get-balance-fixed', [Cl.principal(simnet.deployer + '.auto-alex-v3')], wallet_1));
         console.log(simnet.callReadOnlyFn('auto-alex-v3-endpoint', 'get-intrinsic', [], wallet_1));
         console.log(simnet.callReadOnlyFn('auto-alex-v3-endpoint', 'get-shares-to-tokens-per-cycle-or-default', [Cl.uint(redeem_cycle)], wallet_1));
+        console.log(simnet.callReadOnlyFn('auto-alex-v3', 'get-tokens-to-shares', [Cl.uint(1e8)], wallet_1));
 
         response = simnet.mineBlock([
             // finalize redeem works
-            tx.callPublicFn('auto-alex-v3-endpoint', 'finalize-redeem', [Cl.uint(3)], wallet_3),
+            tx.callPublicFn('auto-alex-v3-endpoint', 'finalize-redeem', [Cl.uint(4)], wallet_3),
             tx.callPublicFn('auto-alex-v3-endpoint', 'finalize-redeem', [Cl.uint(2)], wallet_2),
         ]);
         console.log(response[0].events);
         console.log(response[1].events);
-        response.map((e: any) => expect(e.result).toHaveClarityType(ClarityType.ResponseOk));
+        // response.map((e: any) => expect(e.result).toHaveClarityType(ClarityType.ResponseOk));
+        expect(response[0].result).toBeErr(Cl.uint(10017));
+        expect(response[1].result).toHaveClarityType(ClarityType.ResponseOk);
 
         response = simnet.mineBlock([
             // auto-alex-v2 upgrade redeem works
@@ -122,5 +130,13 @@ describe('auto-alex-v3', () => {
             tx.callPublicFn('auto-alex-v3-endpoint', 'finalize-redeem', [Cl.uint(2)], wallet_2),
         ]);
         expect(response[0].result).toBeErr(Cl.uint(10020));
+
+        simnet.mineEmptyBlocks(ACTIVATION_BLOCK + (redeem_cycle + 3) * 525 - simnet.blockHeight);
+        response = simnet.mineBlock([
+            // finalize redeem works
+            tx.callPublicFn('auto-alex-v3-endpoint', 'finalize-redeem', [Cl.uint(4)], wallet_3),
+        ]);
+        console.log(response[0].events);
+        response.map((e: any) => expect(e.result).toHaveClarityType(ClarityType.ResponseOk));
     });
 });

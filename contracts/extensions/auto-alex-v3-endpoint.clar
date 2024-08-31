@@ -170,6 +170,7 @@
   (let (
       (current-cycle (try! (rebase)))
       (redeem-cycle (+ current-cycle max-cycles))
+      ;; (amount (contract-call? .auto-alex-v3 get-tokens-to-shares token-amount))
       (request-details { requested-by: tx-sender, amount: amount, redeem-cycle: redeem-cycle, status: PENDING })
 			(request-id (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request u0 request-details)))))
     (asserts! (not (is-redeem-paused)) err-paused)
@@ -191,7 +192,7 @@
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
 
     (as-contract (try! (contract-call? .auto-alex-v3 burn (get amount request-details) .auto-alex-v3)))
-    (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
+    ;; (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
     (print { notification: "finalize-redeem", payload: updated-request-details })
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
     (try! (rebase))
