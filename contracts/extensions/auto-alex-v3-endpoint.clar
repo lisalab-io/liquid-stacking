@@ -116,11 +116,11 @@
       (claimed (as-contract (try! (claim-staking-reward reward-cycle))))
       (claimed-v2 (if (< end-cycle-v2 current-cycle) (as-contract (try! (reduce-position-v2))) (begin (try! (claim-and-stake-v2 reward-cycle)) u0)))
       (tokens (+ (get to-return claimed) (get entitled-token claimed) claimed-v2))
-      (previous-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u1)))
-      (redeeming (mul-down previous-shares-to-tokens (get-redeem-shares-per-cycle-or-default reward-cycle)))
+      (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
+        (div-down (mul-down (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u1)) (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u33)))))
       (intrinsic (get-shares-to-tokens ONE_8)))
     (asserts! (> current-cycle reward-cycle) err-reward-cycle-not-completed)
-    (asserts! (>= tokens redeeming) err-redeem-imbalance)
+    (asserts! (>= tokens redeeming) (err tokens))
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-staked-cycle reward-cycle true)))
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-shares-to-tokens-per-cycle reward-cycle intrinsic)))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: (- tokens redeeming) })))
@@ -170,7 +170,6 @@
   (let (
       (current-cycle (try! (rebase)))
       (redeem-cycle (+ current-cycle max-cycles))
-      ;; (amount (contract-call? .auto-alex-v3 get-tokens-to-shares token-amount))
       (request-details { requested-by: tx-sender, amount: amount, redeem-cycle: redeem-cycle, status: PENDING })
 			(request-id (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request u0 request-details)))))
     (asserts! (not (is-redeem-paused)) err-paused)
@@ -186,13 +185,16 @@
       (redeem-cycle (get redeem-cycle request-details))
       (check-claim-and-stake (and (not (is-cycle-staked redeem-cycle)) (try! (claim-and-stake redeem-cycle))))
       (current-cycle (try! (rebase)))
-      (tokens (mul-down (get-shares-to-tokens-per-cycle-or-default (- redeem-cycle u1)) (get amount request-details)))
-      (updated-request-details (merge request-details { status: FINALIZED })))
+      (prev-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- redeem-cycle u1)))
+      (base-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- redeem-cycle u33)))
+      (tokens (div-down (mul-down prev-shares-to-tokens (get amount request-details)) base-shares-to-tokens))
+      (updated-request-details (merge request-details { status: FINALIZED }))
+      (balance (unwrap-panic (contract-call? .auto-alex-v3 get-balance .auto-alex-v3))))
     (asserts! (not (is-redeem-paused)) err-paused)
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
 
-    (as-contract (try! (contract-call? .auto-alex-v3 burn (get amount request-details) .auto-alex-v3)))
-    ;; (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
+    (as-contract (unwrap! (contract-call? .auto-alex-v3 burn tokens .auto-alex-v3) (err balance)))
+    (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
     (print { notification: "finalize-redeem", payload: updated-request-details })
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
     (try! (rebase))
@@ -204,7 +206,9 @@
       (current-cycle (try! (rebase)))
       (redeem-cycle (get redeem-cycle request-details))
       (check-cycle (asserts! (> redeem-cycle current-cycle) err-no-redeem-revoke))
-      (tokens (mul-down (get-shares-to-tokens-per-cycle-or-default (- current-cycle u1)) (get amount request-details)))
+      (prev-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- current-cycle u1)))
+      (base-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- redeem-cycle u33)))
+      (tokens (div-down (mul-down prev-shares-to-tokens (get amount request-details)) base-shares-to-tokens))
       (updated-request-details (merge request-details { status: REVOKED })))
     (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
@@ -228,7 +232,8 @@
     ok-value
     (let (
       (reward-cycle (+ (get current-cycle ok-value) cycles-to-stake))
-      (redeeming (get-shares-to-tokens (get-redeem-shares-per-cycle-or-default reward-cycle)))
+      (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
+      (div-down (get-shares-to-tokens (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u32)))))
       (returning (get to-return (get-staker-at-cycle reward-cycle)))
       (staking (if (is-eq cycles-to-stake max-cycles)
         (get remaining ok-value)
@@ -276,3 +281,6 @@
 
 (define-private (div-down (a uint) (b uint))
   (if (is-eq a u0) u0 (/ (* a ONE_8) b)))
+
+(define-private (max (a uint) (b uint)) (if (> a b) a b))
+

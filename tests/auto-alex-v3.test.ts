@@ -28,7 +28,8 @@ describe('auto-alex-v3', () => {
 
         // add some legacy auto-alex-v2 position and new auto-alex-v3 positions.
         let response = simnet.mineBlock([
-            tx.callPublicFn(contracts.autoAlexV2, "add-to-position", [Cl.uint(dx)], wallet_1),
+            // tx.callPublicFn(contracts.autoAlexV2, "add-to-position", [Cl.uint(dx)], wallet_1),
+            tx.callPublicFn("auto-alex-v3-endpoint", "add-to-position", [Cl.uint(dx)], wallet_1),
             tx.callPublicFn("auto-alex-v3-endpoint", "add-to-position", [Cl.uint(dx)], wallet_2),
             tx.callPublicFn("auto-alex-v3-endpoint", "add-to-position", [Cl.uint(dx)], wallet_3),
             tx.callPublicFn("auto-alex-v3-endpoint", "add-to-position", [Cl.uint(dx)], wallet_4)
@@ -44,7 +45,7 @@ describe('auto-alex-v3', () => {
             // rebase the lialex
             // tx.callPublicFn('auto-alex-v3-endpoint', 'rebase', [], simnet.deployer),
             // upgrade legacy auto-alex-v2 to v3
-            tx.callPublicFn('auto-alex-v3-endpoint', 'upgrade', [Cl.uint(dx)], wallet_1),
+            // tx.callPublicFn('auto-alex-v3-endpoint', 'upgrade', [Cl.uint(dx)], wallet_1),
             // test redeems
             tx.callPublicFn('auto-alex-v3-endpoint', 'request-redeem', [Cl.uint(dx)], wallet_1),
             tx.callPublicFn('auto-alex-v3-endpoint', 'request-redeem', [Cl.uint(dx)], wallet_2),
@@ -130,6 +131,11 @@ describe('auto-alex-v3', () => {
             tx.callPublicFn('auto-alex-v3-endpoint', 'finalize-redeem', [Cl.uint(2)], wallet_2),
         ]);
         expect(response[0].result).toBeErr(Cl.uint(10020));
+
+        simnet.mineEmptyBlocks(ACTIVATION_BLOCK + (redeem_cycle + 2) * 525 - simnet.blockHeight);
+        response = simnet.mineBlock([
+            tx.callPublicFn('auto-alex-v3-endpoint', 'rebase', [], simnet.deployer),
+        ]);
 
         simnet.mineEmptyBlocks(ACTIVATION_BLOCK + (redeem_cycle + 3) * 525 - simnet.blockHeight);
         response = simnet.mineBlock([

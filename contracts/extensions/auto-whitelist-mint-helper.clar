@@ -22,7 +22,7 @@
 
 (define-read-only (was-stacking-in-eligible-pool-height (who principal) (height uint))
 	(at-block (unwrap! (get-block-info? id-header-hash height) false)
-		(is-eligible-pox-address (get pox-addr (unwrap! (contract-call? 'SP000000000000000000002Q6VF78.pox-3 get-stacker-info who) false)))
+		(is-eligible-pox-address (get pox-addr (unwrap! (contract-call? 'ST000000000000000000002AMW42H.pox-3 get-stacker-info who) false)))
 	)
 )
 
