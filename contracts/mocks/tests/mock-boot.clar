@@ -6,12 +6,12 @@
 (define-public (execute (sender principal))
 	(begin
 		(try! (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao set-extensions (list
-			{ extension: .auto-alex-v3-endpoint, enabled: true }
+			{ extension: .auto-alex-v3-endpoint-v2, enabled: true }
 		)))
 
 		(try! (contract-call? .auto-alex-v3-registry set-start-cycle u0))
-		(try! (contract-call? .auto-alex-v3-endpoint pause-create false))
-		(try! (contract-call? .auto-alex-v3-endpoint pause-redeem false))
+		(try! (contract-call? .auto-alex-v3-endpoint-v2 pause-create false))
+		(try! (contract-call? .auto-alex-v3-endpoint-v2 pause-redeem false))
         
 		(ok true)
 	)
