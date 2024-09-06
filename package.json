@@ -4,7 +4,6 @@
   "main": "index.js",
   "description": "Run unit tests on this project.",
   "private": true,
-  "type": "module",
   "scripts": {
     "multisig-plan": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/create-multisig-deployment-plan.ts",
     "multisig-stx-transfer": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./scripts/create-multisig-stx-transfer-plan.ts",

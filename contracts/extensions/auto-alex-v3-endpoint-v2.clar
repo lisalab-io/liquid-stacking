@@ -37,19 +37,19 @@
 	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (get-start-cycle)
-  (contract-call? .auto-alex-v3-registry get-start-cycle))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry get-start-cycle))
 
 (define-read-only (is-cycle-staked (reward-cycle uint))
-  (contract-call? .auto-alex-v3-registry is-cycle-staked reward-cycle))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry is-cycle-staked reward-cycle))
 
 (define-read-only (get-shares-to-tokens-per-cycle-or-default (reward-cycle uint))
-  (contract-call? .auto-alex-v3-registry get-shares-to-tokens-per-cycle-or-default reward-cycle))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry get-shares-to-tokens-per-cycle-or-default reward-cycle))
 
 (define-read-only (get-redeem-shares-per-cycle-or-default (reward-cycle uint))
-  (contract-call? .auto-alex-v3-registry get-redeem-shares-per-cycle-or-default reward-cycle))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry get-redeem-shares-per-cycle-or-default reward-cycle))
 
 (define-read-only (get-redeem-request-or-fail (request-id uint))
-  (contract-call? .auto-alex-v3-registry get-redeem-request-or-fail request-id))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry get-redeem-request-or-fail request-id))
 
 (define-read-only (is-create-paused)
   (var-get create-paused))
@@ -66,14 +66,14 @@
 (define-read-only (get-next-base)
   (let (
       (current-cycle (unwrap! (get-reward-cycle block-height) err-staking-not-available))
-      (auto-alex-v2-bal (unwrap-panic (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 get-balance .auto-alex-v3))))
+      (auto-alex-v2-bal (unwrap-panic (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 get-balance 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3))))
     (asserts! (or (is-eq current-cycle (get-start-cycle)) (is-cycle-staked (- current-cycle u1))) err-claim-and-stake)
     (ok
       (+
         (get amount-staked (as-contract (get-staker-at-cycle (+ current-cycle u1))))
         (get to-return (as-contract (get-staker-at-cycle current-cycle)))
         (as-contract (get-staking-reward current-cycle))
-        (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex get-balance .auto-alex-v3))
+        (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex get-balance 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3))
         (if (is-eq auto-alex-v2-bal u0) u0 (mul-down auto-alex-v2-bal (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 get-intrinsic))))))))
 
 ;; @desc get the intrinsic value of auto-alex-v3
@@ -102,7 +102,7 @@
       (start-cycle (get-start-cycle))
       (check-start-cycle (asserts! (<= start-cycle current-cycle) err-not-activated)))
     (and (> current-cycle start-cycle) (not (is-cycle-staked (- current-cycle u1))) (try! (claim-and-stake (- current-cycle u1))))
-    (as-contract (try! (contract-call? .auto-alex-v3 set-reserve (try! (get-next-base)))))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 set-reserve (try! (get-next-base)))))
     (ok current-cycle)))
 
 ;; @desc triggers external event that claims all that's available and stake for another 32 cycles
@@ -119,11 +119,11 @@
       (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
         (div-down (mul-down (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u1)) (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u33)))))
       (intrinsic (get-shares-to-tokens ONE_8))
-      (balance (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex get-balance .auto-alex-v3))))
+      (balance (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex get-balance 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3))))
     (asserts! (> current-cycle reward-cycle) err-reward-cycle-not-completed)
     (asserts! (>= balance redeeming) err-redeem-imbalance)
-    (as-contract (try! (contract-call? .auto-alex-v3-registry set-staked-cycle reward-cycle true)))
-    (as-contract (try! (contract-call? .auto-alex-v3-registry set-shares-to-tokens-per-cycle reward-cycle intrinsic)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-staked-cycle reward-cycle true)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-shares-to-tokens-per-cycle reward-cycle intrinsic)))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: (- balance redeeming) })))
     (print { notification: "claim-and-stake", payload: { redeeming: redeeming, tokens: tokens, balance: balance }})
     (ok true)))
@@ -144,9 +144,9 @@
       (sender tx-sender))
     (asserts! (> dx u0) err-invalid-liquidity)
     (asserts! (not (is-create-paused)) err-paused)
-    (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex transfer dx sender .auto-alex-v3 none))
+    (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex transfer dx sender 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 none))
     (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: dx })))
-    (as-contract (try! (contract-call? .auto-alex-v3 mint dx sender)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 mint dx sender)))
     (print { notification: "position-added", payload: { new-supply: dx, sender: sender } })
     (try! (rebase))
 		(ok true)))
@@ -160,9 +160,9 @@
     (asserts! (> intrinsic-dx u0) err-invalid-liquidity)
     (asserts! (not (is-create-paused)) err-paused)
     (asserts! (< end-cycle-v2 (+ current-cycle max-cycles)) err-end-cycle-v2) ;; auto-alex-v2 is not configured correctly
-    (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 transfer dx sender .auto-alex-v3 none))
+    (try! (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 transfer dx sender 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 none))
     (and (< end-cycle-v2 current-cycle) (begin (as-contract (try! (reduce-position-v2))) true))
-    (as-contract (try! (contract-call? .auto-alex-v3 mint intrinsic-dx sender)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 mint intrinsic-dx sender)))
     (print { notification: "upgrade-position-added", payload: { new-supply: intrinsic-dx, sender: sender } })
     (try! (rebase))
 		(ok true)))
@@ -172,10 +172,10 @@
       (current-cycle (try! (rebase)))
       (redeem-cycle (+ current-cycle max-cycles))
       (request-details { requested-by: tx-sender, amount: amount, redeem-cycle: redeem-cycle, status: PENDING })
-			(request-id (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request u0 request-details)))))
+			(request-id (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-redeem-request u0 request-details)))))
     (asserts! (not (is-redeem-paused)) err-paused)
-    (try! (contract-call? .auto-alex-v3 transfer amount tx-sender .auto-alex-v3 none))
-    (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-shares-per-cycle redeem-cycle (+ (get-redeem-shares-per-cycle-or-default redeem-cycle) amount))))
+    (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 transfer amount tx-sender 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 none))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-redeem-shares-per-cycle redeem-cycle (+ (get-redeem-shares-per-cycle-or-default redeem-cycle) amount))))
     (print { notification: "redeem-request", payload: request-details })
     (try! (rebase))
 		(ok request-id)))
@@ -193,10 +193,10 @@
     (asserts! (not (is-redeem-paused)) err-paused)
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
 
-    (as-contract (try! (contract-call? .auto-alex-v3 burn tokens .auto-alex-v3)))
-    (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 burn tokens 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
     (print { notification: "finalize-redeem", payload: updated-request-details })
-    (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
     (try! (rebase))
 		(ok true)))
 
@@ -212,10 +212,10 @@
       (updated-request-details (merge request-details { status: REVOKED })))
     (asserts! (is-eq tx-sender (get requested-by request-details)) err-unauthorised)
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
-    (as-contract (try! (contract-call? .auto-alex-v3 transfer-token .auto-alex-v3 tokens (get requested-by request-details))))
-    (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-shares-per-cycle redeem-cycle (- (get-redeem-shares-per-cycle-or-default redeem-cycle) (get amount request-details)))))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 tokens (get requested-by request-details))))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-redeem-shares-per-cycle redeem-cycle (- (get-redeem-shares-per-cycle-or-default redeem-cycle) (get amount request-details)))))
     (print { notification: "revoke-redeem", payload: updated-request-details })
-    (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
     (try! (rebase))
 		(ok true)))
 
@@ -255,19 +255,19 @@
   (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staker-at-cycle-or-default reward-cycle (get-user-id)))
 
 (define-read-only (get-user-id)
-  (default-to u0 (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-user-id .auto-alex-v3)))
+  (default-to u0 (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-user-id 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3)))
 
 (define-private (stake-tokens (amount-tokens uint) (lock-period uint))
-  (contract-call? .auto-alex-v3 stake-tokens amount-tokens lock-period))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 stake-tokens amount-tokens lock-period))
 
 (define-private (claim-staking-reward (reward-cycle uint))
-  (contract-call? .auto-alex-v3 claim-staking-reward reward-cycle))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 claim-staking-reward reward-cycle))
 
 (define-private (reduce-position-v2)
-  (contract-call? .auto-alex-v3 reduce-position-v2))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 reduce-position-v2))
 
 (define-private (get-shares-to-tokens (dx uint))
-  (contract-call? .auto-alex-v3 get-shares-to-tokens dx))
+  (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 get-shares-to-tokens dx))
 
 (define-private (claim-and-stake-v2 (reward-cycle uint))
   (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2 claim-and-stake reward-cycle))
