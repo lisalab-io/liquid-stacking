@@ -118,13 +118,14 @@
       (tokens (+ (get to-return claimed) (get entitled-token claimed) claimed-v2))
       (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
         (div-down (mul-down (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u1)) (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u33)))))
-      (intrinsic (get-shares-to-tokens ONE_8)))
+      (intrinsic (get-shares-to-tokens ONE_8))
+      (balance (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex get-balance .auto-alex-v3))))
     (asserts! (> current-cycle reward-cycle) err-reward-cycle-not-completed)
-    (asserts! (>= tokens redeeming) (err tokens))
+    (asserts! (>= balance redeeming) (err balance))
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-staked-cycle reward-cycle true)))
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-shares-to-tokens-per-cycle reward-cycle intrinsic)))
-    (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: (- tokens redeeming) })))
-    (print { notification: "claim-and-stake", payload: { redeeming: redeeming, tokens: tokens }})
+    (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: (- balance redeeming) })))
+    (print { notification: "claim-and-stake", payload: { redeeming: redeeming, tokens: tokens, balance: balance }})
     (ok true)))
 
 ;; claims alex for the reward-cycles and mint auto-alex-v3
@@ -193,7 +194,7 @@
     (asserts! (not (is-redeem-paused)) err-paused)
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
 
-    (as-contract (unwrap! (contract-call? .auto-alex-v3 burn tokens .auto-alex-v3) (err balance)))
+    (as-contract (unwrap! (contract-call? .auto-alex-v3 burn tokens .auto-alex-v3) (err u1234)))
     (as-contract (try! (contract-call? .auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
     (print { notification: "finalize-redeem", payload: updated-request-details })
     (as-contract (try! (contract-call? .auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
@@ -232,9 +233,10 @@
     ok-value
     (let (
       (reward-cycle (+ (get current-cycle ok-value) cycles-to-stake))
-      (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
-      (div-down (get-shares-to-tokens (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u32)))))
-      (returning (get to-return (get-staker-at-cycle reward-cycle)))
+      (redeeming (get-shares-to-tokens (get-redeem-shares-per-cycle-or-default reward-cycle)))
+      ;; (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
+      ;;   (div-down (get-shares-to-tokens (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u32)))))        
+      (returning (+ (get to-return (get-staker-at-cycle reward-cycle)) (get-staking-reward reward-cycle)))
       (staking (if (is-eq cycles-to-stake max-cycles)
         (get remaining ok-value)
         (if (> returning redeeming)
@@ -246,16 +248,16 @@
       (ok { current-cycle: (get current-cycle ok-value), remaining: (- (get remaining ok-value) staking) }))
     err-value previous-response))
 
-(define-private (get-reward-cycle (burn-height uint))
+(define-read-only (get-reward-cycle (burn-height uint))
   (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-reserve-pool get-reward-cycle 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.age000-governance-token burn-height))
 
-(define-private (get-staking-reward (reward-cycle uint))
+(define-read-only (get-staking-reward (reward-cycle uint))
   (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staking-reward (get-user-id) reward-cycle))
 
-(define-private (get-staker-at-cycle (reward-cycle uint))
+(define-read-only (get-staker-at-cycle (reward-cycle uint))
   (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staker-at-cycle-or-default reward-cycle (get-user-id)))
 
-(define-private (get-user-id)
+(define-read-only (get-user-id)
   (default-to u0 (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-user-id .auto-alex-v3)))
 
 (define-private (stake-tokens (amount-tokens uint) (lock-period uint))
