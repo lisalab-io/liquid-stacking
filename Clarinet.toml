@@ -30,7 +30,8 @@ requirements = [
   { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.executor-dao" },
   { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry" },
   { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3" },
-  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-wrapped" }
+  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-wrapped" },
+  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-endpoint" }
 ]
 
 [contracts.lip007]

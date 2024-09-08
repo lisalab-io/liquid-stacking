@@ -105,29 +105,6 @@
     (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 set-reserve (try! (get-next-base)))))
     (ok current-cycle)))
 
-;; @desc triggers external event that claims all that's available and stake for another 32 cycles
-;; @desc this can be triggered by anyone
-;; @param reward-cycle the target cycle to claim (and stake for current cycle + 32 cycles). reward-cycle must be < current cycle.
-(define-public (claim-and-stake (reward-cycle uint))
-  (let (
-      (current-cycle (unwrap! (get-reward-cycle block-height) err-staking-not-available))
-      (end-cycle-v2 (get-end-cycle-v2))
-      ;; claim all that's available to claim for the reward-cycle
-      (claimed (as-contract (try! (claim-staking-reward reward-cycle))))
-      (claimed-v2 (if (< end-cycle-v2 current-cycle) (as-contract (try! (reduce-position-v2))) (begin (try! (claim-and-stake-v2 reward-cycle)) u0)))
-      (tokens (+ (get to-return claimed) (get entitled-token claimed) claimed-v2))
-      (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
-        (div-down (mul-down (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u1)) (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u33)))))
-      (intrinsic (get-shares-to-tokens ONE_8))
-      (balance (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex get-balance 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3))))
-    (asserts! (> current-cycle reward-cycle) err-reward-cycle-not-completed)
-    (asserts! (>= balance redeeming) err-redeem-imbalance)
-    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-staked-cycle reward-cycle true)))
-    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-shares-to-tokens-per-cycle reward-cycle intrinsic)))
-    (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: (- balance redeeming) })))
-    (print { notification: "claim-and-stake", payload: { redeeming: redeeming, tokens: tokens, balance: balance }})
-    (ok true)))
-
 ;; claims alex for the reward-cycles and mint auto-alex-v3
 (define-public (claim-and-mint (reward-cycles (list 200 uint)))
   (let (
@@ -187,14 +164,14 @@
       (check-claim-and-stake (and (not (is-cycle-staked redeem-cycle)) (try! (claim-and-stake redeem-cycle))))
       (current-cycle (try! (rebase)))
       (prev-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- redeem-cycle u1)))
-      (base-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- redeem-cycle u32)))
+      (base-shares-to-tokens (get-shares-to-tokens-per-cycle-or-default (- redeem-cycle u33)))
       (tokens (div-down (mul-down prev-shares-to-tokens (get amount request-details)) base-shares-to-tokens))
-      (updated-request-details (merge request-details { status: FINALIZED })))
+      (updated-request-details (merge request-details { status: FINALIZED }))
+      (balance (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 get-balance 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3))))
     (asserts! (not (is-redeem-paused)) err-paused)
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
 
-    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 burn tokens 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3)))
-    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex tokens (get requested-by request-details))))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex transfer tokens tx-sender (get requested-by request-details) none)))
     (print { notification: "finalize-redeem", payload: updated-request-details })
     (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-redeem-request request-id updated-request-details)))
     (try! (rebase))
@@ -222,6 +199,30 @@
 ;; private functions
 ;;
 
+;; @desc triggers external event that claims all that's available and stake for another 32 cycles
+;; @param reward-cycle the target cycle to claim (and stake for current cycle + 32 cycles). reward-cycle must be < current cycle.
+(define-private (claim-and-stake (reward-cycle uint))
+  (let (
+      (current-cycle (unwrap! (get-reward-cycle block-height) err-staking-not-available))
+      (end-cycle-v2 (get-end-cycle-v2))
+      ;; claim all that's available to claim for the reward-cycle
+      (claimed (as-contract (try! (claim-staking-reward reward-cycle))))
+      (claimed-v2 (if (< end-cycle-v2 current-cycle) (as-contract (try! (reduce-position-v2))) (begin (try! (claim-and-stake-v2 reward-cycle)) u0)))
+      (tokens (+ (get to-return claimed) (get entitled-token claimed) claimed-v2))
+      (redeeming (if (is-eq (get-redeem-shares-per-cycle-or-default reward-cycle) u0) u0
+        (div-down (mul-down (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u1)) (get-redeem-shares-per-cycle-or-default reward-cycle)) (get-shares-to-tokens-per-cycle-or-default (- reward-cycle u33)))))
+      (intrinsic (get-shares-to-tokens ONE_8))
+      (balance (unwrap-panic (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 get-balance 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3))))
+    (asserts! (> current-cycle reward-cycle) err-reward-cycle-not-completed)
+    (asserts! (>= tokens redeeming) err-redeem-imbalance)
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-staked-cycle reward-cycle true)))
+    (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-shares-to-tokens-per-cycle reward-cycle intrinsic)))
+    (and (> redeeming u0) (as-contract (unwrap! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 burn redeeming 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3) (err redeeming))))
+    (and (> redeeming u0) (as-contract (try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3 transfer-token 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex redeeming tx-sender))))
+    (try! (fold stake-tokens-iter REWARD-CYCLE-INDEXES (ok { current-cycle: current-cycle, remaining: (- tokens redeeming) })))
+    (print { notification: "claim-and-stake", payload: { redeeming: redeeming, tokens: tokens }})
+    (ok true)))
+
 (define-private (sum-claimed (claimed-response (response (tuple (entitled-token uint) (to-return uint)) uint)) (prior (response uint uint)))
   (match prior
     ok-value (match claimed-response claimed (ok (+ ok-value (get to-return claimed) (get entitled-token claimed))) err (err err))
@@ -245,16 +246,16 @@
       (ok { current-cycle: (get current-cycle ok-value), remaining: (- (get remaining ok-value) staking) }))
     err-value previous-response))
 
-(define-read-only (get-reward-cycle (burn-height uint))
+(define-private (get-reward-cycle (burn-height uint))
   (contract-call? 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.alex-reserve-pool get-reward-cycle 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.age000-governance-token burn-height))
 
-(define-read-only (get-staking-reward (reward-cycle uint))
+(define-private (get-staking-reward (reward-cycle uint))
   (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staking-reward (get-user-id) reward-cycle))
 
 (define-read-only (get-staker-at-cycle (reward-cycle uint))
   (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-staker-at-cycle-or-default reward-cycle (get-user-id)))
 
-(define-read-only (get-user-id)
+(define-private (get-user-id)
   (default-to u0 (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.alex-staking-v2 get-user-id 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3)))
 
 (define-private (stake-tokens (amount-tokens uint) (lock-period uint))

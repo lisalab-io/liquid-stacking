@@ -8,7 +8,7 @@
 	{ hashbytes: 0x827a04335a9eb22cb46979f180670c8e7ba453b5, version: 0x04 }
 )
 
-(as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-4 allow-contract-caller 'SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox4-pools none))
+(as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-4 allow-contract-caller 'SP001SFSMC2ZY76PD4M68P3WGX154XCH7NE3TYMX.pox4-pools none))
 
 (define-read-only (is-dao-or-extension)
 	(ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised))
@@ -37,7 +37,7 @@
 (define-public (revoke-delegate-stx)
 	(begin
 		(try! (is-strategy-caller))
-		(match (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-4 revoke-delegate-stx))
+		(match (as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-4 revoke-delegate-stx))
 			ok-val (ok ok-val)
 			err-val (err (to-uint err-val))
 		)

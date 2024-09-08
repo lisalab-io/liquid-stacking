@@ -9,7 +9,7 @@
 			{ extension: .auto-alex-v3-endpoint-v2, enabled: true }
 		)))
 
-		(try! (contract-call? .auto-alex-v3-registry set-start-cycle u0))
+		(try! (contract-call? 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry set-start-cycle u0))
 		(try! (contract-call? .auto-alex-v3-endpoint-v2 pause-create false))
 		(try! (contract-call? .auto-alex-v3-endpoint-v2 pause-redeem false))
         
