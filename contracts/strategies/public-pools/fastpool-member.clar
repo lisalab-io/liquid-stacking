@@ -4,7 +4,7 @@
 
 (define-constant err-unauthorised (err u5000))
 
-(as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-4 allow-contract-caller 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3 none))
+(as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-4 allow-contract-caller 'SP21YTSM60CAY6D011EZVEVNKXVW8FVZE198XEFFP.pox4-fast-pool-v3 none))
 
 (define-read-only (is-strategy-caller)
 	(ok (asserts! (is-eq contract-caller .public-pools-strategy-v2) err-unauthorised))
@@ -21,7 +21,7 @@
 (define-public (revoke-delegate-stx)
 	(begin
 		(try! (is-strategy-caller))
-		(match (as-contract (contract-call? 'ST000000000000000000002AMW42H.pox-4 revoke-delegate-stx))
+		(match (as-contract (contract-call? 'SP000000000000000000002Q6VF78.pox-4 revoke-delegate-stx))
 			ok-val (ok ok-val)
 			err-val (err (to-uint err-val))
 		)

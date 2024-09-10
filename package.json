@@ -30,25 +30,25 @@
   "prettier": "@stacks/prettier-config",
   "dependencies": {
     "@hirosystems/clarinet-sdk": "2.6.0",
-    "@stacks/common": "^6.13.0",
-    "@stacks/network": "^6.13.0",
+    "@stacks/common": "^6.16.0",
+    "@stacks/network": "^6.16.0",
     "@stacks/prettier-config": "^0.0.10",
     "@stacks/stacking": "6.15.0",
-    "@stacks/transactions": "^6.15.0",
+    "@stacks/transactions": "^6.16.1",
     "c32check": "^2.0.0",
     "chokidar-cli": "^3.0.0",
     "print-diff": "^2.0.0",
     "ts-clarity": "^0.0.21",
-    "vite": "^5.2.11",
+    "vite": "^5.4.3",
     "vitest": "^1.6.0",
     "vitest-environment-clarinet": "^2.1.0",
-    "yaml": "^2.4.2"
+    "yaml": "^2.5.1"
   },
   "resolutions": {},
   "devDependencies": {
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.16.5",
     "ts-node": "^10.9.2",
-    "tslib": "^2.6.3",
-    "typescript": "^5.4.5"
+    "tslib": "^2.7.0",
+    "typescript": "^5.5.4"
   }
 }
