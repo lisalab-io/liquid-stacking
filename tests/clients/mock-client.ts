@@ -84,6 +84,7 @@ export const createClientMockSetup = () => {
     expect(result[2].result).toBeOk(Cl.bool(true));
     expect(result[3].result).toBeOk(Cl.bool(true));
   };
+  
   const executeLip = (lipContractId: string) => {
     simnet.mineBlock([
       tx.callPublicFn(
