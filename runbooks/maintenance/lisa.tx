@@ -12,8 +12,14 @@ signer "deployer" "stacks::connect" {
   expected_address = env.stacks_deployer_address
 }
 
-action "deploy_lip" "stacks::deploy_contract" {
+action "deploy_1" "stacks::deploy_contract" {
     contract = stacks::get_contract_from_clarinet_project(env.clarinet_manifest_path, "lip011")
+    signer = signer.deployer
+    fee = 2000001
+}
+
+action "deploy_2" "stacks::deploy_contract" {
+    contract = stacks::get_contract_from_clarinet_project(env.clarinet_manifest_path, "auto-alex-v3-endpoint-v2")
     signer = signer.deployer
     fee = 2000001
 }
