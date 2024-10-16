@@ -64,11 +64,10 @@ async function main() {
   };
 
   const _contracts = {
-    'auto-alex-v3-endpoint-v2': 'extensions/auto-alex-v3-endpoint-v2',
-    'lip011': 'proposals/lip011'
+    'lip013': 'proposals/lip013'
   };
   const _deploy = Object.keys(_contracts).slice(0);
-  const _propose = Object.keys(_contracts).slice(1);
+  const _propose = Object.keys(_contracts).slice(0);
 
   const deployTx: StacksTransaction[] = [];
   for (let i = 0; i < _deploy.length; i++) {

@@ -102,3 +102,11 @@ epoch = 2.5
 [contracts.auto-alex-v3-endpoint-v2-01]
 path = "contracts/extensions/auto-alex-v3-endpoint-v2-01.clar"
 epoch = 2.5
+
+[contracts.lip014]
+path = "contracts/proposals/lip014.clar"
+epoch = 2.5
+
+[contracts.auto-alex-v3-endpoint-v2-02]
+path = "contracts/extensions/auto-alex-v3-endpoint-v2-02.clar"
+epoch = 2.5
