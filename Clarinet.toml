@@ -27,7 +27,11 @@ requirements = [
   { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.trait-sip-010" },
   { contract_id = "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2" },
   { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.migrate-legacy-v2-wl" },  
-  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.executor-dao" }
+  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.executor-dao" },
+  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-registry" },
+  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3" },
+  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-wrapped" },
+  { contract_id = "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-endpoint" }
 ]
 
 [contracts.lip007]
@@ -79,6 +83,22 @@ epoch = 2.5
 path = "contracts/mocks/tests/alex-boot.clar"
 epoch = 2.5
 
+[contracts.lip010]
+path = "contracts/proposals/lip010.clar"
+epoch = 2.5
+
 [contracts.lip009]
 path = "contracts/proposals/lip009.clar"
+epoch = 2.5
+
+[contracts.auto-alex-v3-endpoint-v2]
+path = "contracts/extensions/auto-alex-v3-endpoint-v2.clar"
+epoch = 2.5
+
+[contracts.lip011]
+path = "contracts/proposals/lip011.clar"
+epoch = 2.5
+
+[contracts.auto-alex-v3-endpoint-v2-01]
+path = "contracts/extensions/auto-alex-v3-endpoint-v2-01.clar"
 epoch = 2.5
