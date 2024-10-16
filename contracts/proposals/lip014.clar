@@ -3,7 +3,7 @@
 
 (impl-trait 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.proposal-trait.proposal-trait)
 
-(define-constant intrinsic-234 u158754695853)
+(define-constant intrinsic-234 u101829588)
 
 (define-public (execute (sender principal))
 	(begin
@@ -15,4 +15,5 @@
     (try! (contract-call? .auto-alex-v3-endpoint-v2-01 pause-redeem true))
     (try! (contract-call? .auto-alex-v3-endpoint-v2-02 pause-create false))
     (try! (contract-call? .auto-alex-v3-endpoint-v2-02 pause-redeem false))    
+    (try! (contract-call? .auto-alex-v3-endpoint-v2-02 rebase))
 		(ok true)))
