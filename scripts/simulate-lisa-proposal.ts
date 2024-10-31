@@ -64,7 +64,7 @@ async function main() {
   };
 
   const _contracts = {
-    'lip013': 'proposals/lip013'
+    'lip015': 'proposals/lip015'
   };
   const _deploy = Object.keys(_contracts).slice(0);
   const _propose = Object.keys(_contracts).slice(0);

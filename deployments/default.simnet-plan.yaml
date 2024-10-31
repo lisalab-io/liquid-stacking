@@ -603,39 +603,19 @@ plan:
             path: "./.cache/requirements/SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.auto-alex-v3-wrapped.clar"
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: auto-alex-v3-endpoint-v2-01
+            emulated-sender: SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC
+            path: "./.cache/requirements/SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC.auto-alex-v3-endpoint-v2-01.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: auto-alex-v3-endpoint-v2-02
+            emulated-sender: SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC
+            path: "./.cache/requirements/SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC.auto-alex-v3-endpoint-v2-02.clar"
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: lip006
             emulated-sender: SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7
             path: "./.cache/requirements/SP3BQ65DRM8DMTYDD5HWMN60EYC0JFS5NC2V5CWW7.lip006.clar"
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: alex-boot
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/tests/alex-boot.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: auto-alex-v3
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/auto-alex-v3.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: auto-alex-v3-registry
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/auto-alex-v3-registry.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: auto-alex-v3-endpoint
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/auto-alex-v3-endpoint.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: auto-alex-v3-endpoint-v2
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/auto-alex-v3-endpoint-v2.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: auto-alex-v3-endpoint-v2-01
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/auto-alex-v3-endpoint-v2-01.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: auto-alex-v3-endpoint-v2-02
@@ -643,51 +623,13 @@ plan:
             path: contracts/extensions/auto-alex-v3-endpoint-v2-02.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: auto-alex-v3-wrapped
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/aux/auto-alex-v3-wrapped.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: legacy-boot
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/tests/legacy-boot.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lip007
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip007.clar
-            clarity-version: 2
-      epoch: "2.5"
-    - id: 7
-      transactions:
-        - emulated-contract-publish:
-            contract-name: lip008
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip008.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lip009
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip009.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lip010
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip010.clar
-            clarity-version: 2
-        - emulated-contract-publish:
-            contract-name: lip011
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/lip011.clar
-            clarity-version: 2
-        - emulated-contract-publish:
             contract-name: lip014
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/lip014.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: mock-boot
+            contract-name: lip015
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/mocks/tests/mock-boot.clar
+            path: contracts/proposals/lip015.clar
             clarity-version: 2
       epoch: "2.5"
