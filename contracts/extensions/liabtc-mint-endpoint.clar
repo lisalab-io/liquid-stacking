@@ -67,7 +67,7 @@
 		(try! (contract-call? 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc transfer amount tx-sender (as-contract tx-sender) none))
 		(as-contract (try! (contract-call? .xlink-staking stake 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc amount message signature-packs)))
 		(try! (contract-call? .token-liabtc dao-mint amount tx-sender))
-    (print { type: "mint", amount: amount, message: message })
+    (print { type: "mint", amount: amount, message: message, sender: tx-sender})
     (ok (try! (rebase)))))
 
 (define-public (request-burn 
