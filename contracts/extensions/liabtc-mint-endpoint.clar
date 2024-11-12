@@ -67,6 +67,7 @@
 		(try! (contract-call? 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc transfer amount tx-sender (as-contract tx-sender) none))
 		(as-contract (try! (contract-call? .xlink-staking stake 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc amount message signature-packs)))
 		(try! (contract-call? .token-liabtc dao-mint amount tx-sender))
+    (print { type: "mint", amount: amount, message: message })
     (ok (try! (rebase)))))
 
 (define-public (request-burn 
@@ -91,23 +92,27 @@
 	(signature-packs (list 100 { signer: principal, message-hash: (buff 32), signature: (buff 65) })))	
   (let (
 			(sender tx-sender)
-			(request-details (try! (get-burn-request-or-fail request-id))))
+			(request-details (try! (get-burn-request-or-fail request-id)))
+      (merged-request-details (merge request-details { status: REVOKED })))
     (try! (is-not-paused-or-fail))
 		(try! (rebase))
     (asserts! (is-eq PENDING (get status request-details)) err-request-finalized-or-revoked)
     (asserts! (is-eq sender (get requested-by request-details)) err-unauthorised)
 		(as-contract (try! (contract-call? .liabtc-mint-registry transfer (get amount request-details) sender 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc)))
-		(try! (contract-call? .liabtc-mint-registry set-burn-request request-id (merge request-details { status: REVOKED })))
+		(try! (contract-call? .liabtc-mint-registry set-burn-request request-id merged-request-details))
+    (print { type: "burn-revoke", id: request-id, details: merged-request-details })
 		(mint (get amount request-details) message signature-packs)))
 
 (define-public (finalize-burn (request-id uint))
 	(let (
 			(sender tx-sender)          
-      (request-details (try! (get-burn-request-or-fail request-id))))
+      (request-details (try! (get-burn-request-or-fail request-id)))
+      (merged-request-details (merge request-details { status: FINALIZED })))
     (try! (is-not-paused-or-fail))
 		(asserts! (>= burn-block-height (+ (get requested-at request-details) (var-get burn-delay))) err-request-pending)
 		(as-contract (try! (contract-call? .liabtc-mint-registry transfer (get amount request-details) sender 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc)))
-    (try! (contract-call? .liabtc-mint-registry set-burn-request request-id (merge request-details { status: FINALIZED })))
+    (try! (contract-call? .liabtc-mint-registry set-burn-request request-id merged-request-details))
+    (print { type: "burn-finalize", id: request-id, details: merged-request-details })
     (try! (rebase))
     (ok true)))
 
