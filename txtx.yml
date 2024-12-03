@@ -18,7 +18,8 @@ environments:
   mainnet:
     stacks_network_id: mainnet
     stacks_api_url: https://api.hiro.so
-    stacks_deployer_address: SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC
-    # stacks_deployer_address: SP2SF8P7AKN8NYHD57T96C51RRV9M0GKRN02BNHD2
-    stacks_operator_address: SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC
+    # stacks_deployer_address: SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC    
+    # stacks_operator_address: SP1E0XBN9T4B10E9QMR7XMFJPMA19D77WY3KP2QKC
+    stacks_deployer_address: SP673Z4BPB4R73359K9HE55F2X91V5BJTN5SXZ5T
+    stacks_operator_address: SP673Z4BPB4R73359K9HE55F2X91V5BJTN5SXZ5T    
     clarinet_manifest_path: './Clarinet.toml'

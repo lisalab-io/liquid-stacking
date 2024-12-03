@@ -11,7 +11,7 @@
 
 (define-data-var token-name (string-ascii 32) "LiaBTC")
 (define-data-var token-symbol (string-ascii 10) "LiaBTC")
-(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.alexlab.co/metadata/token-liabtc.json"))
+(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.lisalab.io/metadata/token-liabtc.json"))
 
 (define-data-var token-decimals uint u8)
 
@@ -72,7 +72,7 @@
 ;; read-only functions
 
 (define-read-only (is-dao-or-extension)
-    (ok (asserts! (or (is-eq tx-sender 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao) (contract-call? 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao is-extension contract-caller)) err-unauthorised)))
+    (ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (get-name)
     (ok (var-get token-name)))
