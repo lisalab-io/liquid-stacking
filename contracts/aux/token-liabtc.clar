@@ -13,7 +13,7 @@
 (define-data-var token-symbol (string-ascii 10) "LiaBTC")
 (define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.alexlab.co/metadata/token-liabtc.json"))
 
-(define-data-var token-decimals uint u6)
+(define-data-var token-decimals uint u8)
 
 (define-data-var reserve uint u0)
 
@@ -72,7 +72,7 @@
 ;; read-only functions
 
 (define-read-only (is-dao-or-extension)
-    (ok (asserts! (or (is-eq tx-sender .executor-dao) (contract-call? .executor-dao is-extension contract-caller)) err-unauthorised)))
+    (ok (asserts! (or (is-eq tx-sender 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao) (contract-call? 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (get-name)
     (ok (var-get token-name)))
@@ -99,14 +99,20 @@
     (ok (ft-get-supply liabtc)))
 
 (define-read-only (get-tokens-to-shares (amount uint))
-    (if (is-eq (get-reserve) (ok u0))
-        amount
-        (/ (* amount (unwrap-panic (get-total-shares))) (unwrap-panic (get-reserve)))))
+	(let (
+		(shares-total (unwrap-panic (get-total-shares)))
+		(reserve-total (unwrap-panic (get-reserve))))
+		(if (or (is-eq reserve-total u0) (is-eq shares-total reserve-total))
+			amount
+			(/ (* amount shares-total) reserve-total))))
 
 (define-read-only (get-shares-to-tokens (shares uint))
-    (if (is-eq (get-total-shares) (ok u0))
-        shares
-        (/ (* shares (unwrap-panic (get-reserve))) (unwrap-panic (get-total-shares)))))
+	(let (
+		(shares-total (unwrap-panic (get-total-shares)))
+		(reserve-total (unwrap-panic (get-reserve))))
+		(if (or (is-eq reserve-total u0) (is-eq shares-total reserve-total))
+			shares
+			(/ (* shares reserve-total) shares-total))))
 
 (define-read-only (get-reserve)
     (ok (var-get reserve)))

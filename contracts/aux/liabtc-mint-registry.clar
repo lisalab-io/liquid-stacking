@@ -1,10 +1,7 @@
 
 ;; SPDX-License-Identifier: BUSL-1.1
 
-;; __IF_MAINNET__
 (use-trait sip-010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
-;; (use-trait sip-010-trait .sip-010-trait.sip-010-trait)
-;; __ENDIF__
 
 (define-constant err-unauthorised (err u1000))
 (define-constant err-unknown-request-id (err u1008))
@@ -15,21 +12,17 @@
 
 (define-data-var burn-request-nonce uint u0)
 (define-map burn-requests uint { requested-by: principal, amount: uint, requested-at: uint, status: (buff 1) })
-(define-map burn-requests-pending principal (list 1000 uint))
 
 ;; read-only calls
 
 (define-read-only (is-dao-or-extension)
-	(ok (asserts! (or (is-eq tx-sender .executor-dao) (contract-call? .executor-dao is-extension contract-caller)) err-unauthorised)))
+	(ok (asserts! (or (is-eq tx-sender 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao) (contract-call? 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao is-extension contract-caller)) err-unauthorised)))
 
 (define-read-only (get-burn-request-nonce)
 	(var-get burn-request-nonce))
 
 (define-read-only (get-burn-request-or-fail (request-id uint))
 	(ok (unwrap! (map-get? burn-requests request-id) err-unknown-request-id)))
-
-(define-read-only (get-burn-requests-pending-or-default (user principal))
-    (default-to (list ) (map-get? burn-requests-pending user)))
 
 ;; governance calls
 
@@ -40,11 +33,6 @@
 		(try! (is-dao-or-extension))
 		(map-set burn-requests id details)
 		(ok id)))
-
-(define-public (set-burn-requests-pending (requested-by principal) (new-list (list 1000 uint)))
-	(begin
-		(try! (is-dao-or-extension))
-		(ok (map-set burn-requests-pending requested-by new-list))))
 
 (define-public (transfer (amount uint) (recipient principal) (token-trait <sip-010-trait>))
     (begin

@@ -11,7 +11,7 @@
 (define-data-var token-symbol (string-ascii 10) "vLiaBTC")
 (define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.alexlab.co/metadata/token-vliabtc.json"))
 
-(define-data-var token-decimals uint u6)
+(define-data-var token-decimals uint u8)
 
 ;; governance functions
 
@@ -61,7 +61,7 @@
 ;; read-only functions
 
 (define-read-only (is-dao-or-extension)
-    (ok (asserts! (or (is-eq tx-sender 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao) (contract-call? 'SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.lisa-dao is-extension contract-caller)) err-unauthorised)))
+    (ok (asserts! (or (is-eq tx-sender 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao) (contract-call? 'SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.executor-dao is-extension contract-caller)) err-unauthorised)))
     
 (define-read-only (get-name)
     (ok (var-get token-name)))
@@ -88,14 +88,20 @@
     (contract-call? .token-liabtc get-balance (as-contract tx-sender)))
 
 (define-read-only (get-tokens-to-shares (amount uint))
-    (if (is-eq (get-total-supply) (ok u0))
-        amount
-        (/ (* amount (unwrap-panic (get-total-supply))) (unwrap-panic (get-total-shares)))))
+	(let (
+		(shares-total (unwrap-panic (get-total-shares)))
+		(supply-total (unwrap-panic (get-total-supply))))
+		(if (or (is-eq supply-total u0) (is-eq shares-total supply-total))
+			amount
+			(/ (* amount supply-total) shares-total))))
 
 (define-read-only (get-shares-to-tokens (shares uint))
-    (if (is-eq (get-total-supply) (ok u0))
-        shares
-        (/ (* shares (unwrap-panic (get-total-shares))) (unwrap-panic (get-total-supply)))))
+	(let (
+		(shares-total (unwrap-panic (get-total-shares)))
+		(supply-total (unwrap-panic (get-total-supply))))
+		(if (or (is-eq supply-total u0) (is-eq shares-total supply-total))
+			shares
+			(/ (* shares shares-total) supply-total))))
 
 ;; private functions
 
