@@ -11,7 +11,7 @@
 
 (define-data-var token-name (string-ascii 32) "lqstx")
 (define-data-var token-symbol (string-ascii 10) "lqstx")
-(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.alexlab.co/metadata/token-lqstx.json"))
+(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.lisalab.io/metadata/token-lqstx.json"))
 
 (define-data-var token-decimals uint u6)
 

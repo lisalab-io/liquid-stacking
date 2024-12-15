@@ -11,7 +11,7 @@
 
 (define-data-var token-name (string-ascii 32) "LiALEX")
 (define-data-var token-symbol (string-ascii 32) "LiALEX")
-(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.alexlab.co/metadata/auto-alex-v3.json"))
+(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.lisalab.io/metadata/auto-alex-v3.json"))
 
 (define-data-var reserve uint u0)
 

@@ -7,7 +7,7 @@
 
 (define-data-var token-name (string-ascii 32) "Wrapped lqSTX")
 (define-data-var token-symbol (string-ascii 10) "wlqstx")
-(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.alexlab.co/metadata/token-wlqstx.json"))
+(define-data-var token-uri (optional (string-utf8 256)) (some u"https://cdn.lisalab.io/metadata/token-wlqstx.json"))
 
 (define-data-var token-decimals uint u8)
 

@@ -119,3 +119,23 @@ clarity_version = 2
 path = "contracts/proposals/lip015.clar"
 epoch = 2.5
 clarity_version = 2
+
+[contracts.token-liabtc]
+path = "contracts/aux/token-liabtc.clar"
+epoch = 3.0
+clarity_version = 3
+
+[contracts.token-vliabtc]
+path = "contracts/aux/token-vliabtc.clar"
+epoch = 3.0
+clarity_version = 3
+
+[contracts.liabtc-mint-registry]
+path = "contracts/aux/liabtc-mint-registry.clar"
+epoch = 3.0
+clarity_version = 3
+
+[contracts.liabtc-mint-endpoint]
+path = "contracts/extensions/liabtc-mint-endpoint.clar"
+epoch = 3.0
+clarity_version = 3

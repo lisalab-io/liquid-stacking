@@ -4,20 +4,29 @@
 addon "stacks" {
   network_id = input.stacks_network_id
   rpc_api_url = input.stacks_api_url
+  fee = 1000002
 }
 
 signer "deployer" "stacks::web_wallet" {
   expected_address = input.stacks_deployer_address
 }
 
-action "deploy2" "stacks::deploy_contract" {
-    contract = stacks::get_contract_from_clarinet_project("lip015")
-    signer = signer.deployer
-    fee = 2000002
+// action "deploy-token-liabtc" "stacks::deploy_contract" {
+//     contract = stacks::get_contract_from_clarinet_project("token-liabtc")
+//     signer = signer.deployer    
+// }
+
+action "deploy-token-vliabtc" "stacks::deploy_contract" {
+    contract = stacks::get_contract_from_clarinet_project("token-vliabtc")
+    signer = signer.deployer    
 }
 
-// action "deploy3" "stacks::deploy_contract" {
-//     contract = stacks::get_contract_from_clarinet_project("auto-alex-v3-endpoint-v2-02")
-//     signer = signer.deployer
-//     fee = 2000002
+// action "deploy-liabtc-mint-registry" "stacks::deploy_contract" {
+//     contract = stacks::get_contract_from_clarinet_project("liabtc-mint-registry")
+//     signer = signer.deployer    
 // }
+
+action "deploy-liabtc-mint-endpoint" "stacks::deploy_contract" {
+    contract = stacks::get_contract_from_clarinet_project("liabtc-mint-endpoint")
+    signer = signer.deployer    
+}
