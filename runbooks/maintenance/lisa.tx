@@ -11,22 +11,7 @@ signer "deployer" "stacks::web_wallet" {
   expected_address = input.stacks_deployer_address
 }
 
-// action "deploy-token-liabtc" "stacks::deploy_contract" {
-//     contract = stacks::get_contract_from_clarinet_project("token-liabtc")
-//     signer = signer.deployer    
-// }
-
-action "deploy-token-vliabtc" "stacks::deploy_contract" {
-    contract = stacks::get_contract_from_clarinet_project("token-vliabtc")
-    signer = signer.deployer    
-}
-
-// action "deploy-liabtc-mint-registry" "stacks::deploy_contract" {
-//     contract = stacks::get_contract_from_clarinet_project("liabtc-mint-registry")
-//     signer = signer.deployer    
-// }
-
-action "deploy-liabtc-mint-endpoint" "stacks::deploy_contract" {
-    contract = stacks::get_contract_from_clarinet_project("liabtc-mint-endpoint")
-    signer = signer.deployer    
+action "deploy-lip017" "stacks::deploy_contract" {
+     contract = stacks::get_contract_from_clarinet_project("lip017")
+     signer = signer.deployer    
 }

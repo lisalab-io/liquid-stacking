@@ -65,14 +65,14 @@ async function main() {
   };
 
   const _contracts = {
-    'token-liabtc': 'aux/token-liabtc',
-    'token-vliabtc': 'aux/token-vliabtc',
-    'liabtc-mint-registry': 'aux/liabtc-mint-registry',
-    'liabtc-mint-endpoint': 'extensions/liabtc-mint-endpoint',
-    // 'lip015': 'proposals/lip015'
+    // 'token-liabtc': 'aux/token-liabtc',
+    // 'token-vliabtc': 'aux/token-vliabtc',
+    // 'liabtc-mint-registry': 'aux/liabtc-mint-registry',
+    // 'liabtc-mint-endpoint': 'extensions/liabtc-mint-endpoint',
+    'lip017': 'proposals/lip017'
   };
   const _deploy = Object.keys(_contracts).slice(0);
-  const _propose = Object.keys(_contracts).slice(5);
+  const _propose = Object.keys(_contracts).slice(0);
 
   const deployTx: StacksTransaction[] = [];
   for (let i = 0; i < _deploy.length; i++) {
