@@ -6,5 +6,5 @@
 
 (define-public (execute (sender principal))
 	(begin
-    (try! (contract-call? 'SP673Z4BPB4R73359K9HE55F2X91V5BJgit TN5SXZ5T.liabtc-mint-endpoint set-mint-paused false))
+    (try! (contract-call? 'SP673Z4BPB4R73359K9HE55F2X91V5BJTN5SXZ5T.liabtc-mint-endpoint set-mint-paused false))
 		(ok true)))
