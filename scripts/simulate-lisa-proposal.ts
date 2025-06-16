@@ -69,7 +69,7 @@ async function main() {
     // 'token-vliabtc': 'aux/token-vliabtc',
     // 'liabtc-mint-registry': 'aux/liabtc-mint-registry',
     // 'liabtc-mint-endpoint': 'extensions/liabtc-mint-endpoint',
-    'lip017': 'proposals/lip017'
+    'lip019': 'proposals/lip019'
   };
   const _deploy = Object.keys(_contracts).slice(0);
   const _propose = Object.keys(_contracts).slice(0);

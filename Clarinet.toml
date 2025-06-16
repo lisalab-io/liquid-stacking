@@ -140,7 +140,7 @@ path = "contracts/extensions/liabtc-mint-endpoint.clar"
 epoch = 3.0
 clarity_version = 3
 
-[contracts.lip017]
-path = "contracts/proposals/lip017.clar"
+[contracts.lip019]
+path = "contracts/proposals/lip019.clar"
 epoch = 3.0
 clarity_version = 3

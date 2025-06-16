@@ -4,14 +4,26 @@
 addon "stacks" {
   network_id = input.stacks_network_id
   rpc_api_url = input.stacks_api_url
-  fee = 1000002
+  fee = 200002
 }
 
 signer "deployer" "stacks::web_wallet" {
   expected_address = input.stacks_deployer_address
 }
 
-action "deploy-lip017" "stacks::deploy_contract" {
-     contract = stacks::get_contract_from_clarinet_project("lip017")
-     signer = signer.deployer    
+signer "operator" "stacks::web_wallet" {
+  expected_address = input.stacks_operator_address
+}
+
+# action "deploy-lip019" "stacks::deploy_contract" {
+#     contract = stacks::get_contract_from_clarinet_project("lip019")
+#     signer = signer.deployer
+# }
+
+action "propose-lip019" "stacks::call_contract" {
+    contract_id = "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.operators"
+    function_name = "propose"
+    function_args = [stacks::cv_principal("${input.stacks_deployer_address}.lip019")]
+    signer = signer.operator
+    fee = 20000
 }
